@@ -170,3 +170,37 @@ public class Exercise {
   }
 }
 ```
+
+### Exercicis
+
+#### Exercici 1
+Implementa la classe `NumsToFile1.java` que escriu els números de `1100 a 1200` en un arxiu que amb nom `Num11001200.txt` a l'escriptori.
+
+#### Exercici 2
+Implementa la classe CharsToFile1.java que escrigui les lletres de «a» a «z» (una en cada línia i en minúscules) en un arxiu que hem anomenat «alphabeta.txt» a l'escriptori.
+
+#### Exercici 3
+Implementa la classe CharsFileToScreen1.java Llegir l'arxiu de l'exercici 2 i escriure en pantalla els caràcters un al costat de l'altre i en majúscules amb un espai entre cada caràcter
+
+#### Exercici 4
+Implementa la classe TreballadorsToFile1.java . Cal que llegeixi valors des de consola ( Nom, Cognoms, Salari,  Casat) de tants treballadors fins que en respondre a la pregunta "Vols Continuar?" la seva resposta sigui diferent a Y. Aquestes dades s'hauran d'emmagatzemar en un fitxer anomenat "treballadors.txt" . En aquest arxiu en cada fila s'emmagatzemarà un registre amb els valors separats per comes, amn tants registres com els que s'han introduït per consola.
+
+#### Exercici 5
+Implementa la classe TreballadorsToScreen1.java . Cal que llegeixi valors del fitxer "treballadors.txt" i mostri el resultat amb el següent format exemple:
+
+```console
+TREBALLADOR 1
+
+Gerard
+
+Paulino
+
+1500
+
+false
+
+TREBALLADOR 2
+
+.....
+
+```
