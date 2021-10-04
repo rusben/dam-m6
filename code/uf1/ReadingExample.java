@@ -11,7 +11,7 @@ public class ReadingExample {
         System.out.println("User home = " + System.getProperty("user.home"));
 
         // Indicate that you are planning to opena file
-        File fleExample = new File("Example.xpl");
+        File fleExample = new File("archivos/Example.xpl");
         // Prepare a Scanner that will "scan" the document
         Scanner opnScanner = new Scanner(fleExample);
 

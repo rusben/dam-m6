@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class TreballadorsToScreen1 {
   public static void main(String[] args) {
-    File fd = new File(System.getProperty("user.home") + File.separator + "Escriptori" + File.separator + "treballadors.txt");
+    File fd = new File(System.getProperty("user.home") + File.separator + "Escriptori" + File.separator + "archivos/treballadors.txt");
 
     try {
       Scanner in = new Scanner(fd);

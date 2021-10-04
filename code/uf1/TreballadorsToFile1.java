@@ -9,7 +9,7 @@ public class TreballadorsToFile1 {
   public static void main(String[] args) {
     Scanner in = new Scanner(System.in);
 
-    File fleExample = new File(System.getProperty("user.home")+File.separator+"Escriptori"+File.separator+"treballadors.txt");
+    File fleExample = new File(System.getProperty("user.home")+File.separator+"Escriptori"+File.separator+ "archivos/treballadors.txt");
     // Create that file and prepare to write some values to it
     try {
       PrintWriter pwInput = new PrintWriter(fleExample);

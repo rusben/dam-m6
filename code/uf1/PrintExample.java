@@ -6,7 +6,7 @@ public class PrintExample {
 
         public static void main(String[] args)  throws Exception {
             // Indicate that you are planning to use a file
-            File fleExample = new File("Example.xpl");
+            File fleExample = new File("archivos/Example.xpl");
             // Create that file and prepare to write some values to it
             PrintWriter pwInput = new PrintWriter(fleExample);
 

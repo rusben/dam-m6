@@ -10,7 +10,7 @@ public class ReadBufferedReader {
 
     try {
 
-      BufferedReader inputStream = new BufferedReader(new FileReader(new File("treballadors.txt")));
+      BufferedReader inputStream = new BufferedReader(new FileReader(new File("archivos/treballadors.txt")));
 
       String line = "";
 

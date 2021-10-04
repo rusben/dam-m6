@@ -10,7 +10,7 @@ public class WriteBufferedWriter {
 
     try {
 
-      BufferedWriter outputStream = new BufferedWriter(new FileWriter(new File("treballadors.txt"), true));
+      BufferedWriter outputStream = new BufferedWriter(new FileWriter(new File("archivos/treballadors.txt"), true));
 
       for (int i = 0; i < 100; i++) {
         outputStream.write("Esta es la línea "+(i+1)+"\n");
