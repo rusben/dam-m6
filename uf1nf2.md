@@ -576,13 +576,13 @@ dos.writeByte(b);
 ```
 
 ## Object Streams
-ObjectInputStream
+### ObjectInputStream
 
-The Java ObjectInputStream class (java.io.ObjectInputStream) enables you to read Java objects from an InputStream instead of just raw bytes. You wrap an InputStream in a ObjectInputStream and then you can read objects from it. Of course the bytes read must represent a valid, serialized Java object. Otherwise reading objects will fail.
+The Java `ObjectInputStream` class `java.io.ObjectInputStream` enables you to read Java objects from an `InputStream` instead of just raw bytes. You wrap an `InputStream` in a `ObjectInputStream` and then you can read objects from it. Of course the bytes read must represent a valid, serialized Java object. Otherwise reading objects will fail.
 
-Normally you will use the ObjectInputStream to read objects written (serialized) by a Java ObjectOutputStream . You will see an example of that later.
+Normally you will use the `ObjectInputStream` to read objects written (serialized) by a Java `ObjectOutputStream`. You will see an example of that later.
 
-Here is a Java ObjectInputStream example:
+Here is a Java `ObjectInputStream` example:
 
 ```java
 ObjectInputStream objectInputStream =
@@ -593,19 +593,19 @@ MyClass object = (MyClass) objectInputStream.readObject();
 objectInputStream.close();
 ```
 
-For this ObjectInputStream example to work the object you read must be an instance of MyClass, and must have been serialized into the file "object.data" via an ObjectOutputStream.
+For this `ObjectInputStream` example to work the object you read must be an instance of `MyClass`, and must have been serialized into the file `object.data` via an `ObjectOutputStream`.
 
-Before you can serialize and de-serialize objects the class of the object must implement java.io.Serializable.
+Before you can serialize and de-serialize objects the class of the object must implement `java.io.Serializable`.
 
-When you are finished reading data from the ObjectInputStream you should remember to close it. Closing a ObjectInputStream will also close the InputStream instance from which the ObjectInputStream is reading.
+When you are finished reading data from the `ObjectInputStream` you should remember to close it. Closing a `ObjectInputStream` will also close the `InputStream` instance from which the `ObjectInputStream` is reading.
 
-Closing a ObjectInputStream is done by calling its close() method. Here is how closing a ObjectInputStream looks:
+Closing a `ObjectInputStream` is done by calling its `close()` method. Here is how closing a `ObjectInputStream` looks:
 
 ```java
 objectInputStream.close();
 ```
 
-You can also use the try-with-resources construct introduced in Java 7. Here is how to use and close a ObjectInputStream looks with the try-with-resources construct:
+You can also use the try-with-resources construct introduced in Java 7. Here is how to use and close a `ObjectInputStream` looks with the try-with-resources construct:
 
 ```java
 InputStream input = new FileInputStream("data/data.bin");
@@ -617,17 +617,17 @@ try(ObjectInputStream objectInputStream =
 }
 ```
 
-Notice how there is no longer any explicit close() method call. The try-with-resources construct takes care of that.
+Notice how there is no longer any explicit `close()` method call. The try-with-resources construct takes care of that.
 
-Notice also that the first FileInputStream instance is not created inside the try-with-resources block. That means that the try-with-resources block will not automatically close this FileInputStream instance. However, when the ObjectInputStream is closed it will also close the InputStream instance it reads from, so the FileInputStream instance will get closed when the ObjectInputStream is closed.
+Notice also that the first `FileInputStream` instance is not created inside the try-with-resources block. That means that the try-with-resources block will not automatically close this `FileInputStream` instance. However, when the `ObjectInputStream` is closed it will also close the `InputStream` instance it reads from, so the `FileInputStream` instance will get closed when the `ObjectInputStream` is closed.
 
 ### ObjectOutputStream
 
-The Java ObjectOutputStream class (java.io.ObjectOutputStream) enables you to write Java objects to an OutputStream instead of just raw bytes. You wrap an OutputStream in a ObjectOutputStream and then you can write objects to it.
+The Java `ObjectOutputStream` class `java.io.ObjectOutputStream` enables you to write Java objects to an `OutputStream` instead of just raw bytes. You wrap an `OutputStream` in a `ObjectOutputStream` and then you can write objects to it.
 
-The Java ObjectOutputStream is often used together with a Java ObjectInputStream. The ObjectOutputStream is used to write the Java objects, and the ObjectInputStream is used to read the objects again. You will see an example of this later.
+The Java `ObjectOutputStream` is often used together with a Java `ObjectInputStream`. The `ObjectOutputStream` is used to write the Java objects, and the `ObjectInputStream` is used to read the objects again. You will see an example of this later.
 
-Here is a Java ObjectOutputStream example:
+Here is a Java `ObjectOutputStream` example:
 
 ```java
 ObjectOutputStream objectOutputStream =
@@ -640,32 +640,32 @@ output.writeObject(object);
 output.close();
 ```
 
-First this examples creates a OutputOutputStream connected to a FileOutputStream. Then the example creates a MyClass object and writes it to the ObjectOutputStream. Finally the example closes the ObjectOutputStream.
+First this examples creates a `OutputOutputStream` connected to a `FileOutputStream`. Then the example creates a `MyClass` object and writes it to the `ObjectOutputStream`. Finally the example closes the `ObjectOutputStream`.
 
-Before you can serialize and de-serialize objects the class of the object must implement java.io.Serializable.
+Before you can serialize and de-serialize objects the class of the object must implement `java.io.Serializable`.
 
-Using an ObjectInputStream With an ObjectOutputStream
+Using an `ObjectInputStream` with an `ObjectOutputStream`.
 
-I promised earlier to show you an example of using the Java ObjectInputStream with the ObjectOutputStream. Here is that example:
+I promised earlier to show you an example of using the Java `ObjectInputStream` with the `ObjectOutputStream`. Here is that example:
 
+FALTA EJEMPLO
 
-This example first creates an ObjectOutputStream connected to a FileOutputStream. Then it creates a Person object and writes it to the ObjectOutputStream, and then closes the ObjectOutputStream.
+This example first creates an `ObjectOutputStream` connected to a `FileOutputStream`. Then it creates a `Person` object and writes it to the `ObjectOutputStream`, and then closes the `ObjectOutputStream`.
 
-Then the example creates an ObjectInputStream connected to the same file the ObjectOutputStream was connected to. The example then reads in an object from the ObjectInputStream and casts it to a Person object. After that the ObjectInputStream is also closed, and the values read into the Person object are printed to System.out.
+Then the example creates an `ObjectInputStream` connected to the same file the `ObjectOutputStream` was connected to. The example then reads in an object from the `ObjectInputStream` and casts it to a `Person` object. After that the `ObjectInputStream` is also closed, and the values read into the `Person` object are printed to `System.out`.
 
 The output printed from running this example should be:
 
-Joan Anton
-53
+FALTA OUTPUT
 
 
 ## RandomAccessFile
 
-The `RandomAccessFile` class in the Java IO API allows you to move around a file and read from it or write to it as you please. You can replace existing parts of a file too. This is not possible with the FileInputStream or FileOutputStream.
+The `RandomAccessFile` class in the `java.io` API allows you to move around a file and read from it or write to it as you please. You can replace existing parts of a file too. This is not possible with the `FileInputStream` or `FileOutputStream`.
 
 ### Creating a RandomAccessFile
 
-Before you can work with the RandomAccessFile class you must instantiate it. Here is how that looks:
+Before you can work with the `RandomAccessFile` class you must instantiate it. Here is how that looks:
 
 ```java
 RandomAccessFile file = new RandomAccessFile("c:\\data\\file.txt", "rw");
@@ -690,7 +690,7 @@ file.close();
 
 ### Reading from a RandomAccessFile
 
-Reading from a `RandomAccessFile` is done using one of its many read() methods. Here is a simple example:
+Reading from a `RandomAccessFile` is done using one of its many `read()` methods. Here is a simple example:
 
 ```java
 RandomAccessFile file = new RandomAccessFile("c:\\data\\file.txt", "rw");
@@ -700,27 +700,31 @@ int aByte = file.read();
 file.close();
 ```
 
-The read() method reads the byte located a the position in the file currently pointed to by the file pointer in the RandomAccessFile instance.
+The `read()` method reads the byte located a the position in the file currently pointed to by the file pointer in the `RandomAccessFile` instance.
 
-Here is a thing the JavaDoc forgets to mention: The read() method increments the file pointer to point to the next byte in the file after the byte just read! This means that you can continue to call read() without having to manually move the file pointer.
-Writing to a RandomAccessFile
+Here is a thing the JavaDoc forgets to mention: The `read()` method increments the file pointer to point to the next byte in the file after the byte just read. This means that you can continue to call `read()` without having to manually move the file pointer.
 
-Writing to a RandomAccessFile can be done using one it its many write() methods. Here is a simple example:
+### Writing to a RandomAccessFile
 
-RandomAccessFile file = new RandomAccessFile("c:\\data\\file.txt", "rw");
+Writing to a `RandomAccessFile` can be done using one it its many `write()` methods. Here is a simple example:
+
+```java
+RandomAccessFile file = new 200510", "rw");
 
 file.write("Hello World".getBytes());
 
 file.close();
+```
 
-Just like with the read() method the write() method advances the file pointer after being called. That way you don't have to constantly move the file pointer to write data to a new location in the file.
-close()
+Just like with the `read()` method the `write()` method advances the file pointer after being called. That way you don't have to constantly move the file pointer to write data to a new location in the file.
 
-The RandomAccessFile has a close() method which must be called when you are done using the RandomAccessFile instance. You can see example of calls to close() in the examples above.
+### close()
+
+The `RandomAccessFile` has a `close()` method which must be called when you are done using the `RandomAccessFile` instance. You can see example of calls to `close()` in the examples above.
 
 ### RandomAccessFile Exception Handling
 
-The proper exception handling of a RandomAccessFile is left out of this text for clarity. However, a RandomAccessFile must be closed properly after use, just like with a stream or reader / writer. This requires proper exception handling around the close() call.
+The proper exception handling of a `RandomAccessFile` is left out of this text for clarity. However, a `RandomAccessFile` must be closed properly after use, just like with a stream or reader/writer. This requires proper exception handling around the `close()` call.
 
 #### Examples
 
@@ -743,7 +747,6 @@ La longitud del registre de cada empleat és la mateixa (36 bytes) i els tipus q
 3. Com a continuació de l'exercici anterior, es demana fer un programa que afegexi un registre amb un identificador determinat.
 
 4. Per finalitzar, llegir el fitxer creat als exemples anteriors  i mostrar per pantalla totes les dades.
-
 
 ## Exercicis
 
