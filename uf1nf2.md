@@ -230,7 +230,7 @@ A stream is a path travelled by data in a program. To bring in information a pro
 
 Similarly a program can send information to an external destination by opening a stream to a destination and writing the information out serially.
 
-Depending upon the direction of the data, streams are classified into TWO categories:
+Depending upon the direction of the data, streams are classified into two categories:
 
 * Input Streams
 * Output Streams
@@ -244,10 +244,9 @@ Output Stream: Sending Information Out. A program can send information to an ext
 
 ![OutputStream](images/outstream.jpg)
 
-
 ## The InputStream, OutputStream, Reader and Writer
 
-A program that needs to read data from some source needs an InputStream or a Reader. A program that needs to write data to some destination needs an OutputStream or a Writer. This is also illustrated in the diagram below:
+A program that needs to read data from some source needs an `InputStream` or a `Reader`. A program that needs to write data to some destination needs an `OutputStream` or a `Writer`. This is also illustrated in the diagram below:
 
 ![Esquema](images/schema2.jpg)
 
@@ -260,14 +259,14 @@ Depending upon data type on which they operate, Java streams are classified into
 ![Stream classification](images/streamclassification.jpg)
 
 
-The java.io package contains a large number of stream classes that provide capabilities for processing all types of data.     These classes may be categorized into two groups based on the data type on which they operate.
+The `java.io` package contains a large number of stream classes that provide capabilities for processing all types of data. These classes may be categorized into two groups based on the data type on which they operate.
 
-* Byte Stream Classes: Byte Stream Classes are classes that provide support for handling i/o operations on bytes.
-* Character Stream Classes: Character Stream Classes are classes that provide support for managing i/o operations on characters.
+* **Byte Stream Classes**: Byte Stream Classes are classes that provide support for handling i/o operations on bytes.
+* **Character Stream Classes**: Character Stream Classes are classes that provide support for managing i/o operations on characters.
 
 ### Java IO Purposes and Features
 
-Java IO contains many subclasses of the InputStream, OutputStream, Reader and Writer classes. The reason is, that all of these subclasses are addressing various different purposes. That is why there are so many different classes. The purposes addressed are summarized below:
+`java.io` contains many subclasses of the `InputStream`, `OutputStream`, `Reader` and `Writer` classes. The reason is, that all of these subclasses are addressing various different purposes. That is why there are so many different classes. The purposes addressed are summarized below:
 
 * File Access
 * Network Access
@@ -280,7 +279,7 @@ Java IO contains many subclasses of the InputStream, OutputStream, Reader and Wr
 * Reading and Writing Primitive Data (long, int etc.)
 * Reading and Writing Objects
 
-These purposes are nice to know about when reading through the Java IO classes. They make it somewhat easier to understand what the classes are targeting.
+These purposes are nice to know about when reading through the `java.io` classes. They make it somewhat easier to understand what the classes are targeting.
 
 ## Java IO Class Overview Table
 
@@ -299,13 +298,13 @@ Having discussed sources, destinations, input, output and the various IO purpose
 
 All the programming languages provide support for standard I/O where user's program can take input from a keyboard and then produce output on the computer screen. If you are aware if C or C++ programming languages, then you must be aware of three standard devices STDIN, STDOUT and STDERR. Similar way Java provides following three standard streams
 
-* Standard Input: This is used to feed the data to user's program and usually a keyboard is used as standard input stream and represented as System.in.
+* **Standard Input**: This is used to feed the data to user's program and usually a keyboard is used as standard input stream and represented as `System.in`.
 
-* Standard Output: This is used to output the data produced by the user's program and usually a computer screen is used to standard output stream and represented as System.out.
+* **Standard Output**: This is used to output the data produced by the user's program and usually a computer screen is used to standard output stream and represented as `System.out`.
 
-* Standard Error: This is used to output the error data produced by the user's program and usually a computer screen is used to standard error stream and represented as System.err.
+* **Standard Error**: This is used to output the error data produced by the user's program and usually a computer screen is used to standard error stream and represented as `System.err`.
 
- The 3 streams System.in, System.out, and System.err are also common sources or destinations of data. Most commonly used is probably System.out for writing output to the console from console programs.
+The 3 streams `System.in`, `System.out`, and `System.err` are also common sources or destinations of data. Most commonly used is probably `System.out` for writing output to the console from console programs.
 
 These 3 streams are initialized by the Java runtime when a JVM starts up, so you don't have to instantiate any streams yourself (although you can exchange them at runtime).
 
@@ -696,7 +695,7 @@ int aByte = file.read();
 file.close();
 ```
 
-The `read()` method reads the byte located a the position in the file currently pointed to by the file pointer in the `RandomAccessFile` instance.
+The `read()` method reads the byte located at the position in the file currently pointed to by the file pointer in the `RandomAccessFile` instance.
 
 Here is a thing the JavaDoc forgets to mention: The `read()` method increments the file pointer to point to the next byte in the file after the byte just read. This means that you can continue to call `read()` without having to manually move the file pointer.
 
