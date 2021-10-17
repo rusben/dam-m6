@@ -364,18 +364,15 @@ Character stream classes can be used to read and write 16 bit Unicode characters
 * `Reader Stream class`: Used to read characters from file. These are functionally same as InputStream classes but these read characters instead of bytes.
 * `Writer Stream class`: Used to write characters to file. These are functionally same as OutputStream classes but these write characters instead of bytes.
 
-
 ## Reading/Writing Characters
 
 The Reader and Writer implement the streams that can handle characters. The two subclasses used for handling characters in files are FileReader and FileWriter.
-
 
 ![Read / Write Character](images/readwritecharacter.jpg)
 
 ### Character Strings
 
 Character strings are used to work with any text that is represented by ASCII value set or Unicode. Examples of files you can work with through a character stream are plain text files, html documents and java source files. The classes used to read and write these streams are subclasses of readers and writers. These should be used for all text input instead of dealing directly with file streams.
-
 
 ### Reading Text Files
 
@@ -547,13 +544,12 @@ These are Filter streams used to read/write primitive data types instead of raw 
 
 If you want to work with data that is not represented as bytes or characters you can use DataInputStream and DataOutputStream. These streams filter an existing byte stream so that each of the following primitive types can be read or written directly from the stream i.e. Boolean, byte, double, float, int, long and short.
 
-
-The data input stream is created with the DataInputStream( Input Stream) constructor. The argument should be an existing input stream such as an buffer input stream or file input stream. Conversely, a data output stream requires a DataOutputStream (Output Stream) constructor which indicates the associated output stream.
+The data input stream is created with the `DataInputStream`|`Input Stream` constructor. The argument should be an existing input stream such as an buffer input stream or file input stream. Conversely, a data output stream requires a `DataOutputStream`|`Output Stream` constructor which indicates the associated output stream.
 
 Each of the input method returns the primitive data type indicated by the name of the method
-For example, readDouble() method returns a double value.
+For example, `readDouble()` method returns a double value.
 
-Example:
+#### Example:
 
 ```java
 Using Data Streams
@@ -658,7 +654,6 @@ The output printed from running this example should be:
 
 FALTA OUTPUT
 
-
 ## RandomAccessFile
 
 The `RandomAccessFile` class in the `java.io` API allows you to move around a file and read from it or write to it as you please. You can replace existing parts of a file too. This is not possible with the `FileInputStream` or `FileOutputStream`.
@@ -671,10 +666,11 @@ Before you can work with the `RandomAccessFile` class you must instantiate it. H
 RandomAccessFile file = new RandomAccessFile("c:\\data\\file.txt", "rw");
 ```
 
-Notice the second input parameter to the constructor: "rw". This is the mode you want to open file in. "rw" means read/write mode. Check the JavaDoc for more details about what modes you can open a RandomAccessFile in.
-Moving Around a RandomAccessFile
+Notice the second input parameter to the constructor: `rw`. This is the mode you want to open file in. `rw` means `read/write` mode. Check the JavaDoc for more details about what modes you can open a `RandomAccessFile` in.
 
-To read or write at a specific location in a RandomAccessFile you must first position the file pointer at the location to read or write. This is done using the seek() method. The current position of the file pointer can be obtained by calling the getFilePointer() method.
+### Moving around a RandomAccessFile
+
+To read or write at a specific location in a `RandomAccessFile` you must first position the file pointer at the location to read or write. This is done using the `seek()` method. The current position of the file pointer can be obtained by calling the `getFilePointer()` method.
 
 Here is a simple example:
 
@@ -724,7 +720,7 @@ The `RandomAccessFile` has a `close()` method which must be called when you are 
 
 ### RandomAccessFile Exception Handling
 
-The proper exception handling of a `RandomAccessFile` is left out of this text for clarity. However, a `RandomAccessFile` must be closed properly after use, just like with a stream or reader/writer. This requires proper exception handling around the `close()` call.
+The proper exception handling of a `RandomAccessFile` is left out of this text for clarity. However, a `RandomAccessFile` must be closed properly after use, just like with a stream or `reader/writer`. This requires proper exception handling around the `close()` call.
 
 #### Examples
 
