@@ -230,7 +230,7 @@ A stream is a path travelled by data in a program. To bring in information a pro
 
 Similarly a program can send information to an external destination by opening a stream to a destination and writing the information out serially.
 
-Depending upon the direction of the data, streams are classified into TWO categories:
+Depending upon the direction of the data, streams are classified into two categories:
 
 * Input Streams
 * Output Streams
@@ -244,10 +244,9 @@ Output Stream: Sending Information Out. A program can send information to an ext
 
 ![OutputStream](images/outstream.jpg)
 
-
 ## The InputStream, OutputStream, Reader and Writer
 
-A program that needs to read data from some source needs an InputStream or a Reader. A program that needs to write data to some destination needs an OutputStream or a Writer. This is also illustrated in the diagram below:
+A program that needs to read data from some source needs an `InputStream` or a `Reader`. A program that needs to write data to some destination needs an `OutputStream` or a `Writer`. This is also illustrated in the diagram below:
 
 ![Esquema](images/schema2.jpg)
 
@@ -260,14 +259,14 @@ Depending upon data type on which they operate, Java streams are classified into
 ![Stream classification](images/streamclassification.jpg)
 
 
-The java.io package contains a large number of stream classes that provide capabilities for processing all types of data.     These classes may be categorized into two groups based on the data type on which they operate.
+The `java.io` package contains a large number of stream classes that provide capabilities for processing all types of data. These classes may be categorized into two groups based on the data type on which they operate.
 
-* Byte Stream Classes: Byte Stream Classes are classes that provide support for handling i/o operations on bytes.
-* Character Stream Classes: Character Stream Classes are classes that provide support for managing i/o operations on characters.
+* **Byte Stream Classes**: Byte Stream Classes are classes that provide support for handling i/o operations on bytes.
+* **Character Stream Classes**: Character Stream Classes are classes that provide support for managing i/o operations on characters.
 
 ### Java IO Purposes and Features
 
-Java IO contains many subclasses of the InputStream, OutputStream, Reader and Writer classes. The reason is, that all of these subclasses are addressing various different purposes. That is why there are so many different classes. The purposes addressed are summarized below:
+`java.io` contains many subclasses of the `InputStream`, `OutputStream`, `Reader` and `Writer` classes. The reason is, that all of these subclasses are addressing various different purposes. That is why there are so many different classes. The purposes addressed are summarized below:
 
 * File Access
 * Network Access
@@ -280,7 +279,7 @@ Java IO contains many subclasses of the InputStream, OutputStream, Reader and Wr
 * Reading and Writing Primitive Data (long, int etc.)
 * Reading and Writing Objects
 
-These purposes are nice to know about when reading through the Java IO classes. They make it somewhat easier to understand what the classes are targeting.
+These purposes are nice to know about when reading through the `java.io` classes. They make it somewhat easier to understand what the classes are targeting.
 
 ## Java IO Class Overview Table
 
@@ -299,13 +298,13 @@ Having discussed sources, destinations, input, output and the various IO purpose
 
 All the programming languages provide support for standard I/O where user's program can take input from a keyboard and then produce output on the computer screen. If you are aware if C or C++ programming languages, then you must be aware of three standard devices STDIN, STDOUT and STDERR. Similar way Java provides following three standard streams
 
-* Standard Input: This is used to feed the data to user's program and usually a keyboard is used as standard input stream and represented as System.in.
+* **Standard Input**: This is used to feed the data to user's program and usually a keyboard is used as standard input stream and represented as `System.in`.
 
-* Standard Output: This is used to output the data produced by the user's program and usually a computer screen is used to standard output stream and represented as System.out.
+* **Standard Output**: This is used to output the data produced by the user's program and usually a computer screen is used to standard output stream and represented as `System.out`.
 
-* Standard Error: This is used to output the error data produced by the user's program and usually a computer screen is used to standard error stream and represented as System.err.
+* **Standard Error**: This is used to output the error data produced by the user's program and usually a computer screen is used to standard error stream and represented as `System.err`.
 
- The 3 streams System.in, System.out, and System.err are also common sources or destinations of data. Most commonly used is probably System.out for writing output to the console from console programs.
+The 3 streams `System.in`, `System.out`, and `System.err` are also common sources or destinations of data. Most commonly used is probably `System.out` for writing output to the console from console programs.
 
 These 3 streams are initialized by the Java runtime when a JVM starts up, so you don't have to instantiate any streams yourself (although you can exchange them at runtime).
 
@@ -364,18 +363,15 @@ Character stream classes can be used to read and write 16 bit Unicode characters
 * `Reader Stream class`: Used to read characters from file. These are functionally same as InputStream classes but these read characters instead of bytes.
 * `Writer Stream class`: Used to write characters to file. These are functionally same as OutputStream classes but these write characters instead of bytes.
 
-
 ## Reading/Writing Characters
 
 The Reader and Writer implement the streams that can handle characters. The two subclasses used for handling characters in files are FileReader and FileWriter.
-
 
 ![Read / Write Character](images/readwritecharacter.jpg)
 
 ### Character Strings
 
 Character strings are used to work with any text that is represented by ASCII value set or Unicode. Examples of files you can work with through a character stream are plain text files, html documents and java source files. The classes used to read and write these streams are subclasses of readers and writers. These should be used for all text input instead of dealing directly with file streams.
-
 
 ### Reading Text Files
 
@@ -547,12 +543,16 @@ These are Filter streams used to read/write primitive data types instead of raw 
 
 If you want to work with data that is not represented as bytes or characters you can use DataInputStream and DataOutputStream. These streams filter an existing byte stream so that each of the following primitive types can be read or written directly from the stream i.e. Boolean, byte, double, float, int, long and short.
 
+<<<<<<< HEAD
 The data input stream is created with the DataInputStream( Input Stream) constructor. The argument should be an existing input stream such as an buffer input stream or file input stream. Conversely, a data output stream requires a DataOutputStream (Output Stream) constructor which indicates the associated output stream.
+=======
+The data input stream is created with the `DataInputStream`|`Input Stream` constructor. The argument should be an existing input stream such as an buffer input stream or file input stream. Conversely, a data output stream requires a `DataOutputStream`|`Output Stream` constructor which indicates the associated output stream.
+>>>>>>> 841c7a00389291b838d8a10f331c065c8a409285
 
 Each of the input method returns the primitive data type indicated by the name of the method
-For example, readDouble() method returns a double value.
+For example, `readDouble()` method returns a double value.
 
-Example:
+#### Example:
 
 ```java
 package net.xeill.elpuig;
@@ -634,12 +634,20 @@ dos.writeByte(b);
 ```
 
 ## Object Streams
+<<<<<<< HEAD
 
 ### ObjectInputStream
 
 The Java `ObjectInputStream` class (`java.io.ObjectInputStream`) enables you to read Java objects from an `InputStream` instead of just raw bytes. You wrap an InputStream in a `ObjectInputStream` and then you can read objects from it. Of course the bytes read must represent a valid, serialized Java object. Otherwise reading objects will fail.
 
 Normally you will use the `ObjectInputStream` to read objects written (serialized) by a Java `ObjectOutputStream` . You will see an example of that later.
+=======
+### ObjectInputStream
+
+The Java `ObjectInputStream` class `java.io.ObjectInputStream` enables you to read Java objects from an `InputStream` instead of just raw bytes. You wrap an `InputStream` in a `ObjectInputStream` and then you can read objects from it. Of course the bytes read must represent a valid, serialized Java object. Otherwise reading objects will fail.
+
+Normally you will use the `ObjectInputStream` to read objects written (serialized) by a Java `ObjectOutputStream`. You will see an example of that later.
+>>>>>>> 841c7a00389291b838d8a10f331c065c8a409285
 
 Here is a Java `ObjectInputStream` example:
 
@@ -658,7 +666,11 @@ Before you can serialize and de-serialize objects the class of the object must i
 
 When you are finished reading data from the `ObjectInputStream` you should remember to close it. Closing a `ObjectInputStream` will also close the `InputStream` instance from which the `ObjectInputStream` is reading.
 
+<<<<<<< HEAD
 Closing a `ObjectInputStreamp` is done by calling its `close()` method. Here is how closing a `ObjectInputStream` looks:
+=======
+Closing a `ObjectInputStream` is done by calling its `close()` method. Here is how closing a `ObjectInputStream` looks:
+>>>>>>> 841c7a00389291b838d8a10f331c065c8a409285
 
 ```java
 objectInputStream.close();
@@ -676,17 +688,17 @@ try(ObjectInputStream objectInputStream =
 }
 ```
 
-Notice how there is no longer any explicit close() method call. The try-with-resources construct takes care of that.
+Notice how there is no longer any explicit `close()` method call. The try-with-resources construct takes care of that.
 
-Notice also that the first FileInputStream instance is not created inside the try-with-resources block. That means that the try-with-resources block will not automatically close this FileInputStream instance. However, when the ObjectInputStream is closed it will also close the InputStream instance it reads from, so the FileInputStream instance will get closed when the ObjectInputStream is closed.
+Notice also that the first `FileInputStream` instance is not created inside the try-with-resources block. That means that the try-with-resources block will not automatically close this `FileInputStream` instance. However, when the `ObjectInputStream` is closed it will also close the `InputStream` instance it reads from, so the `FileInputStream` instance will get closed when the `ObjectInputStream` is closed.
 
 ### ObjectOutputStream
 
-The Java ObjectOutputStream class (java.io.ObjectOutputStream) enables you to write Java objects to an OutputStream instead of just raw bytes. You wrap an OutputStream in a ObjectOutputStream and then you can write objects to it.
+The Java `ObjectOutputStream` class `java.io.ObjectOutputStream` enables you to write Java objects to an `OutputStream` instead of just raw bytes. You wrap an `OutputStream` in a `ObjectOutputStream` and then you can write objects to it.
 
-The Java ObjectOutputStream is often used together with a Java ObjectInputStream. The ObjectOutputStream is used to write the Java objects, and the ObjectInputStream is used to read the objects again. You will see an example of this later.
+The Java `ObjectOutputStream` is often used together with a Java `ObjectInputStream`. The `ObjectOutputStream` is used to write the Java objects, and the `ObjectInputStream` is used to read the objects again. You will see an example of this later.
 
-Here is a Java ObjectOutputStream example:
+Here is a Java `ObjectOutputStream` example:
 
 ```java
 ObjectOutputStream objectOutputStream =
@@ -699,9 +711,9 @@ output.writeObject(object);
 output.close();
 ```
 
-First this examples creates a OutputOutputStream connected to a FileOutputStream. Then the example creates a MyClass object and writes it to the ObjectOutputStream. Finally the example closes the ObjectOutputStream.
+First this examples creates a `OutputOutputStream` connected to a `FileOutputStream`. Then the example creates a `MyClass` object and writes it to the `ObjectOutputStream`. Finally the example closes the `ObjectOutputStream`.
 
-Before you can serialize and de-serialize objects the class of the object must implement java.io.Serializable.
+Before you can serialize and de-serialize objects the class of the object must implement `java.io.Serializable`.
 
 ## Using an ObjectInputStream With an ObjectOutputStream
 
@@ -762,30 +774,26 @@ public class ObjectStreamExample {
 ```
 This example first creates an ObjectOutputStream connected to a FileOutputStream. Then it creates a Person object and writes it to the ObjectOutputStream, and then closes the ObjectOutputStream.
 
-Then the example creates an ObjectInputStream connected to the same file the ObjectOutputStream was connected to. The example then reads in an object from the ObjectInputStream and casts it to a Person object. After that the ObjectInputStream is also closed, and the values read into the Person object are printed to System.out.
-
-The output printed from running this example should be:
-
-Joan Anton
-53
+Then the example creates an `ObjectInputStream` connected to the same file the `ObjectOutputStream` was connected to. The example then reads in an object from the `ObjectInputStream` and casts it to a `Person` object. After that the `ObjectInputStream` is also closed, and the values read into the `Person` object are printed to `System.out`.
 
 
 ## RandomAccessFile
 
-The `RandomAccessFile` class in the Java IO API allows you to move around a file and read from it or write to it as you please. You can replace existing parts of a file too. This is not possible with the FileInputStream or FileOutputStream.
+The `RandomAccessFile` class in the `java.io` API allows you to move around a file and read from it or write to it as you please. You can replace existing parts of a file too. This is not possible with the `FileInputStream` or `FileOutputStream`.
 
 ### Creating a RandomAccessFile
 
-Before you can work with the RandomAccessFile class you must instantiate it. Here is how that looks:
+Before you can work with the `RandomAccessFile` class you must instantiate it. Here is how that looks:
 
 ```java
 RandomAccessFile file = new RandomAccessFile("c:\\data\\file.txt", "rw");
 ```
 
-Notice the second input parameter to the constructor: "rw". This is the mode you want to open file in. "rw" means read/write mode. Check the JavaDoc for more details about what modes you can open a RandomAccessFile in.
-Moving Around a RandomAccessFile
+Notice the second input parameter to the constructor: `rw`. This is the mode you want to open file in. `rw` means `read/write` mode. Check the JavaDoc for more details about what modes you can open a `RandomAccessFile` in.
 
-To read or write at a specific location in a RandomAccessFile you must first position the file pointer at the location to read or write. This is done using the seek() method. The current position of the file pointer can be obtained by calling the getFilePointer() method.
+### Moving around a RandomAccessFile
+
+To read or write at a specific location in a `RandomAccessFile` you must first position the file pointer at the location to read or write. This is done using the `seek()` method. The current position of the file pointer can be obtained by calling the `getFilePointer()` method.
 
 Here is a simple example:
 
@@ -801,7 +809,7 @@ file.close();
 
 ### Reading from a RandomAccessFile
 
-Reading from a `RandomAccessFile` is done using one of its many read() methods. Here is a simple example:
+Reading from a `RandomAccessFile` is done using one of its many `read()` methods. Here is a simple example:
 
 ```java
 RandomAccessFile file = new RandomAccessFile("c:\\data\\file.txt", "rw");
@@ -811,27 +819,31 @@ int aByte = file.read();
 file.close();
 ```
 
-The read() method reads the byte located a the position in the file currently pointed to by the file pointer in the RandomAccessFile instance.
+The `read()` method reads the byte located at the position in the file currently pointed to by the file pointer in the `RandomAccessFile` instance.
 
-Here is a thing the JavaDoc forgets to mention: The read() method increments the file pointer to point to the next byte in the file after the byte just read! This means that you can continue to call read() without having to manually move the file pointer.
-Writing to a RandomAccessFile
+Here is a thing the JavaDoc forgets to mention: The `read()` method increments the file pointer to point to the next byte in the file after the byte just read. This means that you can continue to call `read()` without having to manually move the file pointer.
 
-Writing to a RandomAccessFile can be done using one it its many write() methods. Here is a simple example:
+### Writing to a RandomAccessFile
 
-RandomAccessFile file = new RandomAccessFile("c:\\data\\file.txt", "rw");
+Writing to a `RandomAccessFile` can be done using one it its many `write()` methods. Here is a simple example:
+
+```java
+RandomAccessFile file = new 200510", "rw");
 
 file.write("Hello World".getBytes());
 
 file.close();
+```
 
-Just like with the read() method the write() method advances the file pointer after being called. That way you don't have to constantly move the file pointer to write data to a new location in the file.
-close()
+Just like with the `read()` method the `write()` method advances the file pointer after being called. That way you don't have to constantly move the file pointer to write data to a new location in the file.
 
-The RandomAccessFile has a close() method which must be called when you are done using the RandomAccessFile instance. You can see example of calls to close() in the examples above.
+### close()
+
+The `RandomAccessFile` has a `close()` method which must be called when you are done using the `RandomAccessFile` instance. You can see example of calls to `close()` in the examples above.
 
 ### RandomAccessFile Exception Handling
 
-The proper exception handling of a RandomAccessFile is left out of this text for clarity. However, a RandomAccessFile must be closed properly after use, just like with a stream or reader / writer. This requires proper exception handling around the close() call.
+The proper exception handling of a `RandomAccessFile` is left out of this text for clarity. However, a `RandomAccessFile` must be closed properly after use, just like with a stream or `reader/writer`. This requires proper exception handling around the `close()` call.
 
 #### Examples
 
@@ -854,7 +866,6 @@ La longitud del registre de cada empleat és la mateixa `36 bytes` i els tipus q
 3. Com a continuació de l'exercici anterior, es demana fer un programa que afegexi un registre amb un identificador determinat.
 
 4. Per finalitzar, llegir el fitxer creat als exemples anteriors  i mostrar per pantalla totes les dades.
-
 
 ## Exercicis
 
