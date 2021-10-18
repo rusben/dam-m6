@@ -1,3 +1,5 @@
+package net.xeill.elpuig;
+
 import java.io.*;
 
 public class ReadConsole {
@@ -12,9 +14,15 @@ public class ReadConsole {
         c = (char) cin.read();
         System.out.print(c);
       } while (c != 'q');
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
     } finally {
       if (cin != null) {
-        cin.close();
+        try {
+          cin.close();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
       }
     }
   }

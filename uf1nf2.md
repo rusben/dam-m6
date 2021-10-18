@@ -547,13 +547,71 @@ These are Filter streams used to read/write primitive data types instead of raw 
 
 If you want to work with data that is not represented as bytes or characters you can use DataInputStream and DataOutputStream. These streams filter an existing byte stream so that each of the following primitive types can be read or written directly from the stream i.e. Boolean, byte, double, float, int, long and short.
 
-
 The data input stream is created with the DataInputStream( Input Stream) constructor. The argument should be an existing input stream such as an buffer input stream or file input stream. Conversely, a data output stream requires a DataOutputStream (Output Stream) constructor which indicates the associated output stream.
 
 Each of the input method returns the primitive data type indicated by the name of the method
 For example, readDouble() method returns a double value.
 
 Example:
+
+```java
+package net.xeill.elpuig;
+
+import java.io.DataOutputStream;
+import java.io.FileOutputStream;
+
+public class WriteEven {
+  public static void main(String[] args) {
+    try {
+      FileOutputStream file = new FileOutputStream("src/archivos/even.dat");
+      DataOutputStream data = new DataOutputStream(file);
+
+      for (int i = 0; i < 25 ; i++) {
+        data.writeInt(i*2);
+      }
+
+      data.close();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+}
+
+```
+
+```java
+package net.xeill.elpuig;
+
+import java.io.DataInputStream;
+import java.io.EOFException;
+import java.io.FileInputStream;
+
+public class ReadEven {
+
+  public static void main(String[] args) {
+    try {
+      FileInputStream file = new FileInputStream("src/archivos/even.dat");
+      DataInputStream data = new DataInputStream(file);
+
+      int number;
+
+      try {
+        while (true) {
+          number = data.readInt();
+          System.out.println(number+" ");
+        }
+      } catch (EOFException e) {
+        data.close();
+      }
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+}
+
+```
 
 ```java
 Using Data Streams
@@ -570,19 +628,20 @@ Similarly,
 ```java
 DataOutputStream dos =new DataOutputStream(fos);
 
-dos.writeChar(c );
+dos.writeChar(c);
 
 dos.writeByte(b);
 ```
 
 ## Object Streams
-ObjectInputStream
 
-The Java ObjectInputStream class (java.io.ObjectInputStream) enables you to read Java objects from an InputStream instead of just raw bytes. You wrap an InputStream in a ObjectInputStream and then you can read objects from it. Of course the bytes read must represent a valid, serialized Java object. Otherwise reading objects will fail.
+### ObjectInputStream
 
-Normally you will use the ObjectInputStream to read objects written (serialized) by a Java ObjectOutputStream . You will see an example of that later.
+The Java `ObjectInputStream` class (`java.io.ObjectInputStream`) enables you to read Java objects from an `InputStream` instead of just raw bytes. You wrap an InputStream in a `ObjectInputStream` and then you can read objects from it. Of course the bytes read must represent a valid, serialized Java object. Otherwise reading objects will fail.
 
-Here is a Java ObjectInputStream example:
+Normally you will use the `ObjectInputStream` to read objects written (serialized) by a Java `ObjectOutputStream` . You will see an example of that later.
+
+Here is a Java `ObjectInputStream` example:
 
 ```java
 ObjectInputStream objectInputStream =
@@ -593,19 +652,19 @@ MyClass object = (MyClass) objectInputStream.readObject();
 objectInputStream.close();
 ```
 
-For this ObjectInputStream example to work the object you read must be an instance of MyClass, and must have been serialized into the file "object.data" via an ObjectOutputStream.
+For this `ObjectInputStream` example to work the object you read must be an instance of `MyClass`, and must have been serialized into the file `object.data` via an `ObjectOutputStream`.
 
-Before you can serialize and de-serialize objects the class of the object must implement java.io.Serializable.
+Before you can serialize and de-serialize objects the class of the object must implement `java.io.Serializable`.
 
-When you are finished reading data from the ObjectInputStream you should remember to close it. Closing a ObjectInputStream will also close the InputStream instance from which the ObjectInputStream is reading.
+When you are finished reading data from the `ObjectInputStream` you should remember to close it. Closing a `ObjectInputStream` will also close the `InputStream` instance from which the `ObjectInputStream` is reading.
 
-Closing a ObjectInputStream is done by calling its close() method. Here is how closing a ObjectInputStream looks:
+Closing a `ObjectInputStreamp` is done by calling its `close()` method. Here is how closing a `ObjectInputStream` looks:
 
 ```java
 objectInputStream.close();
 ```
 
-You can also use the try-with-resources construct introduced in Java 7. Here is how to use and close a ObjectInputStream looks with the try-with-resources construct:
+You can also use the try-with-resources construct introduced in Java 7. Here is how to use and close a `ObjectInputStream` looks with the try-with-resources construct:
 
 ```java
 InputStream input = new FileInputStream("data/data.bin");
@@ -644,11 +703,63 @@ First this examples creates a OutputOutputStream connected to a FileOutputStream
 
 Before you can serialize and de-serialize objects the class of the object must implement java.io.Serializable.
 
-Using an ObjectInputStream With an ObjectOutputStream
+## Using an ObjectInputStream With an ObjectOutputStream
 
-I promised earlier to show you an example of using the Java ObjectInputStream with the ObjectOutputStream. Here is that example:
+I promised earlier to show you an example of using the Java ObjectInputStream with the `ObjectOutputStream`. Here is that example:
 
+```java
+package net.xeill.elpuig;
 
+import java.io.*;
+
+public class ObjectStreamExample {
+
+  public static class Person implements Serializable {
+    public String name = null;
+    public int age = 0;
+  }
+
+  public static void main(String[] args) {
+
+    Person p = new Person();
+    p.name = "John";
+    p.age = 22;
+
+    Person q = new Person();
+    q.name = "Mary";
+    q.age = 24;
+
+    Person r, s ;
+
+    r = s = null;
+
+    try {
+      ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream("src/archivos/person.bin"));
+      objectOutputStream.writeObject(p);
+      objectOutputStream.writeObject(q);
+      objectOutputStream.close();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    try {
+      ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("src/archivos/person.bin"));
+      r = (Person) objectInputStream.readObject();
+      s = (Person) objectInputStream.readObject();
+
+      objectInputStream.close();
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    System.out.println(r.name +": "+ r.age);
+    System.out.println(s.name +": "+ s.age);
+
+  }
+}
+
+```
 This example first creates an ObjectOutputStream connected to a FileOutputStream. Then it creates a Person object and writes it to the ObjectOutputStream, and then closes the ObjectOutputStream.
 
 Then the example creates an ObjectInputStream connected to the same file the ObjectOutputStream was connected to. The example then reads in an object from the ObjectInputStream and casts it to a Person object. After that the ObjectInputStream is also closed, and the values read into the Person object are printed to System.out.
@@ -728,17 +839,17 @@ The proper exception handling of a RandomAccessFile is left out of this text for
 
 2. Es demana fer un programa que escrigui un fitxer aleatori amb les dades d'empleats, tenint en compte les següents consideracions:
 
-Les dades a inserir són: cognom, departament i salari.
+Les dades a inserir són: `cognom`, `departament` i `salari`.
 
 Les dades es van introduint de forma seqüencial, no s'usarà el mètode `seek()`.
-Per cada empleat també s'inserirà un identificador que coincidirà amb l'índex +1 amb què es recorren els arrays.
+Per cada empleat també s'inserirà un identificador que coincidirà amb l'`index+1` amb què es recorren els arrays.
 
-La longitud del registre de cada empleat és la mateixa (36 bytes) i els tipus que s'insereixen i la seva grandària en bytes és el següent:
+La longitud del registre de cada empleat és la mateixa `36 bytes` i els tipus que s'insereixen i la seva grandària en bytes és el següent:
 
-* Identificador: és un enter, ocupa 4
-* Cognom: cadena de 10 caràcters. Com cada caràcter Unicode ocupa 2 bytes llavors el cognom ocupa 20.
-* Departament: és un enter, ocupa 4 bytes.
-* Sou: és un double, ocupa 8 bytes.
+* **Identificador**: és un `int`, ocupa `4 bytes`
+* **Cognom**: cadena de `10 caràcters`. Com cada `char` Unicode ocupa `2 bytes` llavors el cognom ocupa `20 bytes`.
+* **Departament**: és un `int`, ocupa `4 bytes`.
+* **Sou**: és un `double`, ocupa `8 bytes`.
 
 3. Com a continuació de l'exercici anterior, es demana fer un programa que afegexi un registre amb un identificador determinat.
 
@@ -756,7 +867,7 @@ Implementa la classe `CopyDirFISFOS.java` que copii els fitxers continguts en un
 
 ### Exercici 16
 
-Implementa una classe `FileTypes.java` que escrigui dades en un fitxer, dades de diferents tipus, float, int, ..., Strings, etc. Feu servir la classe `DataOutputStream`.
+Implementa una classe `FileTypes.java` que escrigui dades en un fitxer, dades de diferents tipus: `int`, `char`, `float`, `double`, `String`, `boolean`, etc. Feu servir la classe `DataOutputStream`.
 
 Ensenyar per pantalla les dades de l'arxiu, primer fent servir la classe `FileReader/BufferedReader` i després les `DataInputStream`.
 
@@ -765,17 +876,17 @@ Quina és la diferencia? Que ha passat? Quina és l'explicació?
 ### Exercici 17
 
 Refina la classe `ObjectStreamExample.java` de manera que:
-Treballi una classe Persona externa amb els mateixos atributs privats i mètodes getters i setters.
+Treballi una classe `Persona` externa amb els mateixos atributs privats i mètodes `getters` i `setters`.
 Es creïn diferents objectes de tipus `Persona` i s'enregistren en un fitxer mitjançant el mètode `introDades()`
-Llegir de nou el fitxer mitjançant el mètode `mostraDades()`. Tots els objectes de tipus Persona llegits es carregaran en un `ArrayList`. Posteriorment es recorrerà l'ArrayList i es mostraran les dades de les diferents persones per pantalla.
+Llegir de nou el fitxer mitjançant el mètode `mostraDades()`. Tots els objectes de tipus `Persona` llegits es carregaran en un `ArrayList`. Posteriorment es recorrerà l'`ArrayList` i es mostraran les dades de les diferents persones per pantalla.
 
 ### Exercici 18
 
 Implementar la classe `CSVToObjectFile.java` de manera que:
 
-Treballi una classe User externa amb atributs privats (`username, firstname,lastname, email i password`) i els corresponents mètodes getters i setters i constructor amb tots els atributs.
+Treballi una classe `User` externa amb atributs privats (`username, firstname,lastname, email i password`) i els corresponents mètodes `getters` i `setters` i `constructor` amb tots els atributs.
 
-Es creïn diferents objectes de tipus `User` a partir de la lectura d'un fitxer csv on es tenen enregistrats en l'ordre especificat prèviament. Aquests objectes s'emmagatzemen en un `ArrayList`. El mètode s'anomenarà `loadUsers()`
+Es creïn diferents objectes de tipus `User` a partir de la lectura d'un fitxer `CSV`  on es tenen enregistrats en l'ordre especificat prèviament. Aquests objectes s'emmagatzemen en un `ArrayList`. El mètode s'anomenarà `loadUsers()`
 
 Llegir tots els objectes de tipus `User`. Mostrar els seus atributs per pantalla i emmagatzemar els objectes en el fitxer `users.bin` mitjançant el mètode `writeUsers()`.
 
@@ -783,28 +894,28 @@ Llegir tots els objectes de tipus `User`. Mostrar els seus atributs per pantalla
 
 Implementar la classe `ObjectFileToCSV.java` de manera que:
 
-Treballi amb l'anterior classe User externa amb atributs privats (`username, firstname,lastname, email i password`) i els corresponents mètodes getters i setters i constructor amb tots els atributs.
+Treballi amb l'anterior classe User externa amb atributs privats (`username, firstname,lastname, email i password`) i els corresponents mètodes `getters` i `setters` i `constructor` amb tots els atributs.
 
-Es creïn diferents objectes de tipus User a partir de la lectura d'un fitxer binari on s'emmagatzemen aquests objectes (aquest fitxer és el resultat de l'exercici anterior `users.bin`. Aquests objectes s'emmagatzemen en un `ArrayList` però prèviament es mostren els seus atributs per pantalla (recomanable implementar un mètode `toString()` a la classe `User`). El mètode s'anomenarà loadUsers()
+Es creïn diferents objectes de tipus `User` a partir de la lectura d'un fitxer binari on s'emmagatzemen aquests objectes (aquest fitxer és el resultat de l'exercici anterior `users.bin`. Aquests objectes s'emmagatzemen en un `ArrayList` però prèviament es mostren els seus atributs per pantalla, es recomanable implementar un mètode `toString()` a la classe `User`. El mètode s'anomenarà `loadUsers()`
 
-Llegir tots els objectes de tipus User. Emmagatzemar els valors dels atributs username, firstname i lastname en el fitxer `users2.csv`  en l'ordre mitjançant el mètode `writeUsersToCSV()`.
+Llegir tots els objectes de tipus `User`. Emmagatzemar els valors dels atributs `username`, `firstname` i `lastname` en el fitxer `users2.csv`  en l'ordre mitjançant el mètode `writeUsersToCSV()`.
 
 ### Exercici 20
 
-Es demana fer un programa `RandomWrite2.java` que escrigui un fitxer aleatori amb les dades de departaments , tenint en compte les següents consideracions:
+Es demana fer un programa `RandomWrite2.java` que escrigui un fitxer aleatori amb les dades de departaments, tenint en compte les següents consideracions:
 
 Les dades a inserir són: codi del departament i el nom departament.
 
-Els noms dels departaments es llegeixen des d'un array i el seu identificador serà (posició+1)*10 que ocuparà dins del fitxer) per a cada valor.
+Els noms dels departaments es llegeixen des d'un array i el seu identificador serà `(posició+1)*10` que ocuparà dins del fitxer per a cada valor.
 
-La longitud del registre de cada departament és la mateixa (24 bytes) i els tipus que s'insereixen i la seva grandària en bytes és el següent:
+La longitud del registre de cada departament és la mateixa `24 bytes` i els tipus que s'insereixen i la seva grandària en bytes és el següent:
 
-* codi: és un enter, ocupa 4 bytes
-* nom: cadena de 10 caràcters. Com cada caràcter Unicode ocupa 2 bytes llavors el cognom ocupa 20 bytes
+* **codi**: és un enter, ocupa `4 bytes`
+* **nom**: cadena de `10 caràcters`. Com cada caràcter Unicode ocupa `2 bytes` llavors el cognom ocupa `20 bytes`.
 
 ### Exercici 21
 
-Es demana fer un programa `ShowDepts.java` que llegeixi seqüencialment el fitxer de departaments i que per a cada departament ( que els seu id sigui diferent de 0) mostri el nom del departament i el nom dels treballadors que pertanyen. ( Són dos accessos seqüencials)
+Es demana fer un programa `ShowDepts.java` que llegeixi seqüencialment el fitxer de departaments i que per a cada departament (que el seu `id` sigui diferent de `0`) mostri el nom del departament i el nom dels treballadors que pertanyen. (Són dos accessos seqüencials).
 
 ### Exercici 22
 
