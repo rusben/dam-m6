@@ -877,9 +877,14 @@ Quina és la diferencia? Que ha passat? Quina és l'explicació?
 ### Exercici 17
 
 Refina la classe `ObjectStreamExample.java` de manera que:
-Treballi una classe `Persona` externa amb els mateixos atributs privats i mètodes `getters` i `setters`.
-Es creïn diferents objectes de tipus `Persona` i s'enregistren en un fitxer mitjançant el mètode `introDades()`
-Llegir de nou el fitxer mitjançant el mètode `mostraDades()`. Tots els objectes de tipus `Persona` llegits es carregaran en un `ArrayList`. Posteriorment es recorrerà l'`ArrayList` i es mostraran les dades de les diferents persones per pantalla.
+
+* Treballi una classe `Persona` externa amb els mateixos atributs privats i mètodes `getters` i `setters`.
+
+* Es creïn diferents objectes de tipus `Persona` i s'enregistren en un fitxer mitjançant el mètode `introDades()`
+
+* Llegir de nou el fitxer mitjançant el mètode `mostraDades()`. Tots els objectes de tipus `Persona` llegits es carregaran en un `ArrayList`.
+
+* Posteriorment es recorrerà l'`ArrayList` i es mostraran les dades de les diferents persones per pantalla.
 
 ### Exercici 18
 
