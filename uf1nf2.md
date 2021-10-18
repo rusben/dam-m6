@@ -1,8 +1,8 @@
 # Magatzems i fluxos de dades
 ## [Conceptes bàsics sobre fitxers seqüencials](uf1nf2.md#conceptes-bàsics-sobre-fitxers-seqüencials)
-### [Creating a file](uf1nf2.md#creating-a-file)
-### [Writing to a file](uf1nf2.md#writing-to-a-file)
-### [Opening a file](uf1nf2.md#opening-a-file)
+### [Creació d'un fitxer](uf1nf2.md#creating-a-file)
+### [Escritura d'un fitxer](uf1nf2.md#writing-to-a-file)
+### [Obertura d'un fitxer](uf1nf2.md#opening-a-file)
 
 
 ## Introducció
