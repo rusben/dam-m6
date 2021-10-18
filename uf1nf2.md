@@ -1,4 +1,11 @@
 # Magatzems i fluxos de dades
+## [Conceptes bàsics sobre fitxers seqüencials](uf1nf2.md#conceptes-bàsics-sobre-fitxers-seqüencials)
+### [Creating a file](uf1nf2.md#creating-a-file)
+### [Writing to a file](uf1nf2.md#writing-to-a-file)
+### [Opening a file](uf1nf2.md#opening-a-file)
+
+
+## Introducció
 En la primera part de la UF vam veure en Java (en el paquet java.io) que hi ha diferents classes que faciliten treballar amb fitxers des de diferents perspectives:
 
 * Fitxers d'accés seqüencial o accés aleatori,
@@ -41,13 +48,13 @@ Aquesta abstracció proporcionada pels fluxos fa que els programadors, quan vole
 
 Qualsevol programa que hagi de obtenir informació de qualsevol font necessita obrir un stream, igualment si necessita enviar informació obrirà un stream i s'escriurà la informació. La vinculació d'aquest stream amb el dispositiu físic la fa el sistema d'entrada / sortida de Java.
 
-## Conceptes bàsics sobre fitxers seqüencials
+# Conceptes bàsics sobre fitxers seqüencials
 
 Començarem veient les operacions sobre fitxers seqüencials i després treballarem amb els aleatoris.
 
 En els primers veurem les classes per la gestió dels fluxos de dades, primer en el cas dels fluxos binaris i després en el cas dels fluxos de caràcters.
 
-* Accés seqüencial: les dades o registres es llegeixen i s'escriuen en ordre. Si es vol accedir a una dada cal llegir abans tots els anteriors. L'escriptura de dades es fa a partir de l'última dada escrita, no és
+* **Accés seqüencial**: les dades o registres es llegeixen i s'escriuen en ordre. Si es vol accedir a una dada cal llegir abans tots els anteriors. L'escriptura de dades es fa a partir de l'última dada escrita, no és
 possible fer insercions entre les dades que ja hi existeixen.
 
 Operacions bàsiques sobre fitxers:
@@ -68,7 +75,7 @@ En els fitxers seqüencials els registres s'insereixen en ordre cronològic. Si 
 
 * Modificacions: El procés de modificacions és similar al de baixes
 
-### Creating a File
+## Creating a File
 
 If you want to create a new file, you must use a class that is equipped to write values to a file. To do this, you can use the PrintWriter class. The PrintWriter class is defined in the java.io package. Therefore, if you want to use it, you can import it in your document. This would be done as follows:
 
@@ -543,11 +550,7 @@ These are Filter streams used to read/write primitive data types instead of raw 
 
 If you want to work with data that is not represented as bytes or characters you can use DataInputStream and DataOutputStream. These streams filter an existing byte stream so that each of the following primitive types can be read or written directly from the stream i.e. Boolean, byte, double, float, int, long and short.
 
-<<<<<<< HEAD
-The data input stream is created with the DataInputStream( Input Stream) constructor. The argument should be an existing input stream such as an buffer input stream or file input stream. Conversely, a data output stream requires a DataOutputStream (Output Stream) constructor which indicates the associated output stream.
-=======
 The data input stream is created with the `DataInputStream`|`Input Stream` constructor. The argument should be an existing input stream such as an buffer input stream or file input stream. Conversely, a data output stream requires a `DataOutputStream`|`Output Stream` constructor which indicates the associated output stream.
->>>>>>> 841c7a00389291b838d8a10f331c065c8a409285
 
 Each of the input method returns the primitive data type indicated by the name of the method
 For example, `readDouble()` method returns a double value.
@@ -634,20 +637,11 @@ dos.writeByte(b);
 ```
 
 ## Object Streams
-<<<<<<< HEAD
-
-### ObjectInputStream
-
-The Java `ObjectInputStream` class (`java.io.ObjectInputStream`) enables you to read Java objects from an `InputStream` instead of just raw bytes. You wrap an InputStream in a `ObjectInputStream` and then you can read objects from it. Of course the bytes read must represent a valid, serialized Java object. Otherwise reading objects will fail.
-
-Normally you will use the `ObjectInputStream` to read objects written (serialized) by a Java `ObjectOutputStream` . You will see an example of that later.
-=======
 ### ObjectInputStream
 
 The Java `ObjectInputStream` class `java.io.ObjectInputStream` enables you to read Java objects from an `InputStream` instead of just raw bytes. You wrap an `InputStream` in a `ObjectInputStream` and then you can read objects from it. Of course the bytes read must represent a valid, serialized Java object. Otherwise reading objects will fail.
 
 Normally you will use the `ObjectInputStream` to read objects written (serialized) by a Java `ObjectOutputStream`. You will see an example of that later.
->>>>>>> 841c7a00389291b838d8a10f331c065c8a409285
 
 Here is a Java `ObjectInputStream` example:
 
@@ -666,11 +660,7 @@ Before you can serialize and de-serialize objects the class of the object must i
 
 When you are finished reading data from the `ObjectInputStream` you should remember to close it. Closing a `ObjectInputStream` will also close the `InputStream` instance from which the `ObjectInputStream` is reading.
 
-<<<<<<< HEAD
-Closing a `ObjectInputStreamp` is done by calling its `close()` method. Here is how closing a `ObjectInputStream` looks:
-=======
 Closing a `ObjectInputStream` is done by calling its `close()` method. Here is how closing a `ObjectInputStream` looks:
->>>>>>> 841c7a00389291b838d8a10f331c065c8a409285
 
 ```java
 objectInputStream.close();
@@ -905,7 +895,7 @@ Llegir tots els objectes de tipus `User`. Mostrar els seus atributs per pantalla
 
 Implementar la classe `ObjectFileToCSV.java` de manera que:
 
-Treballi amb l'anterior classe User externa amb atributs privats (`username, firstname,lastname, email i password`) i els corresponents mètodes `getters` i `setters` i `constructor` amb tots els atributs.
+Treballi amb l'anterior classe `User` externa amb atributs privats (`username, firstname,lastname, email i password`) i els corresponents mètodes `getters` i `setters` i `constructor` amb tots els atributs.
 
 Es creïn diferents objectes de tipus `User` a partir de la lectura d'un fitxer binari on s'emmagatzemen aquests objectes (aquest fitxer és el resultat de l'exercici anterior `users.bin`. Aquests objectes s'emmagatzemen en un `ArrayList` però prèviament es mostren els seus atributs per pantalla, es recomanable implementar un mètode `toString()` a la classe `User`. El mètode s'anomenarà `loadUsers()`
 
