@@ -818,7 +818,7 @@ Here is a thing the JavaDoc forgets to mention: The `read()` method increments t
 Writing to a `RandomAccessFile` can be done using one it its many `write()` methods. Here is a simple example:
 
 ```java
-RandomAccessFile file = new 200510", "rw");
+RandomAccessFile file = new RandomAccessFile("fitxer.bin", "rw");
 
 file.write("Hello World".getBytes());
 
@@ -838,6 +838,100 @@ The proper exception handling of a `RandomAccessFile` is left out of this text f
 #### Examples
 
 1. We want to make a program, given an initial file and a specific letter `X`, changing the file every letter `X` in capital letters.
+
+Exemple `CanviLletra` amb `read()`
+
+```java
+package net.xeill.elpuig;
+
+import java.io.*;
+
+public class CanviLletra {
+
+  public static void main(String[] args) {
+
+    try {
+
+      RandomAccessFile randomAccessFile = new RandomAccessFile(new File("src/archivos/texto.txt"), "rw");
+      char x = 'r';
+
+      char c;
+      int lectura;
+
+      while ((lectura = randomAccessFile.read()) != -1) {
+        try {
+
+          c = (char) lectura;
+
+          if (c == x) {
+            randomAccessFile.seek(randomAccessFile.getFilePointer() - 1);
+            //randomAccessFile.write(Byte.parseByte(String.valueOf(Character.toUpperCase(c))));
+            randomAccessFile.writeByte(Character.toUpperCase(c));
+          }
+        } catch (EOFException e) {
+          e.printStackTrace();
+
+        }
+      }
+      randomAccessFile.close();
+
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+}
+
+```
+
+Exemple `CanviLletra` amb `readByte()`
+
+```java
+package net.xeill.elpuig;
+
+import java.io.*;
+
+public class CanviLletraReadByte {
+
+  public static void main(String[] args) {
+
+    try {
+
+      RandomAccessFile randomAccessFile = new RandomAccessFile(new File("src/archivos/texto.txt"), "rw");
+      char x = 'r';
+
+      char c;
+      int lectura;
+      boolean fin = false;
+
+      do {
+        try {
+          lectura = randomAccessFile.readByte();
+          c = (char) lectura;
+
+          if (c == x) {
+            randomAccessFile.seek(randomAccessFile.getFilePointer() - 1);
+            //randomAccessFile.write(Byte.parseByte(String.valueOf(Character.toUpperCase(c))));
+            randomAccessFile.writeByte(Character.toUpperCase(c));
+          }
+        } catch (EOFException e) {
+          fin = true;
+          randomAccessFile.close();
+          System.out.println("Hem acabat de llegir el fitxer.");
+        }
+
+      } while (!fin);
+
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+}
+
+```
 
 2. Es demana fer un programa que escrigui un fitxer aleatori amb les dades d'empleats, tenint en compte les següents consideracions:
 
