@@ -947,9 +947,184 @@ La longitud del registre de cada empleat és la mateixa `36 bytes` i els tipus q
 * **Departament**: és un `int`, ocupa `4 bytes`.
 * **Sou**: és un `double`, ocupa `8 bytes`.
 
+```java
+package net.xeill.elpuig;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+
+public class RandomWrite {
+
+  public static void main(String[] args) {
+    /*
+    Identificador: és un enter, ocupa 4 bytes
+    Cognom: cadena de 10 caràcters. Com cada caràcter Unicode ocupa 2 bytes llavors el cognom ocupa 20 bytes
+    Departament: és un enter, ocupa 4 bytes.
+    Sou: és un double, ocupa 8 bytes.
+    */
+
+    String[] cognoms = {"Parker", "Ocón", "Ben", "Orrit"};
+    int[] departaments = {11, 22, 33, 44};
+    double[] salaris = {1111.11, 2222.22, 3333.33, 4444.44};
+
+    try {
+      RandomAccessFile randomAccessFile = new RandomAccessFile(new File("src/archivos/empleats.txt"), "rw");
+
+      for (int i = 0; i < cognoms.length ; i++) {
+        // Identificador
+        randomAccessFile.writeInt(i+1);
+        // String[10] amb el cognom
+        StringBuffer sBuffer = new StringBuffer(cognoms[i]);
+        sBuffer.setLength(10);
+        randomAccessFile.writeChars(sBuffer.toString());
+        // Departament
+        randomAccessFile.writeInt(departaments[i]);
+        // Salari
+        randomAccessFile.writeDouble(salaris[i]);
+      }
+      randomAccessFile.close();
+
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+}
+
+```
+
 3. Com a continuació de l'exercici anterior, es demana fer un programa que afegexi un registre amb un identificador determinat.
 
-4. Per finalitzar, llegir el fitxer creat als exemples anteriors  i mostrar per pantalla totes les dades.
+```java
+package net.xeill.elpuig;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+
+public class RandomWritePosition {
+
+  public static void main(String[] args) {
+    /*
+    Identificador: és un enter, ocupa 4 bytes
+    Cognom: cadena de 10 caràcters. Com cada caràcter Unicode ocupa 2 bytes llavors el cognom ocupa 20 bytes
+    Departament: és un enter, ocupa 4 bytes.
+    Sou: és un double, ocupa 8 bytes.
+    */
+
+    String cognom = "Martin";
+    StringBuffer bCognom = new StringBuffer(cognom);
+    bCognom.setLength(10);
+
+    int departament = 55;
+    double salari = 5555.55;
+
+    int position = 7;
+
+    try {
+      RandomAccessFile randomAccessFile = new RandomAccessFile(new File("src/archivos/empleats.txt"), "rw");
+
+      randomAccessFile.seek((position - 1) * 36);
+
+      // Identificador
+      randomAccessFile.writeInt(position);
+      // String[10] amb el cognom
+      randomAccessFile.writeChars(bCognom.toString());
+      // Departament
+      randomAccessFile.writeInt(departament);
+      // Salari
+      randomAccessFile.writeDouble(salari);
+
+      randomAccessFile.close();
+
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+}
+
+```
+
+4. Per finalitzar, llegir el fitxer creat als exemples anteriors i mostrar per pantalla totes les dades.
+
+```java
+package net.xeill.elpuig;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+
+public class ShowRandomFile {
+
+  /*
+    Identificador: és un enter, ocupa 4 bytes
+    Cognom: cadena de 10 caràcters. Com cada caràcter Unicode ocupa 2 bytes llavors el cognom ocupa 20 bytes
+    Departament: és un enter, ocupa 4 bytes.
+    Sou: és un double, ocupa 8 bytes.
+  */
+
+  public static void main(String[] args) {
+
+    try {
+      RandomAccessFile randomAccessFile = new RandomAccessFile(new File("src/archivos/empleats.txt"), "r");
+
+      int id, departament, position;
+      double salari;
+      String sCognom;
+      char[] cognom;
+
+      // Nos colocamos al incio del fichero
+      position = 0;
+
+      while (randomAccessFile.getFilePointer() != randomAccessFile.length()) {
+
+        // Nos movemos a la posición del siguiente empleado que vamos a leer
+        randomAccessFile.seek(position);
+
+        // Identificador
+        id = randomAccessFile.readInt();
+        // Cognom (inicializamos)
+        cognom = new char[10];
+        // Cognom (lectura)
+        for (int i = 0; i < cognom.length; i++) {
+          cognom[i] = randomAccessFile.readChar();
+        }
+        sCognom = new String(cognom);
+
+        // Departament
+        departament = randomAccessFile.readInt();
+
+        // Salari
+        salari = randomAccessFile.readDouble();
+
+        // Imprimimos
+        System.out.println("Identificador: " + id);
+        System.out.println("Cognom: " + sCognom);
+        System.out.println("Departament: " + departament);
+        System.out.println("Salari: " + salari);
+
+        // Avanzamos la posición del puntero
+        position += 36;
+      }
+
+      randomAccessFile.close();
+
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+}
+
+```
 
 ## Exercicis
 
@@ -1002,7 +1177,7 @@ Llegir tots els objectes de tipus `User`. Emmagatzemar els valors dels atributs 
 
 ### Exercici 20
 
-Es demana fer un programa `RandomWrite2.java` que escrigui un fitxer aleatori amb les dades de departaments, tenint en compte les següents consideracions:
+Es demana fer un programa `MyRandomWrite.java` que escrigui un fitxer aleatori amb les dades de departaments, tenint en compte les següents consideracions:
 
 Les dades a inserir són: codi del departament i el nom departament.
 
