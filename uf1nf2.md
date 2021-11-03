@@ -4,7 +4,6 @@
 ### [Escritura d'un fitxer](uf1nf2.md#writing-to-a-file)
 ### [Obertura d'un fitxer](uf1nf2.md#opening-a-file)
 
-
 ## Introducció
 En la primera part de la UF vam veure en Java (en el paquet java.io) que hi ha diferents classes que faciliten treballar amb fitxers des de diferents perspectives:
 
