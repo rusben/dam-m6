@@ -23,50 +23,28 @@ import org.w3c.dom.NodeList;
 public class XPathExample {
   public static void main(String[] args) throws Exception {
 
-    String fileName = "src/archivos/departaments.html";
-    downloadFile(new URL("https://elpuig.xeill.net/departaments"), fileName);
+    String localName = "src/archivos/departaments.html";
+    downloadFile(new URL("https://elpuig.xeill.net/departaments"), localName);
     //Get DOM Node for XML
-    Document document = getDocument(fileName);
-    String xpathExpression = "";
+    Document document = getDocument(localName);
 
-    /*******Get attribute values using xpath******/
+    // xpathExpression = "//div[@class=\"navTreeItem\"]";
+    // xpathExpression ="//li[contains(concat(' ', normalize-space(@class), ' '), ' navTreeItem ')]/a";
 
-    //Get all employee ids
- //   xpathExpression = "//div[@class=\"navTreeItem\"]";
+    String xpathExpression = "//li[contains(concat(' ', normalize-space(@class), ' '), ' navTreeItem ')]/a";
 
-    //xpathExpression ="//li[contains(concat(' ', normalize-space(@class), ' '), ' navTreeItem ')]/a";
+   // System.out.println(evaluateXPath(document, xpathExpression));
+   // System.out.println(evaluateXPathAndGetNodes(document, xpathExpression));
 
-
-    xpathExpression = "//a";
-    System.out.println(evaluateXPath(document, xpathExpression));
-    System.out.println(evaluateXPathAndGetNodes(document, xpathExpression));
-
-    NodeList nl = evaluateXPathAndGetNodes(document, xpathExpression);
+    NodeList nl = getNodesByExpression(document, xpathExpression);
     System.out.println(nl.getLength());
 
     for (int i = 0; i < nl.getLength(); i++) {
-     System.out.println(nl.item(i).getNodeName());
+      System.out.println(nl.item(i).getTextContent().trim());
     }
 
-    //Get all employee ids in HR department
-    //xpathExpression = "/employees/employee[department/name='HR']/@id";
-    //System.out.println(evaluateXPath(document, xpathExpression));
+    // https://howtodoinjava.com/java/xml/java-xpath-expression-examples/
 
-    //Get employee id of 'Alex'
-    //xpathExpression = "/employees/employee[firstName='Alex']/@id";
-    //System.out.println(evaluateXPath(document, xpathExpression));
-
-    //Get employee ids greater than 5
-    //xpathExpression = "/employees/employee/@id[. > 5]";
-    //System.out.println(evaluateXPath(document, xpathExpression));
-
-    //Get employee whose id contains 1
-    //xpathExpression = "/employees/employee[contains(@id,'1')]/firstName/text()";
-    //System.out.println(evaluateXPath(document, xpathExpression));
-
-    //Get employee whose id contains 1
-    //xpathExpression = "descendant-or-self::*[contains(@id,'1')]/firstName/text()";
-    //System.out.println(evaluateXPath(document, xpathExpression));
   }
 
   private static void downloadFile(URL url, String outputFileName) throws IOException {
@@ -79,7 +57,7 @@ public class XPathExample {
         }
   }
 
-  private static NodeList evaluateXPathAndGetNodes(Document document, String xpathExpression) throws Exception {
+  private static NodeList getNodesByExpression(Document document, String xpathExpression) throws Exception {
     // Create XPathFactory object
     XPathFactory xpathFactory = XPathFactory.newInstance();
 
@@ -100,6 +78,7 @@ public class XPathExample {
     return null;
   }
 
+  /*
   private static List<String> evaluateXPath(Document document, String xpathExpression) throws Exception {
     // Create XPathFactory object
     XPathFactory xpathFactory = XPathFactory.newInstance();
@@ -116,7 +95,7 @@ public class XPathExample {
       NodeList nodes = (NodeList) expr.evaluate(document, XPathConstants.NODESET);
 
       for (int i = 0; i < nodes.getLength(); i++) {
-        values.add(nodes.item(i).getNodeValue());
+        values.add(nodes.item(i).getTextContent());
       }
 
     } catch (XPathExpressionException e) {
@@ -124,12 +103,17 @@ public class XPathExample {
     }
     return values;
   }
+*/
 
   private static Document getDocument(String fileName) throws Exception {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    factory.setNamespaceAware(true);
+    // https://stackoverflow.com/questions/49790117/are-there-any-disadvantages-to-setnamespaceawaretrue
+    // factory.setNamespaceAware(true);
     DocumentBuilder builder = factory.newDocumentBuilder();
-    Document doc = builder.parse(fileName);
-    return doc;
+    Document document = builder.parse(fileName);
+
+    return document;
   }
+
 }
+
