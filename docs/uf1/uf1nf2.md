@@ -1,8 +1,4 @@
 # Magatzems i fluxos de dades
-## [Conceptes bàsics sobre fitxers seqüencials](uf1nf2.md#conceptes-bàsics-sobre-fitxers-seqüencials)
-### [Creació d'un fitxer](uf1nf2.md#creating-a-file)
-### [Escritura d'un fitxer](uf1nf2.md#writing-to-a-file)
-### [Obertura d'un fitxer](uf1nf2.md#opening-a-file)
 
 ## Introducció
 En la primera part de la UF vam veure en Java (en el paquet java.io) que hi ha diferents classes que faciliten treballar amb fitxers des de diferents perspectives:
@@ -226,7 +222,7 @@ Java's IO package mostly concerns itself with the reading of raw data from a sou
 
 The diagram below illustrates the principle of a program reading data from a source and writing it to some destination:
 
-![Esquema](images/schema.jpg)
+![Esquema](../images/schema.jpg)
 
 ## Streams
 
@@ -243,18 +239,18 @@ Depending upon the direction of the data, streams are classified into two catego
 
 Input Streams: Bringing Information in. To bring in information, open a stream on an information source (a file, memory, or socket) and read the information serially.
 
-![InputStream](images/instream.jpg)
+![InputStream](../images/instream.jpg)
 
 Output Stream: Sending Information Out. A program can send information to an external destination by opening a stream to a destination and writing the information out serially.
 
 
-![OutputStream](images/outstream.jpg)
+![OutputStream](../images/outstream.jpg)
 
 ## The InputStream, OutputStream, Reader and Writer
 
 A program that needs to read data from some source needs an `InputStream` or a `Reader`. A program that needs to write data to some destination needs an `OutputStream` or a `Writer`. This is also illustrated in the diagram below:
 
-![Esquema](images/schema2.jpg)
+![Esquema](../images/schema2.jpg)
 
 An InputStream or Reader is linked to a source of data. An OutputStream or Writer is linked to a destination of data.
 
@@ -262,7 +258,7 @@ An InputStream or Reader is linked to a source of data. An OutputStream or Write
 
 Depending upon data type on which they operate, Java streams are classified into 2 categories:
 
-![Stream classification](images/streamclassification.jpg)
+![Stream classification](../images/streamclassification.jpg)
 
 
 The `java.io` package contains a large number of stream classes that provide capabilities for processing all types of data. These classes may be categorized into two groups based on the data type on which they operate.
@@ -373,7 +369,7 @@ Character stream classes can be used to read and write 16 bit Unicode characters
 
 The Reader and Writer implement the streams that can handle characters. The two subclasses used for handling characters in files are FileReader and FileWriter.
 
-![Read / Write Character](images/readwritecharacter.jpg)
+![Read / Write Character](../images/readwritecharacter.jpg)
 
 ### Character Strings
 
