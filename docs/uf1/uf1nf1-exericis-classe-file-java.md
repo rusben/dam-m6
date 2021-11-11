@@ -1,4 +1,3 @@
-@@include[uf1nf1.md](uf1nf1.md)
 
 # Exercicis
 ## Exercici 1
