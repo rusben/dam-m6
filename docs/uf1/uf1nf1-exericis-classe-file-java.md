@@ -1,3 +1,5 @@
+@@include[uf1nf1.md](uf1nf1.md)
+
 # Exercicis
 ## Exercici 1
 Implementar la classe `MostraFitxers.java` que implementa una versió simple de `ls`.
