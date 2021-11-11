@@ -1,7 +1,7 @@
 # Magatzems i fluxos de dades
 
 ## Introducció
-En la primera part de la UF vam veure en Java (en el paquet java.io) que hi ha diferents classes que faciliten treballar amb fitxers des de diferents perspectives:
+En la primera part de la UF vam veure en Java (en el paquet `java.io`) que hi ha diferents classes que faciliten treballar amb fitxers des de diferents perspectives:
 
 * Fitxers d'accés seqüencial o accés aleatori,
 * Fitxers de caràcters o fitxers de bytes (binaris).
@@ -84,9 +84,9 @@ public class Exercise {
 }
 ```
 
-The PrintWriter class is based on (implements) the Writer class. The class is equipped with the necessary means of writing values to a file.
+The `PrintWriter` class is based on (implements) the `Writer` class. The class is equipped with the necessary means of writing values to a file.
 
-Before using the class, declare a variable for it. This class is equipped with many constructors. One of the constructors takes as argument an OutputStream object. We saw that the File class is based on OutputStream. This means that you can pass a File object to a PrintWriter constructor. This would be done as follows:
+Before using the class, declare a variable for it. This class is equipped with many constructors. One of the constructors takes as argument an `OutputStream` object. We saw that the `File` class is based on `OutputStream`. This means that you can pass a `File` object to a `PrintWriter` constructor. This would be done as follows:
 
 ```java
 import java.io.File;
@@ -104,7 +104,7 @@ public class Exercise {
 
 ## Writing to a File
 
-After creating a PrintWriter object, you can write values to the file. To support this, the PrintWriter class is equipped with the print() and println() methods that is overloaded with various versions for each type of values (boolean, char, char[], int, float, double, String, or Object). Therefore, to write a value to a file, call the appropriate version of the PrintWriter.print() method and pass the desired value. Here are examples:
+After creating a `PrintWriter` object, you can write values to the file. To support this, the `PrintWriter` class is equipped with the `print()` and `println()` methods that is overloaded with various versions for each type of values (`boolean, char, char[], int, float, double, String, or Object`). Therefore, to write a value to a file, call the appropriate version of the `PrintWriter.print()` method and pass the desired value. Here are examples:
 
 ```java
 import java.io.File;
