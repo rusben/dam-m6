@@ -1,9 +1,9 @@
 # Gestió del sistema de fitxers
 * [Introduccó al sistema de fitxers](#intro-sistema-fitxers)
-* [Exemples: Llegir informació introduïda per l'usuari](exemples-lectura-informacio)
-* [La classe File de Java](classe-file-java)
-* [Exemples: Utilització de la classe File de Java](exemples-classe-file-java)
-* [Exercicis](exercicis-classe-file-java)
+* [Exemples: Llegir informació introduïda per l'usuari](#exemples-lectura-informacio)
+* [La classe File de Java](#classe-file-java)
+* [Exemples: Utilització de la classe File de Java](#exemples-classe-file-java)
+* [Exercicis](#exercicis-classe-file-java)
 
 # Introducció al sistema de fitxers <a name="intro-sistema-fitxers"></a>
 Com Java és un llenguatge orientat a objectes, la majoria d'aplicacions tenen un conjunt de classes de dades.
