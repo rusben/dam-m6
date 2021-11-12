@@ -65,7 +65,7 @@ Els dos primers són una classificació segons el tipus de contingut que guarden
 
 * ***Fitxers aleatoris***: a diferència dels anteriors l'accés pot ser directament a una posició concreta fitxer, sense necessitat de recórrer les dades anteriors. Un exemple d'accés aleatori en programació és el ús d'arrays.
 
-En les següents seccions es mostren alternatives per a l'accés a fitxers segons siguin d'un tipus o un altre. No obstant això, amb independència de la manera, Java defineix una classe dins del paquet java.io que representa un arxiu o un directori dins d'un sistema de fitxers. Aquesta classe és `File`.
+En les següents seccions es mostren alternatives per a l'accés a fitxers segons siguin d'un tipus o un altre. No obstant això, amb independència de la manera, Java defineix una classe dins del paquet `java.io` que representa un arxiu o un directori dins d'un sistema de fitxers. Aquesta classe és `File`.
 
 Un objecte de la classe `File` representa el nom d'un fitxer o d'un directori que existeix en el sistema de fitxers (els mètodes de `File` permeten obtenir tota la informació sobre les característiques del fitxer o directori).
 
