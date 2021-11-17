@@ -1,4 +1,6 @@
-# Processament de fitxers XML
+
+
+https://zetcode.com/java/dom/# Processament de fitxers XML
 
 Sovint ens pot interessar emmagatzemar objectes sencers per poder-los recuperar en qualsevol moment. Aquí veurem bàsicament dues maneres diferents d'aconseguir fer-los persistents.
 
@@ -36,3 +38,6 @@ Una classificació de les eines per a l'accés a fitxers `XML` és la següent:
 * Eines que no validen els documents `XML`. Aquestes només comproven que el document està ben conformat segons la definició `XML`, però no necessiten d'un esquema associat per comprovar si és vàlid pel que fa a aquest esquema. Exemples d'aquest tipus d'eines són `DOM` i `SAX`.
 
 A continuació es descriu l'accés a dades amb les tecnologies més esteses: `DOM`, `SAX` i `JAXB`.
+
+
+https://zetcode.com/java/dom/
