@@ -4,9 +4,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class MainDonParser {
-
   public static void main(String[] args) {
-
     try {
       DOMManager domManager = new DOMManager();
       Document doc = domManager.createDocumentFromFile("src/main/resources/input.xml");
@@ -39,7 +37,5 @@ public class MainDonParser {
     } catch (Exception e) {
       e.printStackTrace();
     }
-
-
   }
 }
