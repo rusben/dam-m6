@@ -23,8 +23,6 @@
   * [Open and loop XML using SAX Parser](#example-open-loop-document-sax)
 * [Exercicis SAX](#exercicis-sax)
 
-
-
 # Processament de fitxers XML <a name="processament-fitxers-xml"></a>
 Sovint ens pot interessar emmagatzemar objectes sencers per poder-los recuperar en qualsevol moment. Aquí veurem bàsicament dues maneres diferents d'aconseguir fer-los persistents.
 
@@ -112,6 +110,22 @@ Els programes `Java` que utilitzen `DOM` necessiten aquestes interfícies:
 * ***`Text`***: Són les dades caràcter d'un element.
 * ***`CharacterData`***: Representa les dades caràcter presents en el document.
 * ***`DocumentType`***: Proporciona informació continguda en l'etiqueta `<! DOCTYPE>`
+
+### Tipus de nodes
+
+A continuació es mostra una llista d'alguns tipus de nodes importants:
+
+| Tipus      |  Descripció |
+|     `Attr`       | Representa un atribut en un objecte `Element`            |
+|     `CDATASection`       | escapa dels blocs de text que contenen caràcters que, d'altra manera, es considerarien com a marcatge            |
+|     `Comment`       | Representa el contingut d'un comentari            |
+|     `Document`       | Representa tot el document `HTML` o `XML`            |
+|     `DocumentFragment`       | un objecte `Document` lleuger o mínim que s'utilitza per representar parts d'un document `XML` més grans que un sol node   |
+|     `Element`       | Són branques bàsiques d'un arbre `DOM`; la majoria de nodes excepte el text són elements            |
+|     `Node`       | El tipus de dades principal per a tot el DOM i cadascun dels seus elements |
+|     `NodeList`       | Una col·lecció ordenada d'objectes tipus `Node`'                     |            
+|     `Text`       | Representa el contingut textual (anomenat dades de caràcters en `XML`) d'un `Element` o `Attr`            |
+
 
 En resum, la tecnologia `DOM` (`Document Object Model`) és una interfície de programació que permet analitzar i manipular dinàmicament i de manera global el contingut, l'estil i l'estructura d'un document.
 Per treballar amb un document `XML` primer s'emmagatzema en memòria en forma d'arbre amb nodes pare, nodes fill i nodes finals que són aquells que no tenen descendents.
@@ -498,7 +512,7 @@ public class CreateXMLFileDemo {
 ```
 
 #### Example: DOM Parser - Modify XML Document <a name="example-modify-xml-document-dom"></a>
-Here is the input xml file we need to modify:
+Here is the input `XML` file named `luxury.xml` we need to modify:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
@@ -532,7 +546,7 @@ public class ModifyXMLFileDemo {
   public static void main(String[] args) {
     try {
 
-      File inputFile = new File("cars.xml");
+      File inputFile = new File("luxury.xml");
 
       DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
       DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -590,22 +604,16 @@ public class ModifyXMLFileDemo {
 
 ```
 
-~~~
+```console
 -----------Modified File-----------
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><cars>
     <supercars company="Lamborgini">
         <carname type="formula one">Lamborgini 101</carname>
-        <carname type="sports car">Lamborgini 202</carname>
-        <carname type="sports car">Ferrari 301</carname>
+        <carname type="sports">Ferrari 202</carname>
     </supercars>
-    <supercars company="Lamborgini">
-        <carname>Lamborgini 001</carname>
-        <carname>Lamborgini 002</carname>
-        <carname>Lamborgini 003</carname>
-    </supercars>
-</cars>
-~~~
 
+</cars>
+```
 
 #### Example: Using methods to DOM parsing <a name="example-using-methods-to-dom-parsing"></a>
 
@@ -626,6 +634,8 @@ public class ModifyXMLFileDemo {
 </Llibre>
 </Llibres>
 ```
+
+
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><Llibres>
@@ -657,17 +667,16 @@ Implementar un altre classe anomenada `EmpleatsDOM2.java` per llegir aquest `XML
 
 `SAX` és un analitzador sintàctic, al contrari de `DOM` que requereix memòria i temps sobretot si el fitxer `XML` a processar és bastant gran i complex, `SAX` analitza el fitxer a la vegada que el llegeix. Una alternativa en aquests casos son els analitzadors seqüencials, que permeten extreure el contingut a mida que es van descobrint les etiquetes d’obertura i tancament (analitzadors sintàctics). Són analitzadors molt ràpids, però presenten el problema que cada cop que es necessita accedir a una part del contingut cal rellegir tot el document de dalt a baix.
 
-En `Java`, l’analitzador sintàctic més popular s’anomena `SAX`, que és l’acrònim de Simple `API` for XML. Els analitzadors sintàctics són capaços d’aïllar les dades `XML` en una sola lectura seqüencial detectant les etiquetes d’obertura i tancament. Són molt ràpids, però han de llegir tot el document a cada consulta.
+En `Java`, l’analitzador sintàctic més popular s’anomena `SAX`, que és l’acrònim de Simple `API` for `XML`. Els analitzadors sintàctics són capaços d’aïllar les dades `XML` en una sola lectura seqüencial detectant les etiquetes d’obertura i tancament. Són molt ràpids, però han de llegir tot el document a cada consulta.
 
-Doncs, `SAX` és una altra tecnologia per poder accedir a `XML` des de llenguatges de programació i encara que `SAX` tingui el mateix objectiu que `DOM`, aquesta tecnologia aborda el problema des d'una òptica diferent. En general es fa servir `SAX` quan la informació emmagatzemada en els documents XML és clara, està ben estructurada i no necessita ser modificada.
-
+Doncs, `SAX` és una altra tecnologia per poder accedir a `XML` des de llenguatges de programació i encara que `SAX` tingui el mateix objectiu que `DOM`, aquesta tecnologia aborda el problema des d'una òptica diferent. En general es fa servir `SAX` quan la informació emmagatzemada en els documents `XML` és clara, està ben estructurada i no necessita ser modificada.
 
 Les principals característiques de `SAX` són:
 
 * `SAX` ofereix una alternativa per llegir documents `XML` de manera seqüencial. El document només es llegeix una vegada. A diferència de `DOM`, el programador no es pot moure pel document al seu gust. Una vegada que s'obre el document, es recorre seqüencialment el fitxer fins al final.
 * `SAX`, a diferència de `DOM`, no carrega el document en memòria, sinó que el llegeix directament des del fitxer. Això el fa especialment útil quan el fitxer `XML` és molt gran.
 
-SAX segueix els següents passos bàsics:
+`SAX` segueix els següents passos bàsics:
 
 1. Se li diu al parser `SAX` quin fitxer vol que sigui llegit de manera seqüencial.
 2. El document `XML` és traduït a una sèrie d'esdeveniments.
@@ -687,7 +696,7 @@ El procés es pot resumir de la següent manera:
  * Que s'hagi detectat una cadena de caràcters que pot ser un text.
  * Que s'hagi detectat un error.
 
-Quan `SAX` retorna que ha detectat un esdeveniment, llavors aquest esdeveniment pot ser manejat amb la classe `DefaultHandler` (callbacks). Aquesta classe pot ser estesa i els mètodes d'aquesta classe
+Quan `SAX` retorna que ha detectat un esdeveniment, llavors aquest esdeveniment pot ser manejat amb la classe `DefaultHandler` (`callbacks`). Aquesta classe pot ser estesa i els mètodes d'aquesta classe
 poden ser redefinits (sobrecarregats) pel programador per aconseguir l'efecte desitjat quan `SAX` detecta els esdeveniments. Per exemple, es pot redefinir el mètode `public void startElement()`, que és el que s'invoca quan `SAX` detecta un esdeveniment de començament d'un element. Com a exemple, la redefinició d'aquest mètode pot consistir en comprovar el nom del nou element detectat, i si és un en concret llavors treure per pantalla un missatge amb el seu contingut.
 
 Quan `SAX` detecta un esdeveniment d'error o un final de document llavors s'acaba el recorregut.
@@ -702,15 +711,6 @@ Quan `SAX` detecta un esdeveniment d'error o un final de document llavors s'acab
 * La tasca a realitzar requereix molta memòria i alt rendiment.
 * No cal recórrer l'estructura completa del document.
 * Cal anar processant els elements de l'arxiu a mesura que van arribant.
-
-https://ca.wikipedia.org/wiki/Simple_API_for_XML
-
-https://www.tutorialspoint.com/java_xml/java_sax_parser.htm
-
-https://www.vogella.com/tutorials/JavaXML/article.html
-
-http://cafeconleche.org/books/xmljava/chapters/index.html
-
 
 ### Examples SAX <a name="examples-sax"></a>
 #### Parse XML Document using SAX Parser <a name="example-parsing-document-sax"></a>
@@ -739,7 +739,7 @@ http://cafeconleche.org/books/xmljava/chapters/index.html
 </class>
 ```
 
-~~~
+```console
 Roll No : 393
 First Name: Gerard
 Last Name: Paulino
@@ -758,12 +758,10 @@ Last Name: Polonio
 Nick Name: jpolonio
 Marks: 90
 End Element :student
-~~~
+```
 
 #### Open and loop XML using SAX Parser <a name="example-open-loop-document-sax"></a>
-
-
-Obrir i Recórrer XML amb SAX des de Java
+Obrir i recórrer `XML` amb `SAX` des de `Java`
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -787,13 +785,13 @@ Obrir i Recórrer XML amb SAX des de Java
 
 `public int obrir_XML_SAX(File fitxer)`
 
-Per obrir un document XML des de Java amb SAX s'utilitzen les classes:
+Per obrir un document `XML` des de `Java` amb `SAX` s'utilitzen les classes:
 
 * `SAXParserFactory` i `SAXParser` que pertanyen al paquet `javax.xml.parsers`
 * A més a més és necessari estendre la classe `DefaultHandler` que es troba en el paquet `org.xml.sax.helpers.DefaultHandler`
 * A l'exemple que ensenyarem continuació es farà servir la classe `File` per indicar la localització del fitxer `XML`. La classe `DefaultHandler` és la classe base que atén els esdeveniments retornats pel parser. Aquesta classe s'estén a les aplicacions per personalitzar el comportament del parser quan troba un element `XML`.
 
-Com es pot entendre seguint els comentaris del codi, primerament es creen els objectes factory i parser. Aquesta part és similar a com es fa amb `DOM`. Una diferència amb `DOM` és que a `SAX` es crea una instància de la classe `HandlerLlibres`.  Aquesta classe estén `DefaultHandler` i redefineix els mètodes (callbacks) que atenen els esdeveniments.
+Com es pot entendre seguint els comentaris del codi, primerament es creen els objectes factory i parser. Aquesta part és similar a com es fa amb `DOM`. Una diferència amb `DOM` és que a `SAX` es crea una instància de la classe `HandlerLlibres`. Aquesta classe estén `DefaultHandler` i redefineix els mètodes (`callbacks`) que atenen els esdeveniments.
 
 En resum, la preparació de `SAX` requereix inicialitzar les variables, que seran usades quan s'iniciï el procés de recorregut del fitxer `XML`:
 
@@ -810,13 +808,13 @@ Aquest mètode rep com a paràmetre el parser inicialitzat (parser), la instànc
 
 En aquest mètode l'excepció que es captura és `SAXException` que es defineix en el paquet `org.xml.sax.SAXException`.
 
-Per recórrer un document `XML` un cop inicialitzat el parser l'únic que es necessita és llançar el parser. Evidentment, abans cal haver definit la classe que estén `DefaultHandler`. Aquesta classe té la lògica de com actuar quan es troba algun element `XML` durant el recorregut amb `SAX` ("callbacks").
+Per recórrer un document `XML` un cop inicialitzat el parser l'únic que es necessita és llançar el parser. Evidentment, abans cal haver definit la classe que estén `DefaultHandler`. Aquesta classe té la lògica de com actuar quan es troba algun element `XML` durant el recorregut amb `SAX` (`callbacks`).
 
-Ara veurem el codi de la classe HandlerLlibres que és el codi que gestiona com interpretar els elements d'un document `XML`.
+Ara veurem el codi de la classe `HandlerLlibres` que és el codi que gestiona com interpretar els elements d'un document `XML`.
 
 Aquesta classe estén el mètode `startElement`, `endElement` i `characters`.
 
-Aquests mètodes (callbacks) s'invoquen quan, durant el recorregut del document `XML`, es detecta un esdeveniment de començament d'element, final d'element o cadena de caràcters. En l'exemple, cada mètode realitza el següent:
+Aquests mètodes `callbacks` s'invoquen quan, durant el recorregut del document `XML`, es detecta un esdeveniment de començament d'element, final d'element o cadena de caràcters. En l'exemple, cada mètode realitza el següent:
 
 * ***`startElement()`***: quan es detecta amb `SAX` un esdeveniment de començament d'un element, llavors `SAX` invoca aquest mètode. El que fa és comprovar de quin tipus d'element es tracta.
  * Si és `<Llibre>` llavors treu el valor del seu atribut i el concatena amb una cadena (`cadena_resultat`) que tindrà tota la sortida després de recórrer tot el document.
@@ -824,13 +822,13 @@ Aquests mètodes (callbacks) s'invoquen quan, durant el recorregut del document 
  * Si és `<Autor>` llavors a cadena_resultat se li concatena el text `L'autor és:`.
  * Si és un altre tipus d'element no farà res.
 
-* ***`endElement()`***: quan es detecta amb `SAX` un esdeveniment de final d'un element, llavors SAX invoca aquest mètode. El mètode comprova si és el final d'un element <Llibre>. Si és així, llavors a `cadena_resultat` se li concatena el text `\n -------------------`.
+* ***`endElement()`***: quan es detecta amb `SAX` un esdeveniment de final d'un element, llavors `SAX` invoca aquest mètode. El mètode comprova si és el final d'un element `<Llibre>`. Si és així, llavors a `cadena_resultat` se li concatena el text `\n -------------------`.
 
 * ***`characters()`***: quan es detecta amb `SAX` un esdeveniment de detecció de cadena de text, llavors `SAX` invoca aquest mètode. El mètode el que fa és concatenar a `cadena_resultat` cadascun dels caràcters de la cadena detectada.
 
 Si s'aplica el codi anterior al contingut al document `XML` anterior el resultat seria el següent:
 
-~~~
+```console
 Publicat l'any: 1922
 El títol és: Siddharta
 L'autor és: Hermann Hesse
@@ -843,8 +841,7 @@ Publicat l'any: 1947
 El títol és: Diari d'Anna Frank
 L'autor és: Anne Frank
 -------------------
-~~~
-
+```
 
 ### Exercicis SAX
 
@@ -853,3 +850,9 @@ Donat el xml obtingut en el primer exercici de `DOM` implementar la classe `Alum
 
 #### Exercici 5
 Fer el mateix per al fitxer que vau crear en l'exercici 2 de `DOM` implementar la classe `EmpleatsSAX.java`.  
+
+## Enllaços d'interés
+* https://ca.wikipedia.org/wiki/Simple_API_for_XML
+* https://www.tutorialspoint.com/java_xml/java_sax_parser.htm
+* https://www.vogella.com/tutorials/JavaXML/article.html
+* http://cafeconleche.org/books/xmljava/chapters/index.html
