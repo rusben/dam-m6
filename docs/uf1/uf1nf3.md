@@ -917,49 +917,137 @@ Quan `SAX` detecta un esdeveniment d'error o un final de document llavors s'acab
 ### Examples SAX <a name="examples-sax"></a>
 #### Parse XML Document using SAX Parser <a name="example-parsing-document-sax"></a>
 
+Fitxer `input.txt`
 ```xml
 <?xml version="1.0"?>
 <class>
-<student rollno="393">
-<firstname>Gerard</firstname>
-<lastname>Paulino</lastname>
-<nickname>gpaulino</nickname>
-<marks>85</marks>
-</student>
-<student rollno="493">
-<firstname>Adrià</firstname>
-<lastname>Lora</lastname>
-<nickname>alora</nickname>
-<marks>95</marks>
-</student>
-<student rollno="593">
-<firstname>Jose Luis</firstname>
-<lastname>Polonio</lastname>
-<nickname>jpolonio</nickname>
-<marks>90</marks>
-</student>
+  <student rollno="393">
+    <firstname>Gerard</firstname>
+    <lastname>Paulino</lastname>
+    <nickname>gpaulino</nickname>
+    <marks>85</marks>
+  </student>
+  <student rollno="493">
+    <firstname>Adrià</firstname>
+    <lastname>Lora</lastname>
+    <nickname>alora</nickname>
+    <marks>95</marks>
+  </student>
+  <student rollno="593">
+    <firstname>Jose Luis</firstname>
+    <lastname>Polonio</lastname>
+    <nickname>jpolonio</nickname>
+    <marks>90</marks>
+  </student>
 </class>
 ```
 
+Fitxer `SAXParserDemo.java`
+```java
+package net.xeill.elpuig;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.File;
+
+public class SAXParserDemo {
+  public static void main(String[] args) {
+    try {
+      File inputFile = new File("input.txt");
+      SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
+      SAXParser saxParser = saxParserFactory.newSAXParser();
+      StudentHandler studentHandler = new StudentHandler();
+      saxParser.parse(inputFile, studentHandler);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+}
+```
+
+Fitxer `StudentHandler.java`
+```java
+package net.xeill.elpuig;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
+public class StudentHandler extends DefaultHandler {
+
+  boolean bFirstName = false;
+  boolean bLastName = false;
+  boolean bNickname = false;
+  boolean bMarks = false;
+
+  @Override
+  public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+    super.startElement(uri, localName, qName, attributes);
+
+    if (qName.equalsIgnoreCase("student")) {
+      String rollNo = attributes.getValue("rollno");
+      System.out.println("Roll No: "+rollNo);
+    } else if (qName.equalsIgnoreCase("firstname")) {
+      bFirstName = true;
+    } else if (qName.equalsIgnoreCase("lastname")) {
+      bLastName = true;
+    } else if (qName.equalsIgnoreCase("nickname")) {
+      bNickname = true;
+    } else if (qName.equalsIgnoreCase("marks")) {
+      bMarks = true;
+    }
+  }
+
+  @Override
+  public void endElement(String uri, String localName, String qName) throws SAXException {
+    super.endElement(uri, localName, qName);
+
+    if (qName.equalsIgnoreCase("student")) {
+      System.out.println("End element: "+ qName);
+    }
+  }
+
+  @Override
+  public void characters(char[] ch, int start, int length) throws SAXException {
+    super.characters(ch, start, length);
+
+    if (bFirstName) {
+      System.out.println("First name: "+ new String(ch, start, length));
+      bFirstName = false;
+    } else if  (bLastName) {
+      System.out.println("Last name: "+ new String(ch, start, length));
+      bLastName = false;
+    } else if  (bNickname) {
+      System.out.println("Nickname: "+ new String(ch, start, length));
+      bNickname = false;
+    } else if  (bMarks) {
+      System.out.println("Marks: "+ new String(ch, start, length));
+      bMarks = false;
+    }
+  }
+}
+```
+
+La sortida de consola és la següent:
 ```console
-Roll No : 393
-First Name: Gerard
-Last Name: Paulino
-Nick Name: gpaulino
+Roll No: 393
+First name: Gerard
+Last name: Paulino
+Nickname: gpaulino
 Marks: 85
-End Element :student
-Roll No : 493
-First Name: Adrià
-Last Name: Lora
-Nick Name: alora
+End element: student
+Roll No: 493
+First name: Adrià
+Last name: Lora
+Nickname: alora
 Marks: 95
-End Element :student
-Roll No : 593
-First Name: Jose Luis
-Last Name: Polonio
-Nick Name: jpolonio
+End element: student
+Roll No: 593
+First name: Jose Luis
+Last name: Polonio
+Nickname: jpolonio
 Marks: 90
-End Element :student
+End element: student
 ```
 
 #### Open and loop XML using SAX Parser <a name="example-open-loop-document-sax"></a>
