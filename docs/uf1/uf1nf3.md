@@ -1071,6 +1071,10 @@ Obrir i recórrer `XML` amb `SAX` des de `Java`
 </Llibres>
 ```
 
+```java
+
+```
+
 ### Obrir un document mitjançant `SAX`
 
 `public int obrir_XML_SAX(File fitxer)`
