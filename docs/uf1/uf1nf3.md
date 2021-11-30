@@ -23,6 +23,8 @@
   * [Open and loop XML using SAX Parser](#example-open-loop-document-sax)
 * [Exercicis SAX](#exercicis-sax)
 
+* [La llibrería JAXB](#llibreria-jaxb)
+
 # Processament de fitxers XML <a name="processament-fitxers-xml"></a>
 Sovint ens pot interessar emmagatzemar objectes sencers per poder-los recuperar en qualsevol moment. Aquí veurem bàsicament dues maneres diferents d'aconseguir fer-los persistents.
 
@@ -867,9 +869,9 @@ Implementar un altre classe anomenada `EmpleatsDOM2.java` per llegir aquest `XML
 
 ## La llibrería SAX <a name="llibreria-sax"></a>
 
-`SAX` és un analitzador sintàctic, al contrari de `DOM` que requereix memòria i temps sobretot si el fitxer `XML` a processar és bastant gran i complex, `SAX` analitza el fitxer a la vegada que el llegeix. Una alternativa en aquests casos son els analitzadors seqüencials, que permeten extreure el contingut a mida que es van descobrint les etiquetes d’obertura i tancament (analitzadors sintàctics). Són analitzadors molt ràpids, però presenten el problema que cada cop que es necessita accedir a una part del contingut cal rellegir tot el document de dalt a baix.
+`SAX` és un analitzador sintàctic, al contrari de `DOM` que requereix memòria i temps sobretot si el fitxer `XML` a processar és bastant gran i complex, `SAX` analitza el fitxer a la vegada que el llegeix. Una alternativa en aquests casos son els analitzadors seqüencials, que permeten extreure el contingut a mida que es van descobrint les etiquetes d'obertura i tancament (analitzadors sintàctics). Són analitzadors molt ràpids, però presenten el problema que cada cop que es necessita accedir a una part del contingut cal rellegir tot el document de dalt a baix.
 
-En `Java`, l’analitzador sintàctic més popular s’anomena `SAX`, que és l’acrònim de Simple `API` for `XML`. Els analitzadors sintàctics són capaços d’aïllar les dades `XML` en una sola lectura seqüencial detectant les etiquetes d’obertura i tancament. Són molt ràpids, però han de llegir tot el document a cada consulta.
+En `Java`, l'analitzador sintàctic més popular s'anomena `SAX`, que és l'acrònim de Simple `API` for `XML`. Els analitzadors sintàctics són capaços d'aïllar les dades `XML` en una sola lectura seqüencial detectant les etiquetes d'obertura i tancament. Són molt ràpids, però han de llegir tot el document a cada consulta.
 
 Doncs, `SAX` és una altra tecnologia per poder accedir a `XML` des de llenguatges de programació i encara que `SAX` tingui el mateix objectiu que `DOM`, aquesta tecnologia aborda el problema des d'una òptica diferent. En general es fa servir `SAX` quan la informació emmagatzemada en els documents `XML` és clara, està ben estructurada i no necessita ser modificada.
 
@@ -1071,13 +1073,25 @@ Obrir i recórrer `XML` amb `SAX` des de `Java`
 </Llibres>
 ```
 
+`SAXBooksMain.java`
 ```java
+package net.xeill.elpuig;
 
+import java.io.File;
+
+public class SAXBooksMain {
+  public static void main(String[] args) {
+    File file = new File("llibres.xml");
+    BooksSAXParser booksSAXParser = new BooksSAXParser();
+    booksSAXParser.openXMLWithSAX(file);
+    System.out.println(booksSAXParser.getSAXInfo());
+  }
+}
 ```
 
 ### Obrir un document mitjançant `SAX`
 
-`public int obrir_XML_SAX(File fitxer)`
+`openXMLWithSAX(File file)`
 
 Per obrir un document `XML` des de `Java` amb `SAX` s'utilitzen les classes:
 
@@ -1090,21 +1104,127 @@ Com es pot entendre seguint els comentaris del codi, primerament es creen els ob
 En resum, la preparació de `SAX` requereix inicialitzar les variables, que seran usades quan s'iniciï el procés de recorregut del fitxer `XML`:
 
 * Un objecte parser: en el codi la variable es diu parser.
-* Una instància d'una classe que estengui `DefaultHandler`, que en l'exemple és `Handlerllibres`. La variable es diu `sh`.
+* Una instància d'una classe que estengui `DefaultHandler`, que en l'exemple és `Handlerllibres`. La variable es diu `bookHandler`.
+
+
+```java
+package net.xeill.elpuig;
+
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.File;
+
+public class BooksSAXParser {
+
+  BookHandler bookHandler;
+  SAXParser saxParser;
+  File xmlFile;
+
+  public int openXMLWithSAX(File file) {
+    // Es crea un objecte SAXParser per interpretar el document XML
+    try {
+      SAXParserFactory saxParserFactory = SAXParserFactory.newInstance();
+      saxParser = saxParserFactory.newSAXParser();
+      // Es crea una instancia del Handler que serà el que recorri el document XML secuencialment
+      bookHandler = new BookHandler();
+      xmlFile = file;
+      return 0;
+    } catch (Exception e) {
+      e.printStackTrace();
+      return -1;
+    }
+  }
+
+  public String getSAXInfo() {
+    // Es dona la sortida al parser per a que comenci a gestionar el document XML que
+    // li passem com a paràmetre. Es recorrerà secuencialment el document XML i quan es
+    // detecti un començament o un fi d'element o text llavors s'el tractarà (segons la implementació del handler)
+    try {
+      saxParser.parse(xmlFile, bookHandler);
+      return bookHandler.getResultText();
+    } catch (Exception e) {
+      e.printStackTrace();
+      return "Error processant el document XML";
+    }
+  }
+}
+
+```
 
 ### Recorrer un document mitjançant `SAX`
 
-`public String recorrerSAXiMostrar()`
+`getSAXInfo()`
 
 El mètode `parse()` llança `SAX` pel fitxer `XML` seleccionat i amb el controlador desitjat (es podrien implementar tantes extensions de `DefaultHandler` com controladors diferents es volguéssin utilitzar).
 
-Aquest mètode rep com a paràmetre el parser inicialitzat (parser), la instància de la classe que manejarà els esdeveniments (sh) i el File amb el fitxer `XML` que recorrerà (fitxerXML).
+Aquest mètode rep com a paràmetre el parser inicialitzat (`saxParser`), la instància de la classe que manejarà els esdeveniments (`bookHandler`) i el File amb el fitxer `XML` que recorrerà (`xmlFile`).
 
 En aquest mètode l'excepció que es captura és `SAXException` que es defineix en el paquet `org.xml.sax.SAXException`.
 
 Per recórrer un document `XML` un cop inicialitzat el parser l'únic que es necessita és llançar el parser. Evidentment, abans cal haver definit la classe que estén `DefaultHandler`. Aquesta classe té la lògica de com actuar quan es troba algun element `XML` durant el recorregut amb `SAX` (`callbacks`).
 
-Ara veurem el codi de la classe `HandlerLlibres` que és el codi que gestiona com interpretar els elements d'un document `XML`.
+Ara veurem el codi de la classe `BookHandler` que és el codi que gestiona com interpretar els elements d'un document `XML`.
+
+```java
+package net.xeill.elpuig;
+
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
+
+public class BookHandler extends DefaultHandler {
+
+  int lastElement = 0;
+  String resultText = "";
+
+  public String getResultText() {
+    return resultText;
+  }
+
+  // A continuació es sobrecarreguen els esdeveniments de la classe DefaultHandler per recuperar el document XML
+  // En la implementació d'aquests esdeveniments s'indica què es fa quan es trobi el començament d'un element (startElement)
+  @Override
+  public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+    super.startElement(uri, localName, qName, attributes);
+
+    if (qName.equals("Llibre")) {
+      resultText += "\r" + "Publicat l'any: " + attributes.getValue(attributes.getQName(0)) + "\n";
+      lastElement = 1;
+    } else if (qName.equals("Titol")) {
+      resultText += "El títol és: ";
+      lastElement = 2;
+    } else if (qName.equals("Autor")) {
+      resultText += "\r" + "L'autor és: ";
+      lastElement = 3;
+    }
+  }
+
+  // Quan en aquest exemple detectem un final d'element <Llibre> es posa una línia a la sortida
+  @Override
+  public void endElement(String uri, String localName, String qName) throws SAXException {
+    super.endElement(uri, localName, qName);
+    if (qName.equals("Llibre")) {
+      resultText += "-------------------------";
+    }
+  }
+
+  // Quan es detecta una cadena de text posterior a un dels elements <Titol> o <Autor> llavors guarda aquest
+  // text en la variable corresponent
+  @Override
+  public void characters(char[] ch, int start, int length) throws SAXException {
+    super.characters(ch, start, length);
+    if (lastElement == 2) {
+      resultText += new String(ch, start, length);
+    } else if (lastElement == 3) {
+      resultText += new String(ch, start, length);
+    }
+  }
+}
+
+```
 
 Aquesta classe estén el mètode `startElement`, `endElement` i `characters`.
 
@@ -1126,24 +1246,42 @@ Si s'aplica el codi anterior al contingut al document `XML` anterior el resultat
 Publicat l'any: 1922
 El títol és: Siddharta
 L'autor és: Hermann Hesse
--------------------
+-------------------------
 Publicat l'any: 1985
 El títol és: El perfum
 L'autor és: Patrick Süskind
--------------------
+-------------------------
 Publicat l'any: 1947
 El títol és: Diari d'Anna Frank
 L'autor és: Anne Frank
--------------------
+-------------------------
 ```
 
-### Exercicis SAX
-
+### Exercicis SAX <a name="exercicis-sax"></a>
 #### Exercici 4
 Donat el xml obtingut en el primer exercici de `DOM` implementar la classe `AlumnesSAX.java`, utilitzant el parser `SAX` per ensenyar la informació dels alumnes (`Nom i Edat`) per pantalla.
 
 #### Exercici 5
 Fer el mateix per al fitxer que vau crear en l'exercici 2 de `DOM` implementar la classe `EmpleatsSAX.java`.  
+
+
+## La llibrería JAXB
+
+`JAXB` stands for `Java architecture for XML binding`.
+
+It is used to convert `XML` to `Java Object` and `Java Object` to `XML`.
+
+`JAXB` defines an `API` for reading and writing `Java Objects` to and from `XML` documents.
+
+Unlike `SAX` and `DOM`, we don’t need to be aware of `XML` parsing techniques.
+
+There are two operations you can perform using `JAXB`
+
+* ***Marshalling***: Converting a `Java Object` to `XML`.
+* ***UnMarshalling***:Converting a `XML` to `Java Object`.
+
+We will create a java program to marshal and unmarshal.
+
 
 ## Enllaços d'interés
 * https://ca.wikipedia.org/wiki/Simple_API_for_XML

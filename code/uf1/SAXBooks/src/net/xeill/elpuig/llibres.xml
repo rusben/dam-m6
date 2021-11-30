@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Llibres>
+    <Llibre publicat_en="1922">
+        <Titol>Siddharta</Titol>
+        <Autor>Hermann Hesse</Autor>
+    </Llibre>
+    <Llibre publicat_en="1985">
+        <Titol>El perfum</Titol>
+        <Autor>Patrick Süskind</Autor>
+    </Llibre>
+    <Llibre publicat_en="1947">
+        <Titol>Diari d'Anna Frank</Titol>
+        <Autor>Anne Frank</Autor>
+    </Llibre>
+</Llibres>
