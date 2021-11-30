@@ -25,6 +25,7 @@
 
 * [La llibrería JAXB](#llibreria-jaxb)
 
+
 # Processament de fitxers XML <a name="processament-fitxers-xml"></a>
 Sovint ens pot interessar emmagatzemar objectes sencers per poder-los recuperar en qualsevol moment. Aquí veurem bàsicament dues maneres diferents d'aconseguir fer-los persistents.
 
@@ -1265,7 +1266,7 @@ Donat el xml obtingut en el primer exercici de `DOM` implementar la classe `Alum
 Fer el mateix per al fitxer que vau crear en l'exercici 2 de `DOM` implementar la classe `EmpleatsSAX.java`.  
 
 
-## La llibrería JAXB
+## La llibrería JAXB <a name="llibreria-jaxb"></a>
 
 `JAXB` stands for `Java architecture for XML binding`.
 
