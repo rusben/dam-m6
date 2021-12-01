@@ -24,7 +24,8 @@
 * [Exercicis SAX](#exercicis-sax)
 
 * [La llibrería JAXB](#llibreria-jaxb)
-
+* [JAXB marshalling](#jaxb-marshalling)
+* [JAXB unmarshalling](#jaxb-unmarshalling)
 
 # Processament de fitxers XML <a name="processament-fitxers-xml"></a>
 Sovint ens pot interessar emmagatzemar objectes sencers per poder-los recuperar en qualsevol moment. Aquí veurem bàsicament dues maneres diferents d'aconseguir fer-los persistents.
@@ -1284,8 +1285,449 @@ There are two operations you can perform using `JAXB`
 We will create a java program to marshal and unmarshal.
 
 
+## JAXB marshalling <a name="jaxb-marshalling"></a>
+
+In this example we are going to show how to use the `JAXB` marshal functionalities. `JAXB` offers the possibility to convert `Java Objects` into `XML` structures and vice versa.
+
+As example, we are going to create a list of museums and store it in a specific `XML` file, each museum contains information like its name, about permanent and special exhibitions, city where is located, etc.
+
+First of all we indicate `JAXB` what `Java` elements we want to store in our `XML` file:
+
+```java
+@XmlRootElement(name="MUSEUM")
+public class Museum {
+
+  String name;
+
+  @XmlElement(name="MUSEUM_NAME")
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  boolean childrenAllowed;
+
+  @XmlAttribute(name = "children_allowed")
+  public void setChildrenAllowed(boolean childrenAllowed) {
+    this.childrenAllowed = childrenAllowed;
+  }
+
+  ...
+}
+```
+
+In the code shown above, we can see three `JAXB` annotations:
+
+1. ***`@XmlRootElement(name="MUSEUM")`*** : indicates the root node in the xml structure, the name is the name that will appear in the xml, if no name is specified, the class name will be used.
+2. ***`@XmlElement(name="MUSEUM_NAME")`***: indicates a child node.
+3. ***`@XmlAttribute(name ="children_allowed")`***: indicates an attribute of the root node.
+
+Next step is to marshal this object and generate the `XML` with the desired structure:
+
+```java
+Museum simpleMuseum = new Museum();
+simpleMuseum.setName("Simple Museum");
+simpleMuseum.setCity("Oviedo, Spain");
+
+JAXBContext jaxbContext = JAXBContext.newInstance(Museum.class);
+Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+
+jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+jaxbMarshaller.marshal(simpleMuseum, new File("simple.xml"));
+jaxbMarshaller.marshal(simpleMuseum, System.out);
+```
+
+The code is self explained and shows how a JAXB Marshaller can be used to generate an XML from a Java object. If the JAXB_FORMATTED_PROPERTY is set to true, this indicates JAXB to generate an XML with a proper indentation. The marshal method uses an object and an output file where to store the generated XML as parameters.
+The generated XML would be:
+
+```xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<MUSEUM children_allowed="false">
+    <MUSEUM_NAME>Simple Museum</MUSEUM_NAME>
+    <CITY>Oviedo, Spain</CITY>
+</MUSEUM>
+```
+
+## Exercicis
+### Exercici 6
+Implementa i completa el `Museum.java` class and the `SimpleMuseumJAXB.java` class com indica la teoria per a produir aquest mateix fitxer `XML`.
+
+## How to store a list of museums
+
+We now know how to generate an `XML` from a `Java Object`, now we are going to show how to work with `Lists of Objects`.
+
+```java
+Museum simpleMuseum = new Museum();
+simpleMuseum.setName("Simple Museum");
+simpleMuseum.setCity("Oviedo, Spain");
+
+Museum anotherSimpleMuseum = new Museum();
+anotherSimpleMuseum.setName("Another Simple Museum");
+anotherSimpleMuseum.setCity("Gijon, Spain");
+
+Museums listOfMuseums = new Museums();
+listOfMuseums.add(simpleMuseum);
+listOfMuseums.add(anotherSimpleMuseum);
+
+JAXBContext jaxbContext = JAXBContext.newInstance(Museums.class);
+Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+
+jaxbMarshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, true);
+jaxbMarshaller.marshal(listOfMuseums, new File("simple.xml"));
+jaxbMarshaller.marshal(listOfMuseums, System.out);
+```
+
+It is important to notice that `JAXB` is not able to manage directly `Lists` as root element, so we need to create a new class with the list that we want to store in order to indicate `JAXB` what kind of `XML` structure it has to generate. In this example this class is called `Museums` and contains a `List of Museum`:
+
+```java
+@XmlRootElement(name="MUSEUMS")
+public class Museums {
+  List<Museum> museums;
+
+  @XmlElement(name="MUSEUM")
+  public void setMuseums(List<Museum> museums) {
+    this.museums = museums;
+  }
+
+  public void add(Museum museum) {
+    if (this.museums == null) {
+      this.museums = new ArrayList<Museum>();
+    }
+    this.museums.add(museum);
+  }
+  ...
+}
+```
+
+The generated XML would be:
+
+```xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<MUSEUMS>
+  <MUSEUM>
+    <MUSEUM_NAME>Simple Museum</MUSEUM_NAME>
+    <CITY>Oviedo, Spain</CITY>
+  </MUSEUM>
+  <MUSEUM>
+    <MUSEUM_NAME>Another Simple Museum</MUSEUM_NAME>
+    <CITY>Gijon, Spain</CITY>
+  </MUSEUM>
+</MUSEUMS>
+```
+
+## Exercici 7
+Implement the `Museums.java` class and the `ListMarshall.java` class as above to produce the same `XML` file.
+
+## How to store complex Java types as children nodes using an adapter:
+
+Until now, we just generated `XML` that contained elements of the type `String`, so we are going to see what actions are needed in order to allow `JAXB` to store other types that are not configured per default. In `Java 8`, one of the new features is the new `Date API`; this `API` offers many new possibilities and enhances the old one. One of the new classes coming with this `API` is the `java.time.LocalDate`. `JAXB` does not know how to manage this class, so we have to create an adapter in order to explain `JAXB` how to marshal and unmarshal it:
+
+```java
+public class LocalDateAdapter extends XmlAdapter<String, LocalDate> {
+  public LocalDate unmarshal(String sDate) throws Exception {
+    return LocalDate.parse(sDate);
+  }
+
+  public String marshal(LocalDate date) throws Exception {
+    return date.toString();
+  }
+}
+```
+
+We just implement the marshal and unmarshal methods of the interface `XmlAdapter` with the proper types and results and afterwards, we indicate `JAXB` where to use it:
+
+```java
+@XmlJavaTypeAdapter(LocalDateAdapter.class)
+@XmlElement(name = "FROM")
+public void setFrom(LocalDate from) {
+  this.from = from;
+}
+```
+
+Assuming that `this.from` is `LocalDate` type.
+The `XML` result would be:
+
+```xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<MUSEUM children_allowed="false">
+    <MUSEUM_NAME>Simple Museum</MUSEUM_NAME>
+    <CITY>Oviedo, Spain</CITY>
+    <PERMANENT_EXHIBITION>
+        <NAME>one exhibition</NAME>
+        <FROM>2014-01-01</FROM>
+    </PERMANENT_EXHIBITION>
+</MUSEUM>
+```
+
+Summarizing, we know how to generate `XML` from `Java Objects`, we know also how to use lists within these `Java Objects` and also as root element of the `XML`, we saw how to adapt complex types in order that `JAXB` can work with them and we also made as well.
+
+The example bellow contains all the features explained in this article: A List of `Museums` containing names, cities, permanent and special exhibitions with dates (using java 8 `LocalDate`) and list of artists in each exhibition is stored in an `XML` file.
+
+## Exercici 8
+Implement and complete the `LocalDateAdapter.java`, `Exhibition.java`, `Museum.java` and `AdaptedNestedMarshall.java` class as above to produce the same `XML` file.
+
+## Exercici 9
+Implement `MuseumJAXBComplete.java`  and all classes as necessary  to produce the same xml file as below.
+
+```xml
+<MUSEUMS>
+    <MUSEUM>
+        <MUSEUM_NAME>Prado Museum</MUSEUM_NAME>
+        <CITY>Madrid</CITY>
+        <PERMANENT_EXHIBITION>
+            <NAME>Permanent Exhibition - Prado Museum</NAME>
+            <ARTIST>Velazquez</ARTIST>
+            <ARTIST>Goya</ARTIST>
+            <ARTIST>Zurbaran</ARTIST>
+            <ARTIST>Tiziano</ARTIST>
+            <FROM>1500-01-01</FROM>
+            <TO>2000-12-31</TO>
+        </PERMANENT_EXHIBITION>
+        <SPECIAL_EXHIBITION>
+            <NAME>Game of Bowls (1908), by Henri Matisse</NAME>
+            <ARTIST>Mattise</ARTIST>
+            <FROM>1908-01-01</FROM>
+            <TO>1908-12-31</TO>
+        </SPECIAL_EXHIBITION>
+    </MUSEUM>
+    <MUSEUM>
+        <MUSEUM_NAME>Reina Sofia Museum</MUSEUM_NAME>
+        <CITY>Madrid</CITY>
+        <PERMANENT_EXHIBITION>
+            <NAME>Permanent Exhibition - Reina Sofia Museum</NAME>
+            <ARTIST>Picasso</ARTIST>
+            <ARTIST>Dali</ARTIST>
+            <ARTIST>Miro</ARTIST>
+            <FROM>1900-01-01</FROM>
+            <TO>2014-12-31</TO>
+        </PERMANENT_EXHIBITION>
+    </MUSEUM>
+</MUSEUMS>
+```
+
+## JAXB unmarshalling <a name="jaxb-marshalling"></a>
+
+We are going to see how to do the complementary operation: unmarshal `XML` files into `Java Objects` and what should be taken into consideration while doing this operation.
+
+For this purpose we are going to use the same example about museums. We are going to unmarshall an xml containing information about a list of museums with its main exhibitions and artists exposed.
+
+The code shown bellow unmarshalls a given xml file into java objects. The classes of these objects should contain a set of attributes and annotations:
+
+```xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<MUSEUMS>
+ <MUSEUM children_allowed="false">
+   <MUSEUM_NAME>Reina Sofia Museum</MUSEUM_NAME>
+   <CITY>Madrid</CITY>
+   <PERMANENT_EXHIBITION>
+      <NAME>Permanent Exhibition - Reina Sofia Museum</NAME>
+      <ARTIST>Picasso</ARTIST>
+      <ARTIST>Dali</ARTIST>
+      <ARTIST>Miro</ARTIST>
+      <FROM>1900-01-01</FROM>
+      <TO>2014-12-31</TO>
+   </PERMANENT_EXHIBITION>
+ </MUSEUM>
+ <MUSEUM>
+   <MUSEUM_NAME>Louvre Museum</MUSEUM_NAME>
+   <CITY>Paris</CITY>
+   <PERMANENT_EXHIBITION>
+      <NAME>Permanent Exhibition - Louvre Museum</NAME>
+      <ARTIST>Leonardo da Vinci</ARTIST>
+      <ARTIST>Caravaggio</ARTIST>
+      <ARTIST>Delacroix</ARTIST>
+   </PERMANENT_EXHIBITION>
+ </MUSEUM>
+</MUSEUMS>
+```
+
+
+and the Java main program:
+
+```java
+File file = new File("museums.xml");
+JAXBContext jaxbContext = JAXBContext.newInstance(Museums.class);
+Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+Museums museums = (Museums) jaxbUnmarshaller.unmarshal(file);
+System.out.println(museums);
+```
+
+The output produced would be something like:
+
+```console
+Name: Prado Museum
+City: Madrid
+Permanent Exhibition - Prado Museum
+Game of Bowls (1908), by Henri Matisse
+
+Name: Reina Sofia Museum
+City: Madrid
+ATTENTION! Children are not allowed in this museum
+Permanent Exhibition - Reina Sofia Museum
+
+Name: British Museum
+City: London
+Permanent Exhibition - British Museum
+
+Name: MOMA
+City: New York
+Permanent Exhibition - MOMA
+
+Name: Louvre Museum
+City: Paris
+Permanent Exhibition - Louvre Museum
+```
+
+But this depends in the current `Java` code handling the `Museums` class.
+
+The method createUnmarshaller of the class JAXBContext creates an instance of the type Unmarshaller that allows us to proceed with our tasks. If the class Museums and its members are properly configured using the right JAXB annotations and field members, everything should work fine.
+
+The `Museums` class contains a `List` of `Museum` items:
+
+```java
+@XmlRootElement(name="MUSEUMS")
+public class Museums {
+    List museums;
+    /**
+     * element that is going to be marshaled in the xml
+     */
+    @XmlElement(name="MUSEUM")
+    public void setMuseums( List museums ) {
+        this.museums = museums;
+    }
+   ...
+}
+```
+
+And the `Museum` class contains fields that can be XML elements like the name or the city or XML attributes like the children allowance. These fields can be of any JAXB supported type:
+
+```java
+@XmlType( propOrder = { "name", "city", "permanent", "special" } )
+@XmlRootElement( name = "MUSEUM" )
+public class Museum {
+    String name;
+
+    @XmlElement(name = "MUSEUM_NAME")
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    Boolean childrenAllowed;
+
+    @XmlAttribute(name = "children_allowed")
+    public void setChildrenAllowed(boolean childrenAllowed) {
+        this.childrenAllowed = childrenAllowed;
+    }
+
+    Exhibition special;
+
+    @XmlElement( name = "SPECIAL_EXHIBITION" )
+    public void setSpecial(Exhibition special) {
+        this.special = special;
+    }
+...
+}
+```
+
+In case we want to use a field of a non supported type we have to implement ourselves an Adapter that indicates `JAXB` how to manage this kind of objects. This adapter extends the XmlAdapter class and implements its marshal and unmarshal methods:
+
+```java
+public class LocalDateAdapter extends XmlAdapter {
+    public LocalDate unmarshal(String sDate) throws Exception {
+        return LocalDate.parse(sDate);
+    }
+
+    public String marshal(LocalDate date) throws Exception {
+        return date.toString();
+    }
+}
+```
+
+This adapter is used in the following way:
+
+```java
+@XmlJavaTypeAdapter(LocalDateAdapter.class)
+@XmlElement(name = "FROM")
+public void setFrom(LocalDate from)  {
+    this.from = from;
+}
+```
+
+## Main annotations used
+
+We are going to see some important points related to the configuration of the used classes and the annotations used to configure JAXB:
+
+* ***`@XmlRootElement`***: This annotation binds an XML node with a class or an enum. In our example we bind, using the @XmlRootElement, the XML element <MUSEUMS>…</MUSEUMS> with the class Museums by annotating this class with `@XmlRootElement(name = "MUSEUMS")`.
+
+* ***`@XmlElement`***: Maps XML node into a non static field of a class. In our example, among others, we map the element `<MUSEUM_NAME>Prado Museum</MUSEUM_NAME>` with the field name of the class Museum using the annotation `@XmlElement(name = "MUSEUM_NAME")` in the `setName()` method.
+
+* ***`@XmlAttribute`***: This annotation maps an XML attribute with a non static field of a class. We bind the childrenAllowed field of the Museum class with the xml attribute `<MUSEUM children_allowed="false">` using the following code:
+
+```java
+@XmlAttribute( name = "children_allowed" )
+public void setChildrenAllowed(boolean childrenAllowed) {
+    this.childrenAllowed = childrenAllowed;
+}
+```
+
+And this is how we can unmarshal an `XML` file into `Java Objects`.
+
+`JAXB` offers several ways to marshal and unmarshal collections. In our example, we just created a `Museums` class that contains a `List` of `Museum` items, so `JAXB` can manage directly this class by simply using the annotations explained above. It is also possible to achieve something similar by using the annotations `@XmlElementWrapper` or `@XmlList`, but under my point of view, these ones are more complicated, offer less options and ties you in several ways in your class modelling.
+
+## Exercici 10
+Implement and complete the `JAXBJavaToXML.java` class and all other classes were necessary to produce the same `XML` file as below.
+
+```xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<continent xmlns:ns2="org.xeill.elpuig.jaxb.Continent">
+    <continentName>Europe</continentName>
+    <continentPopulation>7.42452E8</continentPopulation>
+    <stateList>
+        <state>
+            <stateName>Scotland</stateName>
+            <statePopulation>5295000</statePopulation>
+        </state>
+        <state>
+            <stateName>Catalonia</stateName>
+            <statePopulation>7512982</statePopulation>
+        </state>
+    </stateList>
+</continent>
+```
+
+## Exercici 11
+Implement and complete the `JAXBXMLToJava.java` class and all other classes were necessary to produce the same result due to unmarshalling the `XML` file produced in the last exercise.
+
+```console
+Continent Name: Europe
+Continent Population: 7.42452E8
+State:1 Scotland
+State:2 Catalonia
+```
+
+## Exercici 12
+Implement `JAXBCountryToXML.java` class and all other classes were necessary to produce the same `XML` file as below.
+
+```xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Country importance="1">
+<Country_Name>Spain</Country_Name>
+<Country_Capital>Madrid</Country_Capital>
+<Country_Foundation_Date>1469-10-19</Country_Foundation_Date>
+<Country_Continent>Europe</Country_Continent>
+<Country_Population>45000000</Country_Population>
+</Country>
+```
+
 ## Enllaços d'interés
+* https://en.wikipedia.org/wiki/Document_Object_Model
 * https://ca.wikipedia.org/wiki/Simple_API_for_XML
-* https://www.tutorialspoint.com/java_xml/java_sax_parser.htm
+* https://en.wikipedia.org/wiki/Jakarta_XML_Binding
 * https://www.vogella.com/tutorials/JavaXML/article.html
 * http://cafeconleche.org/books/xmljava/chapters/index.html
+* https://www.tutorialspoint.com/java_xml/java_dom_parse_document.htm
+* https://www.tutorialspoint.com/java_xml/java_sax_parser.htm
+* https://www.javacodegeeks.com/2014/12/jaxb-tutorial-xml-binding.html
+* [XML Binding explained](https://www.youtube.com/watch?v=4J_ytgQ96Kg)
+* [Generating JAXB classes in Eclipse from XSD](https://www.youtube.com/watch?v=zgblFjA-5Ks)
+* [Marshalling and unmarshalling data](https://www.youtube.com/watch?v=AVVbuVn0N98)
