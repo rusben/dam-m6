@@ -16,13 +16,11 @@
   * [DOM Parser - Modify XML Document](#example-modify-xml-document-dom)
   * [Using methods to DOM parsing](#example-using-methods-to-dom-parsing)
 * [Exercicis DOM](#exercicis-dom)
-
 * [La llibrería SAX](#llibreria-sax)
 * [Examples SAX](#examples-sax)
   * [Parse XML Document using SAX Parser](#example-parsing-document-sax)
   * [Open and loop XML using SAX Parser](#example-open-loop-document-sax)
 * [Exercicis SAX](#exercicis-sax)
-
 * [La llibrería JAXB](#llibreria-jaxb)
 * [JAXB marshalling](#jaxb-marshalling)
 * [JAXB unmarshalling](#jaxb-unmarshalling)
@@ -1657,11 +1655,11 @@ public void setFrom(LocalDate from)  {
 
 We are going to see some important points related to the configuration of the used classes and the annotations used to configure JAXB:
 
-* ***`@XmlRootElement`***: This annotation binds an XML node with a class or an enum. In our example we bind, using the @XmlRootElement, the XML element <MUSEUMS>…</MUSEUMS> with the class Museums by annotating this class with `@XmlRootElement(name = "MUSEUMS")`.
+* ***@XmlRootElement***: This annotation binds an XML node with a class or an enum. In our example we bind, using the @XmlRootElement, the XML element <MUSEUMS>…</MUSEUMS> with the class Museums by annotating this class with `@XmlRootElement(name = "MUSEUMS")`.
 
-* ***`@XmlElement`***: Maps XML node into a non static field of a class. In our example, among others, we map the element `<MUSEUM_NAME>Prado Museum</MUSEUM_NAME>` with the field name of the class Museum using the annotation `@XmlElement(name = "MUSEUM_NAME")` in the `setName()` method.
+* ***@XmlElement***: Maps XML node into a non static field of a class. In our example, among others, we map the element `<MUSEUM_NAME>Prado Museum</MUSEUM_NAME>` with the field name of the class Museum using the annotation `@XmlElement(name = "MUSEUM_NAME")` in the `setName()` method.
 
-* ***`@XmlAttribute`***: This annotation maps an XML attribute with a non static field of a class. We bind the childrenAllowed field of the Museum class with the xml attribute `<MUSEUM children_allowed="false">` using the following code:
+* ***@XmlAttribute***: This annotation maps an XML attribute with a non static field of a class. We bind the childrenAllowed field of the Museum class with the xml attribute `<MUSEUM children_allowed="false">` using the following code:
 
 ```java
 @XmlAttribute( name = "children_allowed" )
