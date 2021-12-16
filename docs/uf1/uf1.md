@@ -6,3 +6,4 @@
 ##### Extra
 [Crawling vs. Scraping](crawling-vs-scraping.md)
 [Introducción a Selenium WebDriver](introduction-selenium-webdriver.md)
+[Práctica Web Scraping](practica-web-scraping.md)
