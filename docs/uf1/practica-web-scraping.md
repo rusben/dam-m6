@@ -6,7 +6,7 @@ Aplicar los conocimientos adquiridos durante el transcurso de la `UF`, en concre
 * Lectura y escritura de ficheros `XML`.
 * WebScraping mediante `Selenium WebDriver`
 
-## Desarrollo de la pràctica
+## Desarrollo de la práctica
 Cada estudiante debe seleccionar una web de la que extraer datos de forma automatizada. Mediante el uso de `Selenium WebDriver` y las clases y funciones auxiliares que se necesiten, se debe extraer la máxima información "cruda" posible, sin datos de formato.
 
 * Generación de uno o varios documentos `CSV` con la información extraída. La generación del documento `CSV` debe realizarse con la librería `OpenCSV`.
@@ -14,7 +14,8 @@ Cada estudiante debe seleccionar una web de la que extraer datos de forma automa
 
 ## Creación de clases del modelo de datos
 La información extraída de la web debe integrarse en un modelo de datos. Las clases del modelo de datos son específicas para cada desarrollo, un modelo de daos más generalista permitirá que sea más adaptable a posibles futuros cambios.
-Se debe incluir un diagrama `UML` con las clases que forman el modelo de datos.
+
+Se debe incluir un diagrama `UML` con las clases que forman el modelo de datos en un fichero llamado `DIAGRAM.png`.
 
 ## Librerías
 En clase hemos generado documentos `CSV` escribiendo directamente el texto plano en el fichero `CSV`. Este procedimiento puede no resultar satisfactorio si los elementos que estamos guardando contienen carácteres como `,`. Para ello utilizaremos librerías que nos gestionen la lectura y escritura dentro del fichero `CSV`, existen diferentes librerías, en concreto usaremos `OpenCSV`.
