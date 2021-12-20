@@ -4,6 +4,6 @@
 * [UF1NF3 - Processament de fitxers XML (15 hores)](uf1nf3.md)
 
 ##### Extra
-[Crawling vs. Scraping](crawling-vs-scraping.md)
-[Introducción a Selenium WebDriver](introduction-selenium-webdriver.md)
-[Práctica Web Scraping](practica-web-scraping.md)
+* [Crawling vs. Scraping](crawling-vs-scraping.md)
+* [Introducción a Selenium WebDriver](introduction-selenium-webdriver.md)
+* [Práctica Web Scraping](practica-web-scraping.md)
