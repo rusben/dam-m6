@@ -1,1 +1,1 @@
-* [Instal·lació de postgresql](uf1/installacio-postgresql.md)
+* [Instal·lació de postgresql](installacio-postgresql.md)
