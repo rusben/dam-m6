@@ -60,9 +60,9 @@ El primer pas per treballar amb una BD és la connexió. Per a poder-nos connect
 
 4. Tancar la connexió. Sens dubte, és l'operació més senzilla de les vistes fins ara. Simplement cal cridar el mètode `close()` de la connexió que volem tancar.
 
-```java
-conn.close();
-```
+	```java
+	conn.close();
+	```
 
 	Si no tanquem la connexió ho farà el garbage collector quan destrueixi l'objecte connexió.
 	En tot cas, en aplicacions client és molt important tancar les connexions quan ja no les volem utilitzar; així aconseguim que el servidor alliberi recursos i que els pugui dedicar a un altre client.
