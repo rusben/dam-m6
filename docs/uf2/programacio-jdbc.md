@@ -28,7 +28,7 @@ El primer pas per treballar amb una BD és la connexió. Per a poder-nos connect
 	Class.forName( "org.postgresql.Driver" );
 	```
 
-Aquest nom identifica la classe `Driver` del package `org.postgresql` (recordem que és la classe que implementa la interfície `java.sql.Driver`). Si volem utilitzar un altre driver haurem de fer una mica d'investigació per esbrinar el nom del `package` i el nom de la classe que implementa la interfície `java.sql.Driver`.
+	Aquest nom identifica la classe `Driver` del package `org.postgresql` (recordem que és la classe que implementa la interfície `java.sql.Driver`). Si volem utilitzar un altre driver haurem de fer una mica d'investigació per esbrinar el nom del `package` i el nom de la classe que implementa la interfície `java.sql.Driver`.
 
 Carregar una classe a partir del seu nom pot fallar si el classloader (objecte responsable de carregar les classes necessàries per a l'execució d'un programa) no és capaç de trobar cap classe amb aquest nom. Per tant, ens hem d'assegurar que el `CLASSPATH` apunti al fitxer (normalment `.jar`) que conté el driver. En cas de no trobar-la, es genera una excepció de tipus `ClassNotFoundException`.
 
