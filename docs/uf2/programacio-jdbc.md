@@ -24,9 +24,9 @@ El primer pas per treballar amb una BD és la connexió. Per a poder-nos connect
 
 2. Carregar el driver adequat. La manera tradicional de carregar un driver és forçant la càrrega del driver a partir del seu nom, utilitzant el mètode `forName()` de la classe `Class`. Per exemple, per carregar el driver del `PostgreSQL` faríem el següent:
 
-```java
-Class.forName( "org.postgresql.Driver" );
-```
+	```java
+	Class.forName( "org.postgresql.Driver" );
+	```
 
 Aquest nom identifica la classe `Driver` del package `org.postgresql` (recordem que és la classe que implementa la interfície `java.sql.Driver`). Si volem utilitzar un altre driver haurem de fer una mica d'investigació per esbrinar el nom del `package` i el nom de la classe que implementa la interfície `java.sql.Driver`.
 
