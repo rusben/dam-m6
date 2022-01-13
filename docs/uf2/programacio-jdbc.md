@@ -334,8 +334,9 @@ Per tant, la classe `ResultSet` ens oferirà mètodes per poder fer un recorregu
 * Podem consultar el valor de les columnes a partir del nom corresponent o a partir d'un enter que representa la posició de la columna dins de la taula (començant per 1).
 * Disposem de mètodes diferents per a cada tipus de dades de les columnes que es vol consultar.
 
-|-----------------|-----------------|
+
 | Tipus estàndard SQL |	Mètode getTipus |
+|-----------------|-----------------|
 | CHAR | getString |
 | VARCHAR | getString |
 | SMALLINT | getShort |
