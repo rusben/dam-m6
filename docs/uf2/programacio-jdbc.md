@@ -28,11 +28,11 @@ El primer pas per treballar amb una BD és la connexió. Per a poder-nos connect
 Class.forName( "org.postgresql.Driver" );
 ```
 
-	Aquest nom identifica la classe `Driver` del package `org.postgresql` (recordem que és la classe que implementa la interfície `java.sql.Driver`). Si volem utilitzar un altre driver haurem de fer una mica d'investigació per esbrinar el nom del `package` i el nom de la classe que implementa la interfície `java.sql.Driver`.
+Aquest nom identifica la classe `Driver` del package `org.postgresql` (recordem que és la classe que implementa la interfície `java.sql.Driver`). Si volem utilitzar un altre driver haurem de fer una mica d'investigació per esbrinar el nom del `package` i el nom de la classe que implementa la interfície `java.sql.Driver`.
 
-	Carregar una classe a partir del seu nom pot fallar si el classloader (objecte responsable de carregar les classes necessàries per a l'execució d'un programa) no és capaç de trobar cap classe amb aquest nom. Per tant, ens hem d'assegurar que el `CLASSPATH` apunti al fitxer (normalment `.jar`) que conté el driver. En cas de no trobar-la, es genera una excepció de tipus `ClassNotFoundException`.
+Carregar una classe a partir del seu nom pot fallar si el classloader (objecte responsable de carregar les classes necessàries per a l'execució d'un programa) no és capaç de trobar cap classe amb aquest nom. Per tant, ens hem d'assegurar que el `CLASSPATH` apunti al fitxer (normalment `.jar`) que conté el driver. En cas de no trobar-la, es genera una excepció de tipus `ClassNotFoundException`.
 
-	En la versió `JDBC 4.0` es proposa delegar la responsabilitat de carregar el driver al `DriverManager`, que serà l'encarregat de buscar el driver en els directoris o fitxers jar definits al `CLASSPATH` quan siguin necessaris.
+En la versió `JDBC 4.0` es proposa delegar la responsabilitat de carregar el driver al `DriverManager`, que serà l'encarregat de buscar el driver en els directoris o fitxers jar definits al `CLASSPATH` quan siguin necessaris.
 
 3. Obrir la connexió. Tot i que el concepte d'obrir connexió sigui simple, amaga una certa complexitat quan hem d'indicar la BD que volem obrir.
 
@@ -41,22 +41,22 @@ String dbURL="jdbc:postgresql://localhost/bdMail";
 Connection conn = DriverManager.getConnection( dbURL,"usuari","contrasenya");
 ```
 
-	L'encarregat d'obrir una connexió amb una BD és el `DriverManager`, per mitjà del mètode `getConnection()` i requereix tres paràmetres:
+L'encarregat d'obrir una connexió amb una BD és el `DriverManager`, per mitjà del mètode `getConnection()` i requereix tres paràmetres:
 
 
-	a. El primer és l'anomenat url i identifica la BD a la qual ens volem connectar. És una cadena formada per tres parts: la primera sempre és `jdbc` i la resta, variables.
+a. El primer és l'anomenat url i identifica la BD a la qual ens volem connectar. És una cadena formada per tres parts: la primera sempre és `jdbc` i la resta, variables.
 
 `jdbc:<subprotocol>:<subname>`
 
-	El subprotocol és el nom del driver que utilitzarem per a connectar-nos. Un altre cop, cal fer una mica d'investigació.
+El subprotocol és el nom del driver que utilitzarem per a connectar-nos. Un altre cop, cal fer una mica d'investigació.
 
-	El subname serveix per a identificar la BD pròpiament. El seu format depèn del driver que emprem i, per tant, no té un format estàndard. Aquest és un tercer punt d'investigació.
+El subname serveix per a identificar la BD pròpiament. El seu format depèn del driver que emprem i, per tant, no té un format estàndard. Aquest és un tercer punt d'investigació.
 
-	En els casos més explícits, identifica el servidor (on hi ha l'SGBD), el port on escolta l'SGBD i el nom de la BD. Si no indiquem servidor s'entén que és el mateix ordinador (localhost) i, si tampoc no ho fem amb el port, s'entén que és el port per defecte de l'SGBD.
+En els casos més explícits, identifica el servidor (on hi ha l'SGBD), el port on escolta l'SGBD i el nom de la BD. Si no indiquem servidor s'entén que és el mateix ordinador (localhost) i, si tampoc no ho fem amb el port, s'entén que és el port per defecte de l'SGBD.
 
-	En l'exemple anterior ens estaríem connectant a una BD PostgreSQL que hi ha en el mateix ordinador, escoltant el port per defecte i que s'anomena bdMail.
+En l'exemple anterior ens estaríem connectant a una BD PostgreSQL que hi ha en el mateix ordinador, escoltant el port per defecte i que s'anomena bdMail.
 
-	b. El segon i tercer paràmetres corresponen al nom d'usuari de la BD i a la contrasenya corresponent. Cal assegurar-nos que ens connectem amb un usuari que tingui suficients privilegis per a executar les sentències SQL que vinguin a continuació.
+b. El segon i tercer paràmetres corresponen al nom d'usuari de la BD i a la contrasenya corresponent. Cal assegurar-nos que ens connectem amb un usuari que tingui suficients privilegis per a executar les sentències SQL que vinguin a continuació.
 
 4. Tancar la connexió. Sens dubte, és l'operació més senzilla de les vistes fins ara. Simplement cal cridar el mètode `close()` de la connexió que volem tancar.
 
