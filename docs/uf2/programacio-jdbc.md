@@ -1,6 +1,10 @@
 # Programació amb JDBC
 * [Introducció a JDBC](#intro-jdbc)
 * [Connexió a una base de dades](#connexio-base-dades)
+* [Consultes i modificacions bàsiques](#consultes-modificacions-basiques)
+* [Execució de sentències SQL: la classe Statement](#execucio-sentencies-statement)
+* [Tractament de resultats: la classe ResultSet](#tractament-resultats-resultset)
+* [Consultes i modificacions avançades](#consultes-modificacions-avancades)
 
 ## Introducció a JDBC <a name="intro-jdbc"></a>
 Suposem que volem desenvolupar una aplicació en `Java` i que ja hem decidit quin `SGBD` i driver utilitzarem.
@@ -208,3 +212,209 @@ public class ex002CreacioBDMail
 }
 
 ```
+
+## Consultes i modificacions bàsiques <a name="consultes-modificacions-basiques"></a>
+
+Entrem ara a la part més interessant de la programació en JDBC o, com a mínim, la que ens ocuparà més temps.
+Veurem la manera de fer consultes a la BD i de modificar-ne les dades per mitjà de sentències SQL.
+Començarem enviant consultes o modificacions mitjançant la classe Statement i tractant els resultats de les consultes amb la classe ResultSet.
+Amb això tindrem una idea bàsica de comunicació entre aplicació i BD.
+
+![JDBC](../images/jdbc1.png)
+
+## Execució de sentències SQL: la classe Statement <a name="execucio-sentencies-statement"></a>
+
+El procés per a fer una consulta o una modificació arrenca d'allà mateix. Hem de crear un objecte de tipus `Statement` que contindrà la sentència SQL de consulta (`SELECT`), modificació de dades (`INSERT`, `UPDATE` i `DELETE`) o modificació de l'estructura de BD (`CREATE TABLE`, `DROP TABLE`, `ALTER TABLE`, etc.).
+
+La responsabilitat de crear nous objectes de tipus `Statement` és de la connexió a la qual volem enviar la sentència SQL.
+
+```java
+Statement st = conn.createStatement();
+```
+
+Un cop tenim l'objecte de tipus `Statement` creat, utilitzarem el mètode `executeQuery()` per a les consultes i `executeUpdate()` per a les modificacions. En el cas de les consultes, el mètode `executeQuery()` retorna un objecte `ResultSet` que ens permetrà accedir a les dades consultades. Ho tractarem en el subapartat següent.
+
+```java
+ResultSet rs;
+rs = st.executeQuery("SELECT * FROM Usuaris");
+```
+
+En el cas de modificacions, el mètode executeUpdate retorna un enter.
+Aquest enter indica el nombre de files afectades. En el cas de modificar l'estructura de la BD (execució de sentències SQL de tipus `DDL`), retorna un 0.
+
+```java
+st.executeUpdate("DROP TABLE Usuaris");
+st.executeUpdate("CREATE TABLE Usuaris ("+"nom_usuari VARCHAR(10) PRIMARY KEY, "+
+"contrasenya VARCHAR(10), nom VARCHAR(20), "+ "cognoms VARCHAR(40))");
+
+st.executeUpdate("INSERT INTO Usuaris "+"(nom_usuari,contrasenya,nom,cognoms) VALUES "+"('mPalau','1234','Manel','Palau Roca')");
+```
+
+Les tres sentències SQL d'aquest exemple sempre fan el mateix. En alguns casos això ja és suficient (per exemple, quan creem la taula `Usuaris`), però normalment no serà així.
+
+La darrera sentència de l'exemple afegeix l'usuari Manel a la taula Usuaris, però és un cas poc habitual. Normalment, quan s'afegeixen files en una BD, els valors de les columnes els introdueix l'usuari de l'aplicació en temps d'execució o es carreguen des d'un fitxer. En tot cas, són valors que no es coneixen en temps de compilació.
+
+Per aconseguir executar una sentència SQL amb valors canviants concatenarem les parts fixes de la sentència amb les parts canviants (que se substituiran per variables). El codi queda una mica il·legible, però amb el temps ens hi acabarem acostumant.
+
+```java
+String nomUsuari,contrasenya,nom,cognoms;
+...
+st.executeUpdate("INSERT INTO Usuaris "+ "(nom_usuari,contrasenya,nom,cognoms) VALUES "+"('"+nomUsuari+"','"+contrasenya+"','"+nom+"','"+cognoms+"')");
+```
+
+Podem aplicar aquest mateix patró per fer consultes SQL utilitzant la clàusula `WHERE`. Per exemple, ens pot interessar consultar els missatges del fòrum que l'usuari de l'aplicació seleccioni. Fixem-nos que la part canviant correspon a una columna numèrica i que, per tant, no està envoltada de cometes simples!
+
+```java
+int codiForum;
+...
+ResultSet rs = st.executeQuery("SELECT * "+"FROM Missatges WHERE codi_forum="+codiForum);
+```
+
+En el cas de columnes de tipus data hem de fer una atenció especial a la interpretació que en farà l'SGBD. Depenent de la configuració local, l'SGBD pot interpretar les dates en format `dd/mm/yyyy` o `mm/dd/yyyy`. Per a assegurar la interpretació correcta usarem funcions de l'SGBD per a fer la conversió. En el cas de PostgreSQL, per exemple, utilitzarem la funció `to_timestamp()`.
+
+```java
+//La interpretació dependrà de la config. de l'SGBD
+st.executeUpdate("INSERT INTO Lectures "+ "VALUES(1,'mPalau','3/4/2010 16:19')");
+//assegurem que l'SGBD ho interpreti correctament!
+st.executeUpdate("INSERT INTO Lectures "+ "VALUES(1,'cMas', to_timestamp('3/4/2010 16:19'"+ ",'DD/MM/YYYY HH24:MI'))");
+```
+
+Per definir sentències SQL dinàmiques amb paràmetres de tipus temps haurem de tenir en compte el format de les dates en `Java`. Per exemple, el mètode `toString()` de la classe `Timestamp` retorna un data en format `YYYY-MM-DD hh:mm::ss`. El codi necessari seria:
+
+```java
+st.executeUpdate("INSERT INTO Lectures "+ "VALUES("+codiMissatge+",'"+nomUsuari+"',"+ "to_timestamp('"+ts+"','YYYY-MM-DD HH24:MI'))");
+```
+
+## Exemple 3
+```java
+import java.sql.*;
+import java.io.*;
+
+public class ex003InsertStatementVars
+{
+	public static void main( String[] args ) throws Exception
+	{
+		//Per llegir de teclat
+		InputStreamReader stdin =new InputStreamReader(System.in);
+		BufferedReader cons =new BufferedReader(stdin);
+
+		Class.forName( "org.postgresql.Driver" );
+		String dbURL="jdbc:postgresql:bdMail";
+		Connection conn = DriverManager.getConnection( dbURL, "usuari","1234");
+
+		//Creem un objecte Statement
+		Statement st = conn.createStatement();
+
+		//Llegim les dades
+		String nomUsuari=cons.readLine();
+		String contrasenya=cons.readLine();
+		String nom=cons.readLine();
+		String cognoms=cons.readLine();
+
+		st.executeUpdate("INSERT INTO USUARIS (nom_usuari,contrasenya,nom,cognoms) "+
+			"VALUES('"+nomUsuari+"','"+contrasenya+"','"+nom+"','"+cognoms+"')");
+
+		//tanquem Statement i Connection.
+		st.close();
+		conn.close();
+	}
+}
+
+```
+
+## Tractament de resultats: la classe ResultSet  <a name="tractament-resultats-resultset"></a>
+Com ja hem dit, la classe ResultSet ens permetrà accedir als resultats de les consultes. Aquest accés, però, no és lliure i ens haurem de cenyir a les restriccions següents:
+
+* Simultàniament només podem accedir a una sola fila. Per poder accedira totes les files haurem de fer un recorregut i, en cada iteració, accedir a una de les files.
+* El recorregut, per defecte, només pot anar endavant.
+* Durant el recorregut, d'entrada, només podem consultar les files. No les podem modificar.
+
+Per tant, la classe `ResultSet` ens oferirà mètodes per poder fer un recorregut per les files de la consulta i, en cada iteració, consultar el valor de les columnes de la fila actual tenint en compte que:
+
+* Podem consultar el valor de les columnes a partir del nom corresponent o a partir d'un enter que representa la posició de la columna dins de la taula (començant per 1).
+* Disposem de mètodes diferents per a cada tipus de dades de les columnes que es vol consultar.
+
+|-----------------|-----------------|
+| Tipus estàndard SQL |	Mètode getTipus |
+| CHAR | getString |
+| VARCHAR | getString |
+| SMALLINT | getShort |
+| INTEGER | getInt |
+| FLOAT | getFloat / getDouble |
+| DOUBLE | getDouble |
+| DECIMAL | getBigDecimal |
+| DATE | getDate |
+| TIME | getTime |
+| MONEY | getDouble |
+
+En l'exemple següent consultem les dades dels usuaris (emmagatzemades a la taula Usuaris de la nostra BD de referència), fem un recorregut i, en cada iteració, mostrem la columna número 1 (que correspon a la columna nom_usuari) i els cognoms.
+
+```java
+rs = st.executeQuery("SELECT * FROM Usuaris");
+while (rs.next()) {
+               System.out.print(rs.getString(1)+"--"+rs.getString("cognoms"));
+}
+rs.close();
+```
+
+S'intueix que darrere d'un `ResultSet` hi ha un cursor que apunta a la fila actual. Quan es crea un objecte `ResultSet`, el cursor apunta a la posició anterior a la primera fila i, cada cop que executem el mètode next, el cursor avança.
+Quan el mètode next no troba cap més fila, retorna fals i el recorregut finalitza. Però, en realitat, les coses no són ben bé així.
+
+Cada cop que `JDBC` demana dades a la BD (el què es coneix com a fetch) no rep una fila i prou. Per qüestions de rendiment, la BD envia unes quantes files. A més, el nombre de files que s'envien depèn de cada driver.
+
+En el cas del driver `JDBC` de `PostgreSQL`, per defecte, s'envien totes les dades de la consulta de cop. Mentre no són tractades, aquestes dades es guarden a l'equip client en una memòria cau. Hem de vigilar que el volum de dades de la consulta no sigui massa gran, sinó podem exhaurir la memòria de l'equip client!
+
+En relació amb aquest tema, hem de tenir cura de fer consultes de les dades que ens siguin estrictament necessàries. En el cas anterior tenim un exemple clar de consulta ineficient. No té cap sentit fer una consulta de totes les columnes de la taula Usuaris si després només en mostrem dues. El mateix codi refinat seria:
+
+```java
+rs = st.executeQuery("SELECT nom_usuari,cognoms "+"FROM Usuaris");
+while (rs.next()) {
+              System.out.print(rs.getString(1)+"--"+ rs.getString("cognoms"));
+}
+rs.close();
+```
+
+## Exemple 4
+```java
+import java.sql.*;
+import java.io.*;
+
+public class ex004ConsultaStatement
+{
+	public static void main( String[] args ) throws Exception
+	{
+		Class.forName( "org.postgresql.Driver" );
+		String dbURL="jdbc:postgresql:bdMail";
+		Connection conn = DriverManager.getConnection( dbURL, "usuari","1234");
+
+		//Creem un objecte Statement
+		Statement st = conn.createStatement();
+
+		//Consultem les dades de tots els usuaris
+		ResultSet rs = st.executeQuery("SELECT * FROM Usuaris");
+		while (rs.next()) System.out.println(rs.getString(1)+"--"+rs.getString("cognoms"));
+
+		//tanquem el ResultSet, Statement i Connection.
+		rs.close();
+		st.close();
+		conn.close();
+	}
+}
+```
+
+## Consultes i modificacions avançades <a name="consultes-modificacions-avancades"></a>
+
+Tal com hem vist, en la versió JDBC 2.0 es va introduir la possibilitat de fer recorreguts millorats (endavant, endarrere i desplaçaments directes a qualsevol posició) i també la possibilitat de modificar les files mitjançant mètodes (sense utilitzar l'SQL).
+Per a permetre aquestes noves funcionalitats, cal crear l'objecte Statement amb el mateix mètode createStatement, però amb dos paràmetres que determinen el tipus de moviment i el tipus d'operacions permeses (vegeu la taula següent).
+
+Segons el ***tipus de moviment***:
+
+* ***TYPE_FORWARD_ONLY***: és el tipus de moviment assignat per defecte. Només permet fer un sol recorregut cap endavant.
+* ***TYPE_SCROLL_INSENSITIVE***: permet llibertat de moviments (endavant, endarrere) tants cops com calgui.
+* ***TYPE_SCROLL_SENSITIVE***: com l'anterior, però reflecteix els canvis que es van produint en la BD mentre està actiu. S'entén que aquests canvis normalment són generats per l'execució simultània d'altres aplicacions en altres equips.
+
+Segons els ***tipus d'operacions*** admeses:
+* ***CONCUR_READ_ONLY***: només permet fer consultes i és l'opció per defecte.
+* ***CONCUR_UPDATABLE***: permet fer consultes i modificacions.
+
+En total tenim sis combinacions possibles, però en la pràctica no tots els drivers les permeten. Per exemple, el driver de `PostgreSQL` (i no és l'únic) no possibilita el tipus de moviment sensitiu i, per tant, ofereix quatre combinacions. Per a solucionar aquesta limitació es recomana repetir les consultes cada cop que es  vulguin tenir les dades actualitzades.
