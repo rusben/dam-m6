@@ -419,3 +419,258 @@ Segons els ***tipus d'operacions*** admeses:
 * ***CONCUR_UPDATABLE***: permet fer consultes i modificacions.
 
 En total tenim sis combinacions possibles, però en la pràctica no tots els drivers les permeten. Per exemple, el driver de `PostgreSQL` (i no és l'únic) no possibilita el tipus de moviment sensitiu i, per tant, ofereix quatre combinacions. Per a solucionar aquesta limitació es recomana repetir les consultes cada cop que es  vulguin tenir les dades actualitzades.
+
+## ResultSet amb llibertat de moviments
+
+Per a treballar amb ResultSet lliures de moviments cal triar l'opció `TYPE_SCROLL_INSENSITIVE` o `TYPE_SCROLL_SENSITIVE` (si el driver ho permet). Així, podrem fer recorreguts:
+
+* ***Endavant***: amb el mètode `beforeFirst()` i `next()`. El primer no és necessari, ja que és la posició inicial del ResultSet i el segon ja l'hem vist.
+* ***Endarrere***: amb els mètodes `afterLast()` i `previous()`.
+
+L'exemple següent fa un recorregut endarrere per les files de la taula `Usuaris`. En cada iteració mostra la clau primària i els cognoms dels usuaris.
+
+```java
+st=conn.createStatement(
+ResultSet.TYPE_SCROLL_INSENSITIVE,
+ResultSet.CONCUR_READ_ONLY);
+
+rs = st.executeQuery("SELECT * FROM Usuaris");
+rs.afterLast();
+while (rs.previous())
+System.out.println(rs.getString(1)+"--"+ rs.getString("cognoms"));
+rs.close();
+```
+
+## Exemple 5
+```java
+import java.sql.*;
+import java.io.*;
+
+public class ex005ConsultaStatementScrollReves
+{
+	public static void main( String[] args ) throws Exception
+	{
+		Class.forName( "org.postgresql.Driver" );
+		String dbURL="jdbc:postgresql:bdMail";
+		Connection conn = DriverManager.getConnection( dbURL, "usuari","1234");
+
+		//Creem un objecte Statement
+		Statement st = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet.CONCUR_READ_ONLY);
+
+		//Consultem les dades de tots els usuaris del revés!
+		ResultSet rs = st.executeQuery("SELECT * FROM Usuaris");
+		rs.afterLast();
+		while (rs.previous()) System.out.println(rs.getString(1)+"--"+rs.getString("cognoms"));
+
+		//tanquem el ResultSet, Statement i Connection.
+		rs.close();
+		st.close();
+		conn.close();
+	}
+}
+
+```
+
+
+
+* ***Aleatoris***: amb els mètodes first(), last(), absolute(int n) i relative(int n). Permeten moure'ns a la primera, a la darrera, a una posició concreta o a una de relativa, respectivament. Si intentem moure'ns fora de rang genera un error.
+
+A continuació tenim un exemple per a veure com s'utilitzen els diversos mètodes de posicionament.
+
+```java
+st=conn.createStatement(
+ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+rs = st.executeQuery("SELECT * FROM Usuaris");
+rs.last();
+...
+rs.relative(-1);
+...
+rs.first();
+...
+rs.absolute(3);
+```
+
+## Exemple 6
+```java
+import java.sql.*;
+import java.io.*;
+
+public class ex006ConsultaStatementScrollAleatori
+{
+	public static void main( String[] args ) throws Exception
+	{
+		Class.forName( "org.postgresql.Driver" );
+		String dbURL="jdbc:postgresql:bdMail";
+		Connection conn = DriverManager.getConnection( dbURL, "usuari","1234");
+
+		//Creem un objecte Statement
+		Statement st = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet.CONCUR_READ_ONLY);
+
+		//Consultem les dades de tots els usuaris del revés!
+		ResultSet rs = st.executeQuery("SELECT * FROM Usuaris");
+		rs.last();
+		System.out.println(rs.getString(1)+"--"+rs.getString("cognoms"));
+		rs.relative(-1);
+		System.out.println(rs.getString(1)+"--"+rs.getString("cognoms"));
+		rs.first();
+		System.out.println(rs.getString(1)+"--"+rs.getString("cognoms"));
+		rs.absolute(3);
+		System.out.println(rs.getStrixºng(1)+"--"+rs.getString("cognoms"));
+		try
+		{
+			//el posicionament relatiu fora de rang genera un error!!!
+			rs.relative(-300);
+			System.out.println(rs.getString(1)+"--"+rs.getString("cognoms"));
+		 } catch (SQLException e) {}
+		try
+		{
+			//el posicionament absolut fora de rang genera un error!!!
+			rs.absolute(300);
+			System.out.println(rs.getString(1)+"--"+rs.getString("cognoms"));
+		 } catch (SQLException e) {}
+
+		//tanquem el ResultSet, Statement i Connection.
+		rs.close();
+		st.close();
+		conn.close();
+	}
+}
+```
+
+## Modificacions per mitjà d'un ResultSet
+
+Amb l'opció `CONCUR_UPDATABLE` tenim la possibilitat d'actualitzar la BD a mesura que anem recorrent el `ResultSet`, i sense utilitzar sentències `SQL`.
+
+En la pràctica, però, poden aparèixer problemes. El motiu de fons és que l'`SGBD` ha de poder propagar automàticament la modificació des de les dades llegides (i que es troben en el `ResultSet`) cap a les taules que emmagatzemen aquestes dades. Aquesta propagació automàtica dels canvis, en general, només es pot fer quan la sentència `SELECT` que està lligada al `ResultSet` està basada en una única taula i, entre les dades llegides, s'inclou la clau primària.
+
+Un cop superada aquesta problemàtica, els canvis possibles són modificació, inserció i esborraments.
+
+Modificació
+Un cop situats a la fila que volem modificar, disposem de mètodes per a canviar el valor de les columnes. Són els mètodes updateXXX i són antagònics als getXXX.
+Després de modificar les columnes d'una fila cal enviar els canvis a la BD amb el mètode updateRow(). Si ens movem de fila sense executar aquest mètode, els canvis normalment es perdran (depèn del driver que utilitzem). Per contra, si volem descartar els canvis fets, tenim el mètode cancelRowUpdates().
+
+L'exemple següent afegeix un "." al final de cada nom d'usuari.
+
+
+```java
+st = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY,
+ResultSet.CONCUR_UPDATABLE);
+rs = st.executeQuery("SELECT * FROM Usuaris");
+while (rs.next())
+{
+rs.updateString("nom",rs.getString("nom")+".");
+rs.updateRow();
+}
+rs.close();
+```
+
+## Exemple 7
+```java
+import java.sql.*;
+import java.io.*;
+
+public class ex007ResultSetUpdatable
+{
+	public static void main( String[] args ) throws Exception
+	{
+		Class.forName( "org.postgresql.Driver" );
+		String dbURL="jdbc:postgresql:bdMail";
+		Connection conn = DriverManager.getConnection( dbURL, "usuari","1234");
+
+		//Creem un objecte Statement
+		Statement st = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY,
+			ResultSet.CONCUR_UPDATABLE);
+
+		//Consultem les dades de tots els usuaris per afegir un . al final del nom
+		ResultSet rs = st.executeQuery("SELECT * FROM Usuaris");
+		while (rs.next())
+		{
+			rs.updateString("nom",rs.getString("nom")+".");
+			rs.updateRow();
+		}
+		rs.close();
+
+		//Consultem les dades de tots els usuaris
+		rs = st.executeQuery("SELECT * FROM Usuaris");
+		while (rs.next())
+			System.out.println(rs.getString("nom"));
+		rs.close();
+
+		//tanquem Statement i Connection.
+		st.close();
+		conn.close();
+	}
+}
+```
+
+
+
+També podem fer modificacions sobre un ResultSet amb llibertat de moviments.
+
+L'exemple següent se situa a la darrera fila i obté el número de fila amb getRow(). Així sabem el nombre total de files consultades. A continuació se situa sobre una posició aleatòria entre la primera i la darrera fila i afegeix un "." al final del nom.
+
+st = conn.createStatement(
+ResultSet.TYPE_SCROLL_INSENSITIVE,
+ResultSet.CONCUR_UPDATABLE);
+rs = st.executeQuery("SELECT * FROM Usuaris");
+rs.last();
+int nFiles=rs.getRow();
+int pos=(int)(Math.random()*nFiles)+1;
+rs.absolute(pos);
+rs.updateString("nom",rs.getString("nom")+".");
+rs.updateRow();
+
+## Exemple 8
+```java
+import java.sql.*;
+import java.io.*;
+
+public class ex008ResultSetUpdatableAleatori
+{
+	public static void main( String[] args ) throws Exception
+	{
+		Class.forName( "org.postgresql.Driver" );
+		String dbURL="jdbc:postgresql:bdMail";
+		Connection conn = DriverManager.getConnection( dbURL, "usuari","1234");
+
+		//Creem un objecte Statement
+		Statement st = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+			ResultSet.CONCUR_UPDATABLE);
+
+		//Afegir un . al final del nom d'un usuari aleatori
+ 		ResultSet rs = st.executeQuery("SELECT * FROM Usuaris");
+		rs.last();
+		int nFiles=rs.getRow();
+		int pos=(int)(Math.random()*nFiles)+1;
+		rs.absolute(pos);
+		rs.updateString("nom",rs.getString("nom")+".");
+		rs.updateRow();
+
+		//Eliminem el darrer registre
+		rs.last();
+		rs.deleteRow();
+
+		//Inserim un usuari nou
+		rs.moveToInsertRow();
+		rs.updateString("nom_usuari","root");
+		rs.updateString("contrasenya","super");
+		rs.updateString("nom","administrador");
+		rs.updateString("cognoms","");
+		rs.insertRow();
+
+
+
+		//Consultem les dades de tots els usuaris
+		rs = st.executeQuery("SELECT * FROM Usuaris");
+		while (rs.next())
+			System.out.println(rs.getString("nom"));
+		rs.close();
+
+		//tanquem Statement i Connection.
+		st.close();
+		conn.close();
+	}
+}
+```
