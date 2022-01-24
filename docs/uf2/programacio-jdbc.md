@@ -334,7 +334,6 @@ Per tant, la classe `ResultSet` ens oferirà mètodes per poder fer un recorregu
 * Podem consultar el valor de les columnes a partir del nom corresponent o a partir d'un enter que representa la posició de la columna dins de la taula (començant per 1).
 * Disposem de mètodes diferents per a cada tipus de dades de les columnes que es vol consultar.
 
-
 | Tipus estàndard SQL |	Mètode getTipus |
 |-----------------|-----------------|
 | CHAR | getString |
@@ -348,7 +347,7 @@ Per tant, la classe `ResultSet` ens oferirà mètodes per poder fer un recorregu
 | TIME | getTime |
 | MONEY | getDouble |
 
-En l'exemple següent consultem les dades dels usuaris (emmagatzemades a la taula Usuaris de la nostra BD de referència), fem un recorregut i, en cada iteració, mostrem la columna número 1 (que correspon a la columna nom_usuari) i els cognoms.
+En l'exemple següent consultem les dades dels usuaris (emmagatzemades a la taula `Usuaris` de la nostra `BD` de referència), fem un recorregut i, en cada iteració, mostrem la columna número 1 (que correspon a la columna `nom_usuari`) i els cognoms.
 
 ```java
 rs = st.executeQuery("SELECT * FROM Usuaris");
@@ -361,7 +360,7 @@ rs.close();
 S'intueix que darrere d'un `ResultSet` hi ha un cursor que apunta a la fila actual. Quan es crea un objecte `ResultSet`, el cursor apunta a la posició anterior a la primera fila i, cada cop que executem el mètode next, el cursor avança.
 Quan el mètode next no troba cap més fila, retorna fals i el recorregut finalitza. Però, en realitat, les coses no són ben bé així.
 
-Cada cop que `JDBC` demana dades a la BD (el què es coneix com a fetch) no rep una fila i prou. Per qüestions de rendiment, la BD envia unes quantes files. A més, el nombre de files que s'envien depèn de cada driver.
+Cada cop que `JDBC` demana dades a la BD (el què es coneix com a `fetch`) no rep una fila i prou. Per qüestions de rendiment, la BD envia unes quantes files. A més, el nombre de files que s'envien depèn de cada driver.
 
 En el cas del driver `JDBC` de `PostgreSQL`, per defecte, s'envien totes les dades de la consulta de cop. Mentre no són tractades, aquestes dades es guarden a l'equip client en una memòria cau. Hem de vigilar que el volum de dades de la consulta no sigui massa gran, sinó podem exhaurir la memòria de l'equip client!
 
@@ -405,8 +404,8 @@ public class ex004ConsultaStatement
 
 ## Consultes i modificacions avançades <a name="consultes-modificacions-avancades"></a>
 
-Tal com hem vist, en la versió JDBC 2.0 es va introduir la possibilitat de fer recorreguts millorats (endavant, endarrere i desplaçaments directes a qualsevol posició) i també la possibilitat de modificar les files mitjançant mètodes (sense utilitzar l'SQL).
-Per a permetre aquestes noves funcionalitats, cal crear l'objecte Statement amb el mateix mètode createStatement, però amb dos paràmetres que determinen el tipus de moviment i el tipus d'operacions permeses (vegeu la taula següent).
+Tal com hem vist, en la versió `JDBC 2.0` es va introduir la possibilitat de fer recorreguts millorats (endavant, endarrere i desplaçaments directes a qualsevol posició) i també la possibilitat de modificar les files mitjançant mètodes (sense utilitzar l'SQL).
+Per a permetre aquestes noves funcionalitats, cal crear l'objecte `Statement` amb el mateix mètode `createStatement`, però amb dos paràmetres que determinen el tipus de moviment i el tipus d'operacions permeses (vegeu la taula següent).
 
 Segons el ***tipus de moviment***:
 
@@ -422,7 +421,7 @@ En total tenim sis combinacions possibles, però en la pràctica no tots els dri
 
 ## ResultSet amb llibertat de moviments
 
-Per a treballar amb ResultSet lliures de moviments cal triar l'opció `TYPE_SCROLL_INSENSITIVE` o `TYPE_SCROLL_SENSITIVE` (si el driver ho permet). Així, podrem fer recorreguts:
+Per a treballar amb `ResultSet` lliures de moviments cal triar l'opció `TYPE_SCROLL_INSENSITIVE` o `TYPE_SCROLL_SENSITIVE` (si el driver ho permet). Així, podrem fer recorreguts:
 
 * ***Endavant***: amb el mètode `beforeFirst()` i `next()`. El primer no és necessari, ja que és la posició inicial del ResultSet i el segon ja l'hem vist.
 * ***Endarrere***: amb els mètodes `afterLast()` i `previous()`.
@@ -472,9 +471,7 @@ public class ex005ConsultaStatementScrollReves
 
 ```
 
-
-
-* ***Aleatoris***: amb els mètodes first(), last(), absolute(int n) i relative(int n). Permeten moure'ns a la primera, a la darrera, a una posició concreta o a una de relativa, respectivament. Si intentem moure'ns fora de rang genera un error.
+* ***Aleatoris***: amb els mètodes `first()`, `last()`, `absolute(int n)` i `relative(int n)`. Permeten moure'ns a la primera, a la darrera, a una posició concreta o a una de relativa, respectivament. Si intentem moure'ns fora de rang genera un error.
 
 A continuació tenim un exemple per a veure com s'utilitzen els diversos mètodes de posicionament.
 
@@ -547,9 +544,9 @@ En la pràctica, però, poden aparèixer problemes. El motiu de fons és que l'`
 
 Un cop superada aquesta problemàtica, els canvis possibles són modificació, inserció i esborraments.
 
-Modificació
-Un cop situats a la fila que volem modificar, disposem de mètodes per a canviar el valor de les columnes. Són els mètodes updateXXX i són antagònics als getXXX.
-Després de modificar les columnes d'una fila cal enviar els canvis a la BD amb el mètode updateRow(). Si ens movem de fila sense executar aquest mètode, els canvis normalment es perdran (depèn del driver que utilitzem). Per contra, si volem descartar els canvis fets, tenim el mètode cancelRowUpdates().
+### Modificació
+Un cop situats a la fila que volem modificar, disposem de mètodes per a canviar el valor de les columnes. Són els mètodes `updateXXX` i són antagònics als `getXXX`.
+Després de modificar les columnes d'una fila cal enviar els canvis a la BD amb el mètode `updateRow()`. Si ens movem de fila sense executar aquest mètode, els canvis normalment es perdran (depèn del driver que utilitzem). Per contra, si volem descartar els canvis fets, tenim el mètode `cancelRowUpdates()`.
 
 L'exemple següent afegeix un "." al final de cada nom d'usuari.
 
@@ -607,10 +604,11 @@ public class ex007ResultSetUpdatable
 
 
 
-També podem fer modificacions sobre un ResultSet amb llibertat de moviments.
+També podem fer modificacions sobre un `ResultSet` amb llibertat de moviments.
 
-L'exemple següent se situa a la darrera fila i obté el número de fila amb getRow(). Així sabem el nombre total de files consultades. A continuació se situa sobre una posició aleatòria entre la primera i la darrera fila i afegeix un "." al final del nom.
+L'exemple següent se situa a la darrera fila i obté el número de fila amb `getRow()`. Així sabem el nombre total de files consultades. A continuació se situa sobre una posició aleatòria entre la primera i la darrera fila i afegeix un `.` al final del nom.
 
+```java
 st = conn.createStatement(
 ResultSet.TYPE_SCROLL_INSENSITIVE,
 ResultSet.CONCUR_UPDATABLE);
@@ -621,6 +619,7 @@ int pos=(int)(Math.random()*nFiles)+1;
 rs.absolute(pos);
 rs.updateString("nom",rs.getString("nom")+".");
 rs.updateRow();
+```
 
 ## Exemple 8
 ```java
@@ -660,8 +659,6 @@ public class ex008ResultSetUpdatableAleatori
 		rs.updateString("cognoms","");
 		rs.insertRow();
 
-
-
 		//Consultem les dades de tots els usuaris
 		rs = st.executeQuery("SELECT * FROM Usuaris");
 		while (rs.next())
@@ -669,6 +666,511 @@ public class ex008ResultSetUpdatableAleatori
 		rs.close();
 
 		//tanquem Statement i Connection.
+		st.close();
+		conn.close();
+	}
+}
+```
+
+### Inserció
+Per poder inserir de primer ens hem de moure a una nova fila mitjançant el mètode `moveToInsertRow()`. A partir d'aquí, assignem el valor de les diverses columnes amb `updateXXX` i, per afegir cridem `insertRow()`.
+
+```java
+rs.moveToInsertRow();
+rs.updateString("nom_usuari","root");
+rs.updateString("contrasenya","super");
+rs.updateString("nom","administrador");
+rs.updateString("cognoms","");
+rs.insertRow();
+```
+
+### Esborraments
+Els esborraments són el cas més simple. Només cal situar-se a la fila adequada i cridar el mètode `deleteRow()`.
+
+L'exemple següent se situa a la darrera fila i l'esborra.
+
+```java
+rs.last();
+rs.deleteRow();
+```
+
+# Consultes i modificacions amb PreparedStatement
+
+Amaga
+
+La classe PreparedStatement és una alternativa a la classe Statement. Permeten fer el mateix, consultes i modificacions a la BD, però canvia la manera de fer-ho.
+
+D'entrada, un PreparedStatement no es pot reutilitzar per a executar una segona sentència SQL. Cada sentència anirà lligada a un objecte PreparedStatement diferent.
+
+Les sentències SQL que definim en un PreparedStatement normalment són incompletes, en el sentit que poden tenir alguns valors indefinits. Utilitzarem un ? per a cada valor indefinit de la sentència.
+
+```java
+SELECT * FROM USUARIS WHERE nom_usuari=?
+```
+
+Una sentència incompleta no es pot executar, però sí que es pot enviar a l'SGBD i fer alguns dels passos necessaris per a dur-la a terme (ho podem entendre com una precompilació). L'objectiu és clar. Tan bon punt sapiguem els valors que completen la sentència, aquesta es podrà executar ràpidament, ja que una part de la feina ja s'haurà fet amb antelació.
+
+L'escenari ideal dels `PreparedStatement` és la situació en què una sentència s'ha d'executar repetidament, canviant només alguns valors; per exemple, si volem afegir unes quantes files a una taula. S'entén que el rendiment és superior que si utilitzem `Statement` independents, ja que l'`SGBD` analitza un sol cop la sentència `SQL` i l'executa tantes vegades com calgui.
+
+Si una sentència només s'ha d'executar un sol cop, utilitzar `PreparedStatements` deixa de ser tan beneficiós i el rendiment s'equipara a la utilització de `Statement` independents.
+
+Per a assignar els valors d'un `PreparedStatement` tenim un seguit de mètodes `setXXX`, de funcionament idèntic a l'`updateXXX` dels ResultSets modificables amb l'excepció que els paràmetres només es poden indexar a partir de la posició i no amb el nom de la columna.
+
+Vegem com podem afegir uns quants fòrums a la BD de referència. Per a aquest exemple, suposem que tenim una classe `Forum` implementada amb els mètodes suficients. Fixem-nos, també, en el mètode clearParameters que esborra el valor dels paràmetres i ens prepara per a l'execució següent.
+
+```java
+Forum[] dades={ new Forum(3,"PostgreSQL"), new Forum(4,"ODBC"), new Forum(5,"Oracle") };
+sql="INSERT INTO FORUMS(codi_forum,nom) VALUES (?,?)";
+PreparedStatement pst = conn.prepareStatement(sql);
+for(Forum f:dades)
+{
+pst.clearParameters();
+pst.setInt(1,f.getCodiForum());
+pst.setString(2,f.getNom());
+pst.executeUpdate();
+}
+```
+
+## Exemple 9
+```java
+import java.sql.*;
+import java.io.*;
+
+class Forum
+{
+	int codiForum;
+	String nom;
+
+	public Forum()
+	{
+		codiForum=-1;
+		nom="";
+	}
+
+	public Forum(int codiForum, String nom)
+	{
+		this.codiForum=codiForum;
+		this.nom=nom;
+	}
+
+	public int getCodiForum() {return codiForum;}
+	public String getNom() {return nom;}
+}
+
+public class ex009PreparedStatementInsert
+{
+	public static void main( String[] args ) throws Exception
+	{
+		Class.forName( "org.postgresql.Driver" );
+		String dbURL="jdbc:postgresql:bdMail";
+		Connection conn = DriverManager.getConnection( dbURL, "usuari","1234");
+
+
+		//Afegim uns quants fòrums
+		Forum[] dades={new Forum(3,"PostgreSQL"),new Forum(4,"ODBC"),
+				new Forum(5,"Oracle"),new Forum(6,"MySQL")};
+
+		String sql="INSERT INTO FORUMS (codi_forum,nom) VALUES (?,?)";
+		PreparedStatement pst = conn.prepareStatement(sql);
+		for(Forum f:dades)
+		{
+			pst.clearParameters();
+			pst.setInt(1,f.getCodiForum());  //el primer ? correspon al codi del fòrum
+			pst.setString(2,f.getNom());	//el segon  ? correspon al nom del fòrum
+			pst.executeUpdate();
+		}
+
+		//Consultem les dades del fòrums
+		Statement st = conn.createStatement();
+		ResultSet rs = st.executeQuery("SELECT * FROM Forums");
+		while (rs.next())
+			System.out.println(rs.getInt("codi_forum")+"--"+rs.getString("nom"));
+		rs.close();
+
+		//tanquem Statement i Connection.
+		st.close();
+		conn.close();
+	}
+}
+
+```
+
+## Tractament de valors nuls
+
+En els exemples que hem vist no hem fet cap consideració especial per als valors nuls, i de tant en tant cal fer-ne. Totes les columnes que no tenen la restricció `NOT NULL` ocasionalment poden contenir un valor nul.
+
+Hi ha quatre situacions en què poden aparèixer complicacions degudes als valors nuls:
+
+* La lectura de valors nuls d'un `ResultSet`.
+* L'ús de valors nuls en sentències `SQL` dinàmiques.
+* L'ús de valors nuls en la clàusula `WHERE`.
+* La modificació d'un `ResultSet` amb valors nuls.
+
+## Lectura de valors nuls d'un ResultSet
+
+Cada cop que fem una consulta a la BD, la nostra aplicació ha de vigilar de no rebre valors nuls i protegir-se si s'escau.
+En la majoria de casos no cal usar cap mètode especial per a detectar si un valor és nul. Els mètodes getString, getBigDecimal, getBytes, getDate, getTime, getTimestamp, getAsciiStream, getCharacterStream, getUnicodeStream, getBinaryStream, getObject, getArray, getBlob, getClob i getRef retornen un objecte. Si el valor consultat en la BD és nul, l'objecte Java també ho serà.
+Cal posar una atenció especial en els mètodes que no retornen objectes. En cas de valor nul, els mètodes getByte, getShort, getInt, getLong, getFloat i getDouble retornen un 0. I el mètode getBoolean retorna fals. En aquests casos hem d'utilitzar un mètode addicional, wasNull() per a esbrinar si el 0 i el valor fals corresponen realment a un 0 i un fals, respectivament, o a un valor nul.
+
+
+El codi següent obté els missatges dels fòrums que inicien nous fils, és a dir, els que tenen el fil nul.
+
+```java
+rs=st.executeQuery("SELECT * FROM Missatges");
+while (rs.next())
+{
+int fil=rs.getInt("fil");
+if (rs.wasNull()) {
+System.out.println(rs.getInt("codi_forum")+"--"+rs.getString("titol"));
+}
+}
+rs.close();
+```
+
+## Exemple 10
+```java
+import java.sql.*;
+import java.io.*;
+
+public class ex010Nulls
+{
+	public static void main( String[] args ) throws Exception
+	{
+		Class.forName( "org.postgresql.Driver" );
+		String dbURL="jdbc:postgresql:bdMail";
+		Connection conn = DriverManager.getConnection( dbURL, "usuari","1234");
+		Statement st = conn.createStatement();
+
+		//busquem tots els missatges que comencen fils. Només és un exemple,
+		//per fer-ho més eficient podíem buscar SELECT * FROM Missatges WHERE fil IS NULL.
+		ResultSet rs=st.executeQuery("SELECT * FROM Missatges");
+		while (rs.next())
+		{
+			int fil=rs.getInt("fil");
+			if (rs.wasNull()) {
+				System.out.println(rs.getInt("codi_forum")+"--"+rs.getString("titol"));
+			}
+		}
+		rs.close();
+
+		//tanquem Statement i Connection.
+		st.close();
+		conn.close();
+	}
+}
+```
+
+## Ús de valors nuls en sentències SQL dinàmiques
+
+Per a afegir un missatge en un fòrum, podríem tenir un codi semblant a aquest:
+
+```java
+int codiForum, ordre, fil;
+
+String autor,titol,text;
+
+...
+
+st.executeUpdate("INSERT INTO Missatges "+"VALUES("+codiMissatge+","+codiForum+",'"+autor+"','"+titol+"','"+text+"',"+fil+")");
+```
+
+Aquest codi és correcte, però no permet tractar valors nuls. Per exemple:
+
+No permet obrir un fil nou. O, dit d'una altra manera, cap valor de la variable fil no es convertirà en un NULL en la BD. Aquest problema és comú a tots els tipus bàsics.
+
+No permet deixar el text nul. Fins i tot fent que el text valgués "NULL", aquest NULL quedaria tancat entre cometes simples i, per tant, la BD l'interpretaria com un text que conté literalment NULL.
+La solució al problema dels tipus bàsics passa o bé per treballar amb els seus objectes equivalents o bé per determinar un valor que representi el nul. Per exemple, el fil ha d'identificar un missatge i, per tant, serà un valor enter >0.
+
+Podríem reservar el –1 per identificar els valors nuls.
+Per solucionar el segon problema hauríem de treure les cometes simples de la part estàtica de la sentència SQL, i afegir-la quan l'objecte fos necessari.
+
+```java
+st.executeUpdate("INSERT INTO Missatges VALUES("+
+codiMissatge+","+codiForum+",'"+autor+"','"+ titol+"',"+
+(text==null?"NULL":"'"+text+"'")+","+ (fil==-1?"NULL":fil)+")");
+```
+
+## Exemple 11
+```java
+import java.sql.*;
+import java.io.*;
+
+public class ex011NullsStatement
+{
+	public static void main( String[] args ) throws Exception
+	{
+		//Per llegir de teclat
+		InputStreamReader stdin =new InputStreamReader(System.in);
+		BufferedReader cons =new BufferedReader(stdin);
+
+		//Connectem i creem un Statement
+		Class.forName( "org.postgresql.Driver" );
+		String dbURL="jdbc:postgresql:bdMail";
+		Connection conn = DriverManager.getConnection( dbURL, "usuari","1234");
+		Statement st = conn.createStatement();
+
+		//Llegim les dades
+		int codiMissatge=Integer.parseInt(cons.readLine());
+		int codiForum=Integer.parseInt(cons.readLine());
+		String autor=cons.readLine();
+		String titol=cons.readLine();
+		String text=cons.readLine();
+		if (text.equals("")) {System.out.println("textn ull"); text=null;}
+		int fil=Integer.parseInt(cons.readLine());
+
+		st.executeUpdate("INSERT INTO Missatges "+
+			"VALUES("+codiMissatge+","+codiForum+",'"+autor+"','"+
+			titol+"',"+(text==null?"NULL":"'"+text+"'")+","+
+			(fil==-1?"NULL":fil)+")");
+
+		//Mostrem missatges
+		ResultSet rs=st.executeQuery("SELECT * FROM Missatges");
+		while (rs.next())
+		{
+			System.out.println(rs.getInt("codi_forum")+"--"+rs.getString("titol"));
+		}
+		rs.close();
+
+
+		//tanquem Statement i Connection.
+		st.close();
+		conn.close();
+	}
+}
+
+```
+
+## Ús de valors nuls en la clàusula WHERE
+La sentència patró que es defineix en un `PreparedStatment` està oberta a la possibilitat de valors nuls, però només funcionarà si els nuls no estan en les condicions `WHERE` de la consulta SQL.
+Els nuls que apareixen en les condicions `WHERE` tenen una sintaxi diferent, `xxx IS NULL`, en comptes de `xxx=valor`. Aquest canvi de sintaxi impedeix tenir un PreparedStatement que sigui vàlid per a condicions amb valors nuls i valors no nuls.
+Per a la resta de casos, és a l'hora de definir els valors que haurem de tenir en compte els valors nuls. Quan els valors siguin objectes, podem continuar emprant el mètode `setXXX`, però en els tipus bàsics serà imprescindible la utilització del mètode `setNull`.
+
+```java
+...
+pst.clearParameters();
+pst.setInt(1,codiMissatge);
+pst.setInt(2,codiForum);
+pst.setString(3,autor);
+pst.setString(4,titol);
+pst.setString(5,text);
+if (fil==-1) pst.setNull(6,java.sql.Types.INTEGER);
+else pst.setInt(6,fil);
+pst.executeUpdate();
+```
+
+## Exemple 12
+```java
+import java.sql.*;
+import java.io.*;
+
+public class ex012NullsPreparedStatement
+{
+	public static void main( String[] args ) throws Exception
+	{
+		//Per llegir de teclat
+		InputStreamReader stdin =new InputStreamReader(System.in);
+		BufferedReader cons =new BufferedReader(stdin);
+
+		//Connectem i creem un Statement
+		Class.forName( "org.postgresql.Driver" );
+		String dbURL="jdbc:postgresql:bdMail";
+		Connection conn = DriverManager.getConnection( dbURL, "usuari","1234");
+		PreparedStatement pst = conn.prepareStatement("INSERT INTO Missatges VALUES(?,?,?,?,?,?)");
+
+		//Llegim les dades
+		int codiMissatge=Integer.parseInt(cons.readLine());
+		int codiForum=Integer.parseInt(cons.readLine());
+		String autor=cons.readLine();
+		String titol=cons.readLine();
+		String text=cons.readLine();
+		if (text.equals("")) {System.out.println("textn ull"); text=null;}
+		int fil=Integer.parseInt(cons.readLine());
+
+		//Provem d'afegir amb el text o el fil nul
+		pst.clearParameters();
+		pst.setInt(1,codiMissatge);
+		pst.setInt(2,codiForum);
+		pst.setString(3,autor);
+		pst.setString(4,titol);
+		if (text==null) pst.setNull(5,java.sql.Types.VARCHAR);
+		else pst.setString(5,text);
+		if (fil==-1) pst.setNull(6,java.sql.Types.INTEGER);
+		else pst.setInt(6,fil);
+		pst.executeUpdate();
+
+		//Mostrem missatges
+		Statement st=conn.createStatement();
+		ResultSet rs=st.executeQuery("SELECT * FROM Missatges");
+		while (rs.next())
+		{
+			System.out.println(rs.getInt("codi_forum")+"--"+rs.getString("titol"));
+		}
+		rs.close();
+
+
+		//tanquem Statement i Connection.
+		st.close();
+		conn.close();
+	}
+}
+```
+
+## Modificació d'un ResultSet amb valors nuls
+En aquest darrer cas torna a passar el mateix. Tenim un mètode especial per a assignar nuls, que serà imprescindible per als tipus bàsics, i opcional, per a la resta.
+
+```java
+rs.moveToInsertRow();
+rs.updateInt(1,codiMissatge);
+rs.updateInt(2,codiForum);
+rs.updateString(3,autor);
+rs.updateString(4,titol);
+rs.updateString(5,text);
+if (fil==-1) rs.updateNull(6);
+else rs.updateInt(6,fil);
+rs.insertRow();
+rs.close();
+```
+
+## Exemple 13
+```java
+import java.sql.*;
+import java.io.*;
+
+public class ex013NullsUpdatableResultSet
+{
+	public static void main( String[] args ) throws Exception
+	{
+		//Per llegir de teclat
+		InputStreamReader stdin =new InputStreamReader(System.in);
+		BufferedReader cons =new BufferedReader(stdin);
+
+		//Connectem i creem un Statement i ResultSet updatable
+		Class.forName( "org.postgresql.Driver" );
+		String dbURL="jdbc:postgresql:bdMail";
+		Connection conn = DriverManager.getConnection( dbURL, "usuari","1234");
+		Statement st = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY,
+			ResultSet.CONCUR_UPDATABLE);
+		ResultSet rs=st.executeQuery("SELECT * FROM Missatges");
+
+		//Llegim les dades
+		int codiMissatge=Integer.parseInt(cons.readLine());
+		int codiForum=Integer.parseInt(cons.readLine());
+		String autor=cons.readLine();
+		String titol=cons.readLine();
+		String text=cons.readLine();
+		if (text.equals("")) {System.out.println("textn ull"); text=null;}
+		int fil=Integer.parseInt(cons.readLine());
+
+		//Provem d'afegir amb el text o el fil nul
+		rs.moveToInsertRow();
+		rs.updateInt(1,codiMissatge);
+		rs.updateInt(2,codiForum);
+		rs.updateString(3,autor);
+		rs.updateString(4,titol);
+		rs.updateString(5,text);
+		if (fil==-1) rs.updateNull(6);
+		else rs.updateInt(6,fil);
+		rs.insertRow();
+		rs.close();
+
+		//Mostrem missatges
+		rs=st.executeQuery("SELECT * FROM Missatges");
+		while (rs.next())
+		{
+			System.out.println(rs.getInt("codi_forum")+"--"+rs.getString("titol"));
+		}
+		rs.close();
+
+
+		//tanquem Statement i Connection.
+		st.close();
+		conn.close();
+	}
+}
+```
+
+## Procediments emmagatzemats
+
+`JDBC` ofereix l'objecte `CallableStatement` per poder executar procediments emmagatzemats. La sintaxi utilitzada s'aparta de l'SQL i s'anomena escape syntax. A més a més, tindrem mètodes per a definir els paràmetres d'entrada i recollir els de sortida. La forma general d'una crida serà:
+
+```java
+{? = call nomProcedimentEmmagatzemat(?, ?, ...)}
+```
+
+en què els ? corresponen als paràmetres d'entrada, de sortida, i d'entrada i sortida.
+
+El següent és un exemple d'un procediment emmagatzemat que rep un paràmetre d'entrada (import) i retorna l'import amb IVA.
+
+```java
+CREATE FUNCTION ambIva(import FLOAT) RETURNS FLOAT AS $$
+BEGIN
+RETURN import * 1.21;
+END;
+$$ LANGUAGE plpgsql;
+```
+
+La creació del `CallableStatement` per a aquest procediment emmagatzemat seria:
+
+```java
+CallableStatement cst =conn.prepareCall("{?=call ambIva(?)}");
+```
+
+Els procediments emmagatzemats també es poden crear des de JDBC, mitjançant un Statement, però és una pràctica poc habitual. La diferència principal és que tota la sentència quedarà definida en una sola línia de text.
+
+```java
+st.executeUpdate("CREATE OR REPLACE FUNCTION "+"ambIva(import FLOAT) RETURNS FLOAT AS $$ "+"BEGIN RETURN import * 1.21; END; "+"$$ LANGUAGE plpgsql;");
+```
+
+*** Paràmetres d'entrada ***
+Per a passar paràmetres d'entrada utilitzarem mètodes setXXX, un cop creat el CallableStatement. El funcionament d'aquests mètodes és idèntic als mètodes setXXX dels ResultSet modificables.
+
+*** Paràmetres de sortida ***
+Els paràmetres de sortida s'han de registrar abans de fer la crida al procediment emmagatzemat. Durant el registre indiquem el tipus de paràmetre que rebrem.
+Després d'executar el procediment emmagatzemat es poden recollir els resultats amb els mètodes getXXX.
+
+```java
+CallableStatement cst = conn.prepareCall("{?=call ambIva(?)}");
+cst.registerOutParameter(1, java.sql.Types.REAL);
+cst.setFloat(2,10.0f);
+cst.execute();
+System.out.println(cst.getFloat(1));
+```
+
+## Exemple 14
+```java
+// $createlang plpgsql bdMail
+
+
+import java.sql.*;
+import java.io.*;
+
+public class ex14StoredProcedureResultSet
+{
+	public static void main( String[] args ) throws Exception
+	{
+		Class.forName( "org.postgresql.Driver" );
+		String dbURL="jdbc:postgresql:bdMail";
+		Connection conn = DriverManager.getConnection( dbURL, "usuari","1234");
+		conn.setAutoCommit(false);
+		Statement st = conn.createStatement();
+
+		//Creem un procediment emmagatzemat amb un paràmetre IN i un OUT
+		st.executeUpdate("CREATE OR REPLACE FUNCTION consulta(cf INT) RETURNS refcursor AS $$ "+
+			"DECLARE cur refcursor; BEGIN  OPEN cur FOR SELECT * FROM Missatges WHERE codiForum=cf; RETURN cur; END;$$ LANGUAGE plpgsql;");
+
+		//... i l'executem
+		CallableStatement cst = conn.prepareCall("{?=call consulta(?)}");
+		cst.registerOutParameter(1, java.sql.Types.OTHER);
+		cst.setInt(2,2);
+		cst.execute();
+		ResultSet rs=(ResultSet)cst.getObject(1);
+		while (rs.next())
+		{
+			System.out.println(rs.getInt("codiForum")+"--"+rs.getInt("ordre")+"--"+rs.getString("titol"));
+		}
+		//tanquem resultset, statements i connexió
+		rs.close();
+		cst.close();
 		st.close();
 		conn.close();
 	}
