@@ -1176,3 +1176,506 @@ public class ex14StoredProcedureResultSet
 	}
 }
 ```
+
+## Paràmetres d'entrada i sortida
+Per aconseguir paràmetres d'entrada i sortida farem una combinació dels dos anteriors. Utilitzarem el mètode `setXXX` per a donar el valor d'entrada i, abans d'executar el procediment emmagatzemat, també el registrarem. Un cop acabat, obtindrem els paràmetres de sortida amb `getXXX`.
+
+```java
+st.executeUpdate("CREATE OR REPLACE FUNCTION "+
+"ambIva2(INOUT import FLOAT) AS $$ "+
+"BEGIN import:= import*1.21; END; "+
+"$$ LANGUAGE plpgsql;");
+cst = conn.prepareCall("{call ambIva2(?)}");
+cst.registerOutParameter(1, java.sql.Types.REAL);
+cst.setFloat(1,10.0f);
+cst.execute();
+System.out.println(cst.getFloat(1));
+```
+
+## Exemple 15
+```java
+// $createlang plpgsql bdMail
+
+
+import java.sql.*;
+import java.io.*;
+
+public class ex015StoredProcedureIN_OUT
+{
+	public static void main( String[] args ) throws Exception
+	{
+		Class.forName( "org.postgresql.Driver" );
+		String dbURL="jdbc:postgresql:bdMail";
+		Connection conn = DriverManager.getConnection( dbURL, "usuari","1234");
+		Statement st = conn.createStatement();
+
+		//Creem un procediment emmagatzemat amb un paràmetre IN i un OUT
+		st.executeUpdate("CREATE OR REPLACE FUNCTION ambIva(import FLOAT) RETURNS FLOAT AS $$ "+
+			"BEGIN    RETURN import * 1.18; END;$$ LANGUAGE plpgsql;");
+
+		//... i l'executem
+		CallableStatement cst = conn.prepareCall("{?=call ambIva(?)}");
+		cst.registerOutParameter(1, java.sql.Types.REAL);
+		cst.setFloat(2,10.0f);
+		cst.execute();
+		System.out.println(cst.getFloat(1));
+
+		//tanquem resultset, statements i connexió
+		cst.close();
+		st.close();
+		conn.close();
+	}
+}
+```
+
+## Exemple 16
+``` java
+// $createlang plpgsql bdMail
+
+
+import java.sql.*;
+import java.io.*;
+
+public class ex016StoredProcedureINOUT
+{
+	public static void main( String[] args ) throws Exception
+	{
+		Class.forName( "org.postgresql.Driver" );
+		String dbURL="jdbc:postgresql:bdMail";
+		Connection conn = DriverManager.getConnection( dbURL, "usuari","1234");
+		Statement st = conn.createStatement();
+
+		//Creem un procediment emmagatzemat amb un paràmetre IN i un OUT
+		st.executeUpdate("CREATE OR REPLACE FUNCTION ambIva2(INOUT import FLOAT) AS $$ "+
+			"BEGIN    import:= import*1.18; END;$$ LANGUAGE plpgsql;");
+
+		//... i l'executem
+		CallableStatement cst = conn.prepareCall("{call ambIva2(?)}");
+		cst.registerOutParameter(1, java.sql.Types.REAL);
+		cst.setFloat(1,10.0f);
+		cst.execute();
+		System.out.println(cst.getFloat(1));
+
+		//tanquem resultset, statements i connexió
+		cst.close();
+		st.close();
+		conn.close();
+	}
+}
+```
+
+# Gestió d'errors
+
+Totes les aplicacions estan exposades a errors durant l'execució, però, si a més, estan connectades a una `BD`, les probabilitats augmenten.
+Podem trobar-ne la raó pel fet de cooperar amb un sistema complex (l'`SGBD`), al qual ens connectem per xarxa i que, simultàniament, dóna servei a altres aplicacions.
+Per si no fos prou, les sentències que enviem sovint són dinàmiques i, per tant, susceptibles d'errors només detectables en temps d'execució.
+
+`JDBC` exposa els errors mitjançant excepcions facilitant d'una manera considerable el desenvolupament d'aplicacions. Com és habitual en Java, es defineix una jerarquia d'excepcions que deriven d'`Exception`. Al capdamunt d'aquesta jerarquia hi ha la classe `SQLException`.
+
+Una gran part de les excepcions que genera `JDBC` són o deriven de `SQLException`, tot i que podrem explotar poc la jerarquia. Les excepcions que ens interessarà capturar són sobretot `SQLException` i, puntualment, alguna excepció derivada. Així doncs, rarament podrem tractar les excepcions a nivell de blocs `try-catch` i ho haurem de fer a partir de la informació que ens facilitaran els objectes `SQLException`.
+
+## Obtenció d'informació sobre una SQLException
+
+Els objectes `SQLException` exposen el tipus d'error generat mitjançant tres mètodes:
+
+* ***getMessage()***: retorna una cadena amb informació textual de l'error. És el mètode estàndard heretat de la classe Exception.
+* ***getSQLState()***: retorna una cadena de cinc caràcters amb un codi d'error definit a `XOPEN SQLState` o a `SQL:2003`. Haurem d'investigar quin estàndard segueix l'`SGBD` que utilitzem i els codis dels errors que ens interessa detectar.
+* ***getErrorCode()***: retorna un enter que correspon al codi d'error. El significat d'aquest enter dependrà de l'`SGBD` al qual estem connectats.
+
+```java
+int codiMissatge;
+String nomUsuari;
+...
+try {
+   st.executeUpdate("INSERT INTO Lectures "+
+   "VALUES("+codiMissatge+",'"+nomUsuari+"',"+
+   "to_timestamp('"+ts+"','YYYY-MM-DD HH24:MI'))");
+}
+catch (SQLException e) {
+   System.out.println("Missatge:"+e.getMessage());
+   System.out.println("SQLState:"+e.getSQLState());
+   System.out.println("ErrorCode:"+e.getErrorCode());
+}
+```
+
+En aquest exemple, la sentència `INSERT` pot generar tres tipus d'error. Si l'`SGBD` utilitzat és el `PostgreSQL`, els resultats que podríem obtenir són:
+
+1. La clau forana codi_missatge no identifica cap missatge.
+
+	```console
+	ERROR: insert or update on table "lectures" violates foreign key
+	constraint "lectures_missatges_fkey"
+	Detail: Key (codi_missatge)=(455) is not present in table "missatges".
+	SQLState:23503
+	ErrorCode:0
+	```
+
+2. La clau forana nom_usuari no identifica cap usuari.
+	```console
+	ERROR: insert or update on table "lectures" violates foreign key
+	constraint "lectures_usuaris_fkey"
+	Detail: Key (nom_usuari)=(sadf) is not present in table "usuaris".
+	SQLState:23503
+	ErrorCode:0
+	```
+
+3. Aquest usuari ja havia llegit el missatge: clau primària duplicada.
+
+	```console
+	ERROR: duplicate key value violates unique constraint "lectures_pkey"
+	SQLState:23505
+	ErrorCode:0
+	```
+
+Podem comprovar que el driver de `PostgreSQL` no retorna `ErrorCode`, només `SQLState`. Això no presenta cap problema, ja que des de l'estàndard `SQL:1992` es va proposar reportar els errors per mitjà de codis `SQLState`. Durant uns quants anys s'han mantingut les dues versions de codis, però la versió actual del driver `JDBC` de `PostgreSQL` ha prescindit de l'`ErrorCode`.
+
+## Exemple 17
+```java
+import java.sql.*;
+import java.io.*;
+
+public class ex017SQLExceptionInfo
+{
+	public static void main( String[] args ) throws Exception
+	{
+		//Per llegir de teclat
+		InputStreamReader stdin =new InputStreamReader(System.in);
+		BufferedReader cons =new BufferedReader(stdin);
+
+		Class.forName( "org.postgresql.Driver" );
+		String dbURL="jdbc:postgresql:bdMail";
+		Connection conn = DriverManager.getConnection( dbURL, "usuari","1234");
+		Statement st = conn.createStatement();
+
+		//llegim les dades
+		int codiMissatge=Integer.parseInt(cons.readLine());
+		String nomUsuari=cons.readLine();
+		Timestamp ts = new Timestamp(System.currentTimeMillis());
+
+		try
+		{
+			st.executeUpdate("INSERT INTO Lectures VALUES("+codiMissatge+",'"+nomUsuari+"',"+
+				"to_timestamp('"+ts+"','YYYY-MM-DD HH24:MI'))");
+		}
+		catch (SQLException e)
+		{
+			System.out.println("Missatge:"+e.getMessage());
+			System.out.println("SQLState:"+e.getSQLState());
+			System.out.println("ErrorCode:"+e.getErrorCode());
+			throw e;
+		}		
+
+		//tanquem el ResultSet, Statement i Connection.
+		st.close();
+		conn.close();
+	}
+
+}
+```
+
+## Exemple 18
+```java
+import java.sql.*;
+import java.io.*;
+
+public class ex018TractamentException
+{
+	//Definició de codis SQLState
+	private static final String FK_ERROR = "23503";
+	private static final String PK_ERROR = "23505";
+
+	//Definició dels noms de les contraints de claus foranes
+	private static final String FK_LECTURES_USUARIS   = "lectures_usuaris_fkey";
+	private static final String FK_LECTURES_MISSATGES = "lectures_missatges_fkey";
+
+
+	public static void main( String[] args ) throws Exception
+	{
+		Connection conn=null;
+		Statement st=null;
+
+		//Per llegir de teclat
+		InputStreamReader stdin =new InputStreamReader(System.in);
+		BufferedReader cons =new BufferedReader(stdin);
+
+		//Provem de connectar-nos a la base de dades i crear un statement
+		try
+		{
+			Class.forName( "org.postgresql.Driver" );
+			String dbURL="jdbc:postgresql:bdMail";
+			conn = DriverManager.getConnection( dbURL, "usuari","1234");
+			st = conn.createStatement();
+		}
+		catch (Exception e)
+		{
+			//tanquem el què calgui i rellancem l'error
+			if (st!=null) st.close();
+			if (conn!=null) conn.close();
+			throw e;
+		}
+
+		//Si tot és correcte, demanem dades i executem INSERT.
+		boolean correcte=false;
+		while (!correcte)
+		{
+			try
+			{
+				//llegim les dades
+				System.out.print("CodiMissatge:");
+				int codiMissatge=Integer.parseInt(cons.readLine());
+				System.out.print("NomUsuari:");
+				String nomUsuari=cons.readLine();
+				Timestamp ts = new Timestamp(System.currentTimeMillis());
+
+				st.executeUpdate("INSERT INTO Lectures VALUES("+codiMissatge+",'"+nomUsuari+
+					"',"+"to_timestamp('"+ts+"','YYYY-MM-DD HH24:MI'))");
+
+				correcte=true;
+			}
+			catch (SQLException e)
+			{
+				if (e.getSQLState().equals(FK_ERROR))
+					if (e.getMessage().indexOf(FK_LECTURES_MISSATGES)!=-1)
+						System.out.println("Error: el codi de Missatge no existeix");
+					else if (e.getMessage().indexOf(FK_LECTURES_USUARIS)!=-1)
+						 System.out.println("Error: el nom de l'usuari no existeix");
+					else System.out.println("Error inesperat:"+e.getMessage());
+				else if (e.getSQLState().equals(PK_ERROR))
+					System.out.println("Error: missatge ja llegit");
+				else System.out.println("Error inesperat:"+e.getMessage());
+			}
+			catch (Exception e)
+			{
+				System.out.println("Error llegint les dades");
+			}		
+		}
+
+		//tanquem Statement i Connection.
+		st.close();
+		conn.close();
+	}
+}
+```
+
+# Gestió de l'error des dels nostres programes
+
+Analitzant els `SQLState` obtinguts en els tres exemples anteriors podem distingir entre errors provocats per claus foranes o errors provocats per claus primàries. Tanmateix, per a discriminar quina de les claus foranes ha provocat l'error no ens queda més remei que analitzar el text obtingut a `getMessage`.
+
+Ara ja podem definir el patró que seguirem per al tractament d'errors:
+
+1. Definir el bloc try-catch del conjunt de sentències SQL de les quals volem tractar els errors. Com més gran sigui el conjunt, més difícil ens serà determinar-ne l'error exacte. Si amb un sol bloc no podem tractar bé els errors, n'haurem de definir més d'un, sovint, niuats.
+2. Capturar els diferents tipus d'errors a partir de la classe d'excepció generada. Això ens permetrà diferenciar entre errors de drivers, connexió, etc., però no entre el tipus d'error SQL.
+3. Per discriminar el tipus d'error SQL ens basarem en el codi SQLState.
+4. Per acabar de determinar la causa exacta de l'error haurem d'analitzar la cadena obtinguda amb el mètode getMessage buscant alguna paraula clau que ens ajudi.
+
+Un cop detectada la causa exacta de l'error, l'aplicació haurà de decidir entre reintentar l'operació, abandonar-la silenciosament (és a dir, ignorar-la) o aturar-la amb una excepció. Exceptuant el reintent, en les altres situacions és molt important tancar tots els objectes `ResultSet`, `Statement`, etc. que puguem tenir oberts. Així permetem que l'`SGBD` alliberi recursos ràpidament i que pugui atendre altres usuaris.
+
+## Enllaç d'interès
+Podeu trobar la llista de codis `SQLState` de `PostgreSQL` en l'annex A de la documentació: http://www.postgresql.org/docs/9.4/interactive/errcodes-appendix.html
+
+Exemple per registrar la lectura d'un missatge per part d'un usuari
+```java
+Class.forName( "org.postgresql.Driver" );
+String dbURL="jdbc:postgresql:bdMail";
+Connection conn = DriverManager.getConnection(dbURL, "usuari","usuari");
+Statement st = conn.createStatement();
+st.executeUpdate("INSERT INTO Lectures VALUES("+ codiMissatge+",'"+nomUsuari+"',"+ "to_timestamp('"+ts+"','YYYY-MM-DD HH24:MI'))");
+```
+
+Les diverses línies d'aquest codi poden generar tipus d'excepcions diferents:
+
+* Class.forName(...):
+  * ClassNotFoundException: no trobem el driver. No està instal·lat o no hem definit el CLASSPATH.
+* DriverManager.getConnection(...):
+  * SQLException: hi ha un error connectant amb la BD: l'url, el port, l'usuari, la contrasenya, etc. són incorrectes.
+* Connection.createStatement()
+  * SQLException: la connexió està tancada, o els paràmetres per a definir el tipus de ResultSet són incorrectes.
+  * SQLFeatureNotSupportedException: el driver no suporta aquesta operació, normalment deguda al tipus de ResultSet demanat.
+* Statement.executeUpdate(...)
+  * SQLException: error en la instrucció SQL. Serà la situació més habitual.
+  * SQLFeatureNotSupportedException: en cas que el driver no suporti alguna funcionalitat. Per exemple, en el cas de PostgreSQL, la impossibilitat de retornar les columnes autogenerades.
+
+Si ens interessa tractar totes les excepcions d'una manera particular, no en farem prou amb un sol bloc `try-catch`. Ara bé, exceptuant els errors provocats per `executeUpdate`, la resta normalment no s'haurien de produir. Són errors del sistema més que de l'aplicació i, si es produeixen, poca cosa podrem fer per solucionar-los.
+
+Una opció correcta és no fer res d'especial en els errors de sistema. L'exemple anterior, tal com està, seria insuficient, ja que, en cas d'error, no es tancarien els objectes oberts. En l'exemple següent mostrem una possible estructuració del codi per garantir que, tant en cas d'èxit com d'error, tots els objectes oberts quedaran tancats. La utilització del bloc `finally` simplifica la codificació. Així mateix, dins del bloc `finally`, tots els mètodes estan protegits amb un bloc `try-catch` per garantir que, tot i que es produeixi un error, el bloc `finally` continua executant-se fins al final.
+
+```java
+try {
+  Class.forName( "org.postgresql.Driver" );
+  String dbURL="jdbc:postgresql:bdMail";
+  conn = DriverManager.getConnection( dbURL,"usuari","usuari");
+  st = conn.createStatement();
+  //...
+} catch (Exception e) {
+    throw e;
+} finally {
+  //tanquem el que calgui
+  if (st!=null) {
+    try {
+			st.close();
+		} catch(SQLException e) {
+         //...tractem l'error
+    }
+  }
+  if (conn!=null) {
+    try {
+			conn.close();
+		} catch(SQLException e) {
+        //...tractem l'error
+    }
+  }
+}
+```
+
+Els errors provocats per l'execució de sentències SQL sí que els tractarem. Si el problema és provocat per dades errònies que l'usuari ha entrat, és molt interessant donar un missatge d'error fàcil d'entendre per l'usuari final. I, sobretot, donar una segona oportunitat.
+
+En aquest exemple llegim el codi d'un missatge, el nom d'un usuari i afegim una fila a la taula Lectures per reflectir que l'usuari en qüestió ha llegit el missatge en la data i l'hora actuals.
+
+```java
+boolean correcte=false;
+while (!correcte) {
+	try {
+		//llegim les dades
+		System.out.print("CodiMissatge:");
+		codiMissatge=Integer.parseInt(cons.readLine());
+		System.out.print("NomUsuari:");
+		nomUsuari=cons.readLine();
+		ts = new Timestamp(System.currentTimeMillis());
+		st.executeUpdate("INSERT INTO Lectures "+
+		"VALUES("+codiMissatge+",'"+nomUsuari+"',"+
+		"to_timestamp('"+ts+"','YYYY-MM-DD HH24:MI'))");
+		correcte=true;
+	} catch (SQLException e) {
+	if(e.getSQLState().equals(FK_ERROR))
+		if(e.getMessage().indexOf(FK_MISSATGES)!=-1)
+			System.out.println("codi de Missatge no existeix");
+		else if(e.getMessage().indexOf(FK_USUARIS)!=-1)
+			System.out.println("nom de l'usuari no existeix");
+		else System.out.println("Inesperat:"+e.getMessage());
+	else if (e.getSQLState().equals(PK_ERROR))
+		System.out.println("Error: missatge ja llegit");
+		else System.out.println("Inesperat:"+e.getMessage());
+	} catch (Exception e) {
+		System.out.println("Error llegint les dades");
+	}
+}
+```
+
+# Gestió de transaccions
+
+Cada connexió `JDBC` pot mantenir una sola transacció activa. Quan creem una connexió, per defecte, es treballa en mode `autocommit`. Això significa que cada sentència `SQL` que executem constitueix una transacció que s'inicia abans de dur a terme la sentència i que, si no es genera cap error, acaba en commit en finalitzar (per això, el nom `autocommit`).
+
+
+Treballar en mode autocommit és suficient quan cada transacció només incorpora una sentència SQL o quan sabem que no poden aparèixer problemes de concurrència (per exemple, quan estem segurs que només nosaltres estem treballant amb la BD o quan sabem que totes les operacions que s'executen sobre la BD són operacions de només lectura). Quan hàgim de treballar amb transaccions que incorporen més d'una sentència SQL, o quan tinguem dubtes en relació amb les operacions que s'executen d'una manera concurrent amb les operacions que duen a terme les nostres aplicacions, és recomanable treballar amb el mode autocommit desactivat.
+
+Amb el mode autocommit desactivat, les transaccions s'acaben explícitament cridant els mètodes `commit()` o `rollback()` i comencen implícitament en executar la primera sentència després d'un commit o un rollback. Això permet incloure diferents sentències `SQL` dins d'una transacció, tirar-les totes endarrere amb un rollback o acceptar-les totes amb un `commit`.
+
+```java
+conn.setAutoCommit(false);
+...
+try
+{
+... sentències SQL que formen la transacció
+conn.commit();
+}
+catch (SQLException e)
+{
+conn.rollback();
+}
+```
+
+En la nostra BD de referència tenim una taula per a registrar els missatges que han llegit els usuaris. Cada cop que un usuari llegeix un missatge haurem d'actualitzar la taula Lectures amb un codi semblant a aquest.
+
+```java
+st.executeUpdate("INSERT INTO Lectures "+"VALUES("+codiMissatge+",'"+nomUsuari+"',"+"to_timestamp('"+ts+"','YYYY-MM-DD HH24:MI'))");
+rs=st.executeQuery("SELECT * FROM Missatges "+"WHERE codi_missatge="+codiMissatge);
+if (rs.next())
+System.out.println(rs.getString("titol")+"--"+rs.getString("text"));
+```
+
+Aquest codi sembla correcte i, de fet, ho és sempre que no es produeixi cap error. Ara bé, si mai es produeix un error després d'haver inserit la fila i abans de llegir el missatge, deixarem la BD en un estat incorrecte. Per recuperar l'estat hauríem de tractar l'error i fer un `DELETE` de la fila, però aquest `DELETE` també podria fallar i aleshores es complicaria la recuperació de l'estat.
+
+La solució òptima per a aquest escenari és la utilització de transaccions. En l'exemple següent definim una transacció que comprèn les operacions de registrar la lectura del missatge i llegir el missatge en si. Si aconseguim registrar la lectura, llegir el missatge i mostrar-lo per pantalla, finalitzem la transacció amb `commit`. En cas contrari, desfem la transacció i tornem a l'estat inicial.
+
+```java
+conn.setAutoCommit(false);
+...
+try {
+	st.executeUpdate("INSERT INTO Lectures "+"VALUES("+codiMissatge+",'"+nomUsuari+"',"+"to_timestamp('"+ts+"','YYYY-MM-DD HH24:MI'))");
+	rs=st.executeQuery("SELECT * FROM Missatges "+"WHERE codi_missatge="+codiMissatge);
+
+	if (rs.next()) System.out.println( rs.getString("titol")+ "--"+rs.getString("text"));
+	else throw new SQLException();
+
+	rs.close();
+	conn.commit();
+} catch (SQLException e) {
+	conn.rollback();
+}
+```
+
+## Exemple 19
+```java
+import java.sql.*;
+import java.io.*;
+
+public class ex019MissatgesLlegitsTransaccio
+{
+	public static void main( String[] args ) throws Exception
+	{
+		//Per llegir de teclat
+		InputStreamReader stdin =new InputStreamReader(System.in);
+		BufferedReader cons =new BufferedReader(stdin);
+
+		Class.forName( "org.postgresql.Driver" );
+		String dbURL="jdbc:postgresql:bdMail";
+		Connection conn = DriverManager.getConnection( dbURL, "usuari","1234");
+		Statement st = conn.createStatement();
+
+
+		//llegim les dades
+		int codiMissatge=Integer.parseInt(cons.readLine());
+		String nomUsuari=cons.readLine();
+		Timestamp ts = new Timestamp(System.currentTimeMillis());
+
+		//Desactivem els commits automàtics		
+		conn.setAutoCommit(false);
+
+		try
+		{
+			st.executeUpdate("INSERT INTO Lectures VALUES("+codiMissatge+",'"+nomUsuari+"',"+
+				"to_timestamp('"+ts+"','YYYY-MM-DD HH24:MI'))");
+			ResultSet rs=st.executeQuery("SELECT * FROM Missatges "+
+					"WHERE codi_missatge="+codiMissatge);
+			if (rs.next()) System.out.println(rs.getString("titol")+"--"+rs.getString("text"));
+			else throw new SQLException();
+			rs.close();
+			conn.commit();
+		}
+		catch (SQLException e)
+		{
+			conn.rollback();
+		}		
+
+		//reactivem l'autocommit
+		conn.setAutoCommit(true);
+
+		//tanquem el ResultSet, Statement i Connection.
+		st.close();
+		conn.close();
+	}
+}
+```
+
+## Durada d'una transacció
+Quan treballem amb el mode `autocommit` desactivat, cal tenir present que la durada d'una transacció convé que sigui tan curta com sigui possible. O, més ben dit, interessa que no sigui més llarga del que és estrictament necessari.
+
+Les sentències `SQL` que s'executen durant una transacció poden afectar diverses files de taules de la `BD` diferents. Depenent de la gestió interna que fa l'`SGBD`, aquestes files o taules poden quedar bloquejades. No és fins al final de la transacció que l'`SGBD` allibera les files o taules del bloqueig. Mentrestant, sentències `SQL` que s'estiguin executant concurrentment i que afectin alguna fila o taula bloquejades poden quedar en pausa i, fins que no s'acaba la transacció, no continuen l'execució.
+
+És a dir, com més llarga sigui l'execució d'una transacció, més probabilitats hi ha d'aturar temporalment l'execució d'altres aplicacions que accedeixin simultàniament a la `BD`. Per això és tan important que les transaccions durin estrictament el temps necessari.
+
+# Pràctiques
+
+## Pràctica 1: Hemeroteca
+## Practica 2: Hospital
+## Pràctica 3: ACB
