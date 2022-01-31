@@ -13,10 +13,8 @@ El proyecto de partida es la `PrácticaACB`. utilizaremos ese proyecto como esqu
 Los pasos a seguir son los siguientes:
 
 * Definir el esquema de la base de datos.
-* Creación de una base de datos. (Esta opción se realiza directamente en PostgreSQL)
-El resto de opciones deberían realizarse mediante un menú de terminal específicamente creado para nuestra práctica.
-
-* Definir las sentencias de creación de las tablas que guardarán la información.
+* Creación de una base de datos. (Esta opción puede realizarse directamente en PostgreSQL). El resto de opciones deberían realizarse mediante un menú de terminal específicamente creado para nuestra práctica.
+* Definir las sentencias de creación de las tablas que guardarán la información. El proyecto deberá incluir un archivo `schema.sql` con las sentencias de creación de la base de datos.
 * Conexión mediante JDBC con la base de datos.
 * Manejo de la conexión mediante un menú de terminal que debe tener:
  * Una opción que permita borrar las tablas de la base de datos y su información.
