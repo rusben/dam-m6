@@ -1,4 +1,4 @@
-# Práctica JDBC
+# Práctica Hibernate & JPA
 ## Objetivos
 Aplicar los conocimientos adquiridos durante el transcurso de la `UF`, en concreto:
 * Uso de Hibernate y JPA.
