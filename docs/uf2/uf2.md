@@ -6,4 +6,4 @@
 
 ##### Prácticas
 * [Práctica JDBC](practica-jdbc.md)
-* [Práctica JDBC](practica-hibernate-jpa.md)
+* [Práctica Hibernate & JPA](practica-hibernate-jpa.md)
