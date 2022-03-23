@@ -13,7 +13,7 @@ Cada estudiante debe seleccionar una web de la que extraer datos de forma automa
 * Generación de uno o varios documentos `XML` con la información extraída. La generación del documento debe realizarse mediante la librería `DOM`. Se valorará el uso de la librería `JAXB`.
 
 ## Creación de clases del modelo de datos
-La información extraída de la web debe integrarse en un modelo de datos. Las clases del modelo de datos son específicas para cada desarrollo, un modelo de daos más generalista permitirá que sea más adaptable a posibles futuros cambios.
+La información extraída de la web debe integrarse en un modelo de datos. Las clases del modelo de datos son específicas para cada desarrollo, un modelo de datos más generalista permitirá que sea más adaptable a posibles futuros cambios.
 
 Se debe incluir un diagrama `UML` con las clases que forman el modelo de datos en un fichero llamado `DIAGRAM.png`.
 
