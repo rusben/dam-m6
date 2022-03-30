@@ -1,4 +1,4 @@
-# Introduccio a les Bases de Dades Orientades A Objectes
+# Introducció a les Bases de Dades Orientades A Objectes
 
 ## Paradigma d'orientació a objectes
 
