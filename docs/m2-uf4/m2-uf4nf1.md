@@ -331,7 +331,6 @@ A la taula següent es mostra de forma detallada els avantatges i desavantatges 
 
 | Tecnologia | Avantatges | Desavantatges |
 |------------|------------|---------------|
-
 | SODA | Simplicitat per fer consultes. Funcionalitats limitades no tenen consultes de conjunts (AND, NOT, OR). | Cal afegir un constructor per crear objectes sense camps inicialitzats. No es pot consultar per valors nuls. |
 | QBE | Independència del llenguatge de programació utilitzat. <br />
 API simple. <br />
