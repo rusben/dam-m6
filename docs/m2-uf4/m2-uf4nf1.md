@@ -333,9 +333,9 @@ A la taula següent es mostra de forma detallada els avantatges i desavantatges 
 |------------|------------|---------------|
 | SODA | Simplicitat per fer consultes. Funcionalitats limitades no tenen consultes de conjunts (AND, NOT, OR). | Cal afegir un constructor per crear objectes sense camps inicialitzats. No es pot consultar per valors nuls. |
 | QBE | Independència del llenguatge de programació utilitzat. <br />
-API simple. <br />
-Minimitza l'ús de cadenes per a consultes <br />
-Opera sobre propietats <br />
+||API simple. <br />  |
+||Minimitza l'ús de cadenes per a consultes <br /> |
+||Opera sobre propietats <br /> |
 Introdueix conceptes relacionats amb grafs de nodes (natural a les bases d'objectes): baixar i restringir per nodes que poden ser una o moltes classes, un atribut d'una classe o consultes mateixes |
 No es verifiquen tipus en temps de compilació. <br />
 Massa explícita. <br />
