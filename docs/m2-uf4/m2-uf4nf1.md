@@ -332,16 +332,12 @@ A la taula següent es mostra de forma detallada els avantatges i desavantatges 
 | Tecnologia | Avantatges | Desavantatges |
 |------------|------------|---------------|
 | SODA | Simplicitat per fer consultes. Funcionalitats limitades no tenen consultes de conjunts (AND, NOT, OR). | Cal afegir un constructor per crear objectes sense camps inicialitzats. No es pot consultar per valors nuls. |
-| QBE | Independència del llenguatge de programació utilitzat. <br />
-||API simple. <br />  |
-||Minimitza l'ús de cadenes per a consultes <br /> |
-||Opera sobre propietats <br /> |
-Introdueix conceptes relacionats amb grafs de nodes (natural a les bases d'objectes): baixar i restringir per nodes que poden ser una o moltes classes, un atribut d'una classe o consultes mateixes |
-No es verifiquen tipus en temps de compilació. <br />
-Massa explícita. <br />
-Opera sobre camps, en comptes de propietats. <br />
-Cal actualitzar les consultes quan es refactoritza o modifica el model de classes. <br />
-Consultes basades en cadenes embegudes són blanc per a atacs via injecció de codi.|
+| QBE | Independència del llenguatge de programació utilitzat.
+||API simple.  | No es verifiquen tipus en temps de compilació. |
+||Minimitza l'ús de cadenes per a consultes  | Massa explícita. |
+||Opera sobre propietats  | Opera sobre camps, en comptes de propietats. |
+||Introdueix conceptes relacionats amb grafs de nodes (natural a les bases d'objectes): baixar i restringir per nodes que poden ser una o moltes classes, un atribut d'una classe o consultes mateixes | Cal actualitzar les consultes quan es refactoritza o modifica el model de classes. |
+|| | Consultes basades en cadenes embegudes són blanc per a atacs via injecció de codi.|
 | NQs | Interfície recomanada per gestors orientats a objectes. <br />
 Seguretat en tipus de dades. <br />
 Verificació derrors semàntics i sintàctics en temps de compilació. <br />
