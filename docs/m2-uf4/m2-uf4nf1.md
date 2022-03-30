@@ -342,7 +342,6 @@ Massa explícita. <br />
 Opera sobre camps, en comptes de propietats. <br />
 Cal actualitzar les consultes quan es refactoritza o modifica el model de classes. <br />
 Consultes basades en cadenes embegudes són blanc per a atacs via injecció de codi.|
-
 | NQs | Interfície recomanada per gestors orientats a objectes. <br />
 Seguretat en tipus de dades. <br />
 Verificació derrors semàntics i sintàctics en temps de compilació. <br />
