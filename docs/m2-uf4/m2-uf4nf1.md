@@ -331,19 +331,17 @@ A la taula següent es mostra de forma detallada els avantatges i desavantatges 
 
 | Tecnologia | Avantatges | Desavantatges |
 |------------|------------|---------------|
-| SODA | Simplicitat per fer consultes. Funcionalitats limitades no tenen consultes de conjunts (AND, NOT, OR). | Cal afegir un constructor per crear objectes sense camps inicialitzats. No es pot consultar per valors nuls. |
-| QBE | Independència del llenguatge de programació utilitzat.
-||API simple.  | No es verifiquen tipus en temps de compilació. |
-||Minimitza l'ús de cadenes per a consultes  | Massa explícita. |
-||Opera sobre propietats  | Opera sobre camps, en comptes de propietats. |
-||Introdueix conceptes relacionats amb grafs de nodes (natural a les bases d'objectes): baixar i restringir per nodes que poden ser una o moltes classes, un atribut d'una classe o consultes mateixes | Cal actualitzar les consultes quan es refactoritza o modifica el model de classes. |
-|| | Consultes basades en cadenes embegudes són blanc per a atacs via injecció de codi.|
-| NQs | Interfície recomanada per gestors orientats a objectes. <br />
-Seguretat en tipus de dades. <br />
-Verificació derrors semàntics i sintàctics en temps de compilació. <br />
-Capacitat de refactoritzar codi. <br />
-Consultes natives sense necessitat d'aprendre llenguatges de consultes o un API. |
-Les consultes han de ser traduïdes al llenguatge o API del motor, això pot penalitzar en rendiment en el cas de consulta complexes on no és possible fer-ho sense instànciar alguns objectes persistits. |
+| ***SODA*** | Simplicitat per fer consultes. Funcionalitats limitades no tenen consultes de conjunts (AND, NOT, OR). | Cal afegir un constructor per crear objectes sense camps inicialitzats. No es pot consultar per valors nuls. |
+| ***QBE*** | Independència del llenguatge de programació utilitzat. | No es verifiquen tipus en temps de compilació. |
+||API simple.  | Massa explícita.  |
+||Minimitza l'ús de cadenes per a consultes  | Opera sobre camps, en comptes de propietats. |
+||Opera sobre propietats  | Cal actualitzar les consultes quan es refactoritza o modifica el model de classes.  |
+||Introdueix conceptes relacionats amb grafs de nodes (natural a les bases d'objectes): baixar i restringir per nodes que poden ser una o moltes classes, un atribut d'una classe o consultes mateixes | Consultes basades en cadenes embegudes són blanc per a atacs via injecció de codi. |
+| ***NQs*** | Interfície recomanada per gestors orientats a objectes. | Les consultes han de ser traduïdes al llenguatge o API del motor, això pot penalitzar en rendiment en el cas de consulta complexes on no és possible fer-ho sense instànciar alguns objectes persistits. |
+| | Seguretat en tipus de dades. | |
+| | Verificació derrors semàntics i sintàctics en temps de compilació. | |
+| | Capacitat de refactoritzar codi. | |
+| | Consultes natives sense necessitat d'aprendre llenguatges de consultes o un API. | |
 
 # DB4O – Creació d'estructures i manipulació bàsica de dades
 
