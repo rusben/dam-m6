@@ -1,12 +1,12 @@
-# Exemple de base de dades documental: MongoDB
+# MongoDB, una base de dades documental
 
 ## Objectius generals
-* Conèixer les operacions bàsiques per tal de realitzar operacions CRUD amb MongoDB
-* Poder crear programes en Java per tal d'accedir a la informació de MongoDB.
+* Conèixer les operacions bàsiques per tal de realitzar operacions `CRUD` amb `MongoDB`.
+* Poder crear programes en `Java` per tal d'accedir a la informació de `MongoDB`.
 
-Segurament hagis sentit parlar de les bases de dades NoSQL (Not Only SQL). És una cosa que últimament està molt de moda en el món del desenvolupament. Gairebé tant com que la gent faci servir auriculars grans per al MP3.
+Segurament hagis sentit parlar de les bases de dades `NoSQL` `(Not Only SQL)`. És una cosa que últimament està molt de moda en el món del desenvolupament.
 
-Resumint les bases de dades `NoSQL`, difereixen en diversos punts a les bases de dades relacionals de tota la vida com són: que no fan servir `SQL` ja que no són bases de dades relacionals, que no es necessiten estructures fixes (taules, columnes etc.) i en general no suporten `ACID`.
+Resumint les bases de dades `NoSQL`, difereixen en diversos punts a les bases de dades relacionals de tota la vida com són: que no fan servir `SQL` ja que no són bases de dades relacionals, que no es necessiten estructures fixes (taules, columnes etc.) i en general no suporten `ACID` (atomicitat, consistència, aïllament, durabilitat).
 
 En el nostre cas parlarem de bases de dades documentals. Tot i que aquesta primera presa de contacte es centrarà més en les bases de dades documentals, ho farem tenint en compte que en el futur farem servir `MongoDB`.
 
@@ -14,9 +14,9 @@ En el nostre cas parlarem de bases de dades documentals. Tot i que aquesta prime
 
 `MongoDB` és un sistema gestor de base de dades orientat a documents. El que vol dir, en llenguatge d'estar per casa, que el que guardem a la base de dades són documents. `MongoDB` guarda els documents en `BSON`, que no és més que una implementació binària del conegut `JSON`. Per tant tots els documents guardats a la base de dades es poden tractar com faríem en `JavaScript`. De fet, ja anirem veient que per a realitzar consultes, a la consola de `MongoDB` utilitzarem `JavaScript`.
 
-* Tutorial: http://www.tutorialspoint.com/json/index.htm
+* ***Tutorial***: http://www.tutorialspoint.com/json/index.htm
 
-Question: What is the corresponding JSON for the following XML document?
+Pregunta: Quin és el `JSON` corresponent per al document `XML` següent?
 
 ```xml
 <person>
@@ -66,25 +66,25 @@ Com es pot veure, no tenim un esquema definit, de manera que l'enfocament que ut
 `MongoDB` ofereix tant una edició comunitària que es pot descarregar i utilitzar gratuïtament com una edició Enterprise que forma part de la subscripció avançada de `MongoDB Enterprise`. Aquesta versió Enterprise inclou un suport complet per al vostre desplegament de MongoDB i ofereix funcions enfocades a l'empresa, com ara suport LDAP i Kerberos, xifratge en disc i auditoria.
 
 ## Característiques i avantatges de la base de dades MongoDB
-* Ofereix una gran escalabilitat i flexibilitat; error automàtic i redundància de dades
-* Ofereix un llenguatge de consulta expressiu que és fàcil d'aprendre i utilitzar
-* Consultes ad-hoc per a analítiques en temps real
+* Ofereix una gran escalabilitat i flexibilitat; error automàtic i redundància de dades.
+* Ofereix un llenguatge de consulta expressiu que és fàcil d'aprendre i utilitzar.
+* Consultes ad-hoc per a analítiques en temps real.
 * Admet matrius i objectes imbricats com a valors i permet esquemes flexibles i dinàmics.
 * És fàcil redactar consultes que permeten ordenar i filtrar, sense importar com estiguin imbricades, i admet l'agregació, la geolocalització, les sèries temporals, la cerca de gràfics i molt més.
 * Admet la fragmentació que permet dividir grans conjunts de dades en múltiples col·leccions distribuïdes que, a continuació, faciliten les consultes.
-* Admet diversos motors d'emmagatzematge
+* Admet diversos motors d'emmagatzematge.
 
 ### Noves funcions de MongoDB 5.0
 
-`MongoDB 5.0` és l'última versió publicada el 13 de juliol de 2021. Hi ha una sèrie de correccions fetes a partir de les versions anteriors i també algunes funcions addicionals que les podeu trobar totes a les notes de llançament oficials de MongoDB 5.0. Algunes de les característiques addicionals inclouen:
+`MongoDB 5.0` és l'última versió publicada el 13 de juliol de 2021. Hi ha una sèrie de correccions fetes a partir de les versions anteriors i també algunes funcions addicionals que les podeu trobar totes a les notes de llançament oficials de `MongoDB 5.0`. Algunes de les característiques addicionals inclouen:
 
 * Introducció de col·leccions de sèries temporals que emmagatzemen de manera eficient seqüències de mesures durant un període de temps.
 * Obsoleta de l'operació de reducció de mapes.
 * Introducció de nous operadors d'agregació com ara `$dateAdd`, `$dateDiff`, `$dateSubtract`, `$getField`, `$rand` i molts més. Consulteu la documentació.
-* Introducció de l'etapa de pipeline $setWindowFields que permet realitzar operacions en un interval especificat de documents d'una col·lecció, coneguda com a finestra.
+* Introducció de l'etapa de pipeline `$setWindowFields` que permet realitzar operacions en un interval especificat de documents d'una col·lecció, coneguda com a finestra.
 * Afegeix la capacitat de configurar filtres d'auditoria en temps d'execució.
 
-# Instal·lació de MongoDB 5.0 on Ubuntu 20.04
+# Instal·lació de MongoDB 5.0 a Ubuntu 20.04
 
 Els passos següents ens guiaran sobre com podem instal·lar MongoDB 5.0 a Ubuntu 20.04
 
@@ -104,7 +104,7 @@ sudo apt update
 sudo apt-get install gnupg
 ```
 
-## Pas 2: afegiu el repositori MongoDB a Ubuntu 20.04
+## Pas 2: afegeix el repositori
 
 Per poder instal·lar `MongoDB` amb apt, hem d'afegir el repositori `MongoDB`.
 
@@ -112,7 +112,7 @@ Per poder instal·lar `MongoDB` amb apt, hem d'afegir el repositori `MongoDB`.
 echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/5.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-5.0.list
 ```
 
-## Pas 3: instal·leu MongoDB 5.0 a Ubuntu 20.04
+## Pas 3: instal·la el paquet
 
 Ja hem afegit MongoDB GPG i repositori, procedim a instal·lar MongoDB. Actualitzeu primer els paquets
 
@@ -121,13 +121,13 @@ sudo apt-get update
 sudo apt-get install -y mongodb-org
 ```
 
-Si voleu instal·lar una versió específica de MongoDB, podeu passar la versió tal com es mostra a continuació.
+Si voleu instal·lar una versió específica de `MongoDB`, podeu passar la versió tal com es mostra a continuació.
 
 ```
 sudo apt-get install -y mongodb-org=5.0.2 mongodb-org-database=5.0.2 mongodb-org-server=5.0.2 mongodb-org-shell=5.0.2 mongodb-org-mongos=5.0.2 mongodb-org-tools=5.0.2
 ```
 
-## Pas 4: inicieu MongoDB 5.0 a Ubuntu 20.04
+## Pas 4: arrenca el servei
 
 Un cop finalitzat el procés d'instal·lació, procediu a iniciar i habilitar MongoDB.
 
@@ -177,13 +177,13 @@ $ sudo systemctl enable mongod
 Created symlink /etc/systemd/system/multi-user.target.wants/mongod.service → /lib/systemd/system/mongod.service.
 ```
 
-## Pas 5: configureu MongoDB 5.0 a Ubuntu
+## Pas 5: configura la base de dades
 
 El fitxer de configuració de `MongoDB` es troba a `/etc/mongod.conf`. Aquí trobareu les configuracions per a la ruta `db`, la ruta dels registres. Sempre podeu fer canvis a aquest fitxer en funció de les vostres necessitats d'instal·lació. Reinicieu el servei `mongod` cada vegada que feu un canvi al fitxer.
 
 ### Mongodb habilita l'autenticació de contrasenya
 
-Activem l'autenticació de contrasenya de mongodb perquè els usuaris puguin iniciar sessió amb una contrasenya per llegir o editar la base de dades. Descomenteu `#Security` i afegiu el contingut com a continuació:
+Activem l'autenticació de contrasenya de `MongoDB` perquè els usuaris puguin iniciar sessió amb una contrasenya per llegir o editar la base de dades. Descomenteu `#security` i afegiu el contingut com a continuació:
 
 ```
 security:
@@ -196,7 +196,7 @@ Després d'això, reinicieu el servei `mongod`.
 sudo systemctl restart mongod
 ```
 
-### MongoDB Habilita l'accés remot
+### Habilita l'accés des d'una màquina remota
 
 Per defecte, `MongoDB` només es pot accedir localment. Si voleu poder accedir a la base de dades de forma remota, farem un petit canvi al fitxer de configuració per incloure l'adreça `IP` o el nom d'amfitrió del servidor `MongoDB`, tal com es mostra a continuació.
 
@@ -207,14 +207,14 @@ net:
   bindIp: 127.0.0.1,mongodb-server-ip/hostname
 ```
 
-Deseu els canvis i reinicieu el servei `mongod`. També heu de permetre al tallafoc les adreces `IP` remotes de confiança si heu habilitat el vostre tallafoc.
+Desa els canvis i reinicia el servei `mongod`. També heu de permetre al tallafoc les adreces `IP` remotes de confiança si heu habilitat el vostre tallafoc.
 
 ```
 sudo ufw allow from trusted-server-ip to any port 27017
 ```
 
-## Pas 6: Creació d'usuaris i base de dades a MongoDB
-### Per accedir a l'intèrpret d'ordres de MongoDB, executeu l'ordre mongosh al terminal tal com es mostra.
+## Pas 6: Creació d'usuaris i bases de dades
+Per accedir a l'intèrpret d'ordres de `MongoDB`, executeu l'ordre `mongosh` al terminal tal com es mostra.
 
 ```
 $ mongosh
@@ -226,7 +226,7 @@ For mongosh info see: https://docs.mongodb.com/mongodb-shell/
 >
 ```
 
-### Per llistar les bases de dades existents
+Per llistar les bases de dades existents executeu:
 
 ```
 > show dbs
@@ -235,7 +235,7 @@ config      111 kB
 local      73.7 kB
 ```
 
-### Com crear un usuari i afegir un rol a MongoDB
+Per crear un usuari i afegir un rol a MongoDB
 
 Vegem com podem crear un usuari a `MongoDB` i donar-li rols d'administrador i permís per a totes les bases de dades.
 
@@ -247,6 +247,7 @@ Vegem com podem crear un usuari a `MongoDB` i donar-li rols d'administrador i pe
 });
 { ok: 1 }
 ```
+
 Per permetre a un usuari tenir permís per a una base de dades específica.
 
 ```
@@ -290,11 +291,11 @@ local      0.000GB
 
 ## Pas 7: Afinació de MongoDB
 
-Un cop hàgiu instal·lat MongoDB, és important assegurar-vos que el seu rendiment estigui en configuracions òptimes. A mesura que la informació augmenta, la nostra instal·lació de MongoDB hauria de poder gestionar-la i processar-la com s'esperava. L'escala es pot produir tant horitzontalment com verticalment. L'escalat horitzontal significa l'addició de recursos del servidor com ara RAM i CPU, mentre que l'escalat vertical és la introducció de més servidors a la nostra instal·lació.
+Un cop hàgiu instal·lat `MongoDB`, és important assegurar-vos que el seu rendiment estigui en configuracions òptimes. A mesura que la informació augmenta, la nostra instal·lació de `MongoDB` hauria de poder gestionar-la i processar-la com s'esperava. L'escala es pot produir tant horitzontalment com verticalment. L'escalat horitzontal significa l'addició de recursos del servidor com ara `RAM` i `CPU`, mentre que l'escalat vertical és la introducció de més servidors a la nostra instal·lació.
 
-Un escalat vertical, que és molt crucial en el rendiment global de mongodb, està influenciat per certs factors, com ara: ús de memòria, nombre de connexions concurrents i WiredTiger Cache, entre d'altres. La memòria és un factor important que influeix molt en el rendiment de MongoDB. MongoDB utilitza WiredTiger com a motor d'emmagatzematge predeterminat i, per tant, conserva el 50% de (la memòria disponible -1) per a WiredTiger.
+Un escalat vertical, que és molt crucial en el rendiment global de mongodb, està influenciat per certs factors, com ara: ús de memòria, nombre de connexions concurrents i `WiredTiger Cache`, entre d'altres. La memòria és un factor important que influeix molt en el rendiment de `MongoDB`. `MongoDB` utilitza `WiredTiger` com a motor d'emmagatzematge predeterminat i, per tant, conserva el 50% de (la memòria disponible -1) per a `WiredTiger`.
 
-Per exemple, un servidor amb 8 GB de RAM tindrà un conservador de memòria de 0,5 * (8-1) per a WiredTiger. Per comprovar les estadístiques d'ús de la memòria cau i determinar si cal fer canvis, executeu l'ordre següent:
+Per exemple, un servidor amb 8 GB de `RAM` tindrà un conservador de memòria de 0,5 * (8-1) per a `WiredTiger`. Per comprovar les estadístiques d'ús de la memòria cau i determinar si cal fer canvis, executeu l'ordre següent:
 
 ```
 > db.serverStatus().wiredTiger.cache
@@ -342,13 +343,13 @@ Per exemple, un servidor amb 8 GB de RAM tindrà un conservador de memòria de 0
 
 Dels resultats anteriors, són de gran importància:
 
-* wiredTiger.cache.maximum bytes configurat
-* wiredTiger.cache.bytes actualment a la memòria cau
-* wiredTiger.cache.tracked bytes bruts a la memòria cau
-* wiredTiger.cache.pages llegit a la memòria cau
-* wiredTiger.cache.pages escrites des de la memòria cau
+* `wiredTiger.cache.maximum` bytes configurat
+* `wiredTiger.cache.bytes` actualment a la memòria cau
+* `wiredTiger.cache.tracked` bytes bruts a la memòria cau
+* `wiredTiger.cache.pages` llegit a la memòria cau
+* `wiredTiger.cache.pages` escrites des de la memòria cau
 
-Les mides actuals de l'anterior ens haurien de permetre prendre una decisió sobre si volem augmentar la mida del WiredTiger als nostres servidors. Una altra cosa igualment important és l'ús de bitllets de lectura i escriptura de concurrència de WiredTiger, que es pot comprovar de la següent manera:
+Les mides actuals de l'anterior ens haurien de permetre prendre una decisió sobre si volem augmentar la mida del `WiredTiger` als nostres servidors. Una altra cosa igualment important és l'ús de bitllets de lectura i escriptura de concurrència de `WiredTiger`, que es pot comprovar de la següent manera:
 
 ```
 > db.serverStatus().wiredTiger.concurrentTransactions
@@ -358,4 +359,4 @@ Les mides actuals de l'anterior ens haurien de permetre prendre una decisió sob
 }
 ```
 
-Si observeu que els números augmenten i tendeixen cap a aquest nombre disponible de nuclis, és possible que els vostres servidors s'apropin a la saturació de la CPU.
+Si observeu que els números augmenten i tendeixen cap a aquest nombre disponible de nuclis, és possible que els vostres servidors s'apropin a la saturació de la `CPU`.
