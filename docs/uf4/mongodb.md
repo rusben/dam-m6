@@ -206,6 +206,14 @@ db.createUser(
 exit;
 ```
 
+Entrem amb l'usuari `admin` que acabem de crear:
+
+```
+$ mongosh -u admin -p
+```
+
+Creem un altre usuari:
+
 ```
 > db.createUser({
         user: "rusben",
