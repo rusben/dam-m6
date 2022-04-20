@@ -190,12 +190,26 @@ local      73.7 kB
 
 Per crear un usuari i afegir un rol a MongoDB
 
-Vegem com podem crear un usuari a `MongoDB` i donar-li rols d'administrador i permís per a totes les bases de dades.
+Vegem com podem crear un usuari a `MongoDB` i donar-li rols d'administrador i permís per a totes les bases de dades:
+
+Crea un usuari admin:
+
+```
+use admin
+db.createUser(
+  {
+    user: 'admin',
+    pwd: 'password',
+    roles: [ { role: 'root', db: 'admin' } ]
+  }
+);
+exit;
+```
 
 ```
 > db.createUser({
         user: "rusben",
-        pwd:  "123456789",
+        pwd:  "password",
         roles: [{role: "userAdminAnyDatabase" , db: "admin"}]
 });
 { ok: 1 }
