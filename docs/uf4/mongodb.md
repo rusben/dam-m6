@@ -233,6 +233,15 @@ db.createUser({
 });
 ```
 
+## Importar una col·lecció
+
+```
+mongoimport --db activitat1 --collection people --authenticationDatabase admin --username admin --password password --drop --file /vagrant/persons.json
+```
+
+[persons.json](datasets/persons.json)
+
+
 Per crear una nova base de dades a `MongoDB`, utilitzem l'ordre `use`. `MongoDB` no té l'ordre de creació. Com a exemple, creeu una nova base de dades anomenada `prova`.
 
 ```
