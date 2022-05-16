@@ -1,6 +1,29 @@
 # MongoDB, una base de dades documental
+* [Objectius generals](#objectius-generals)
+* [Introducció a MongoDB](#introduccio-mongodb)
+  * [Característiques i avantatges de MongoDB](#caracteristiques-avantatges)
+  * [Noves funcionalitats de MongoDB 5](#noves-funcionalitats-mongodb-5)
+* [Instal·lació de MongoDB 5 a Ubuntu 20.04](#installacio-mongodb)
+  * [Pas 1: importa la clau GPG de MongoDB](#installacio-mongodb-pas1)
+  * [Pas 2: afegeix el repositori](#installacio-mongodb-pas2)
+  * [Pas 3: instal·la el paquet](#installacio-mongodb-pas3)
+  * [Pas 4: arrenca el servei](#installacio-mongodb-pas4)
+  * [Pas 5: configura la base de dades](#installacio-mongodb-pas5)
+    * [Habilita l'autenticació de contrasenya](#habilita-autenticacio-contrasenya)
+    * [Habilita l'accés des d'una màquina remota](#habilita-acces-maquina-remota)
+  * [Pas 6: Creació d'usuaris i bases de dades](#creacio-usuaris-bases-dades-pas6)
+    * [Importar una col·lecció](#importa-collecio)
+    * [insertOne i insertMany](#insertone-insertmany)
+  * [Pas 7: Afinació de MongoDB](#afinacio-mongodb-pas7)
 
-## Objectius generals
+* [Introducció a MongoDB](#introduccio-a-mongodb)
+* [Característiques](#caracteristiques)
+* [JSON: Javascript Object Notation](#json)
+* [BSON](#bson)
+  * [Per què BSON?](#per-que-bson)
+* [Data-Sets](#datasets)
+
+# Objectius generals <a name="objectius-generals"></a>
 * Conèixer les operacions bàsiques per tal de realitzar operacions `CRUD` amb `MongoDB`.
 * Poder crear programes en `Java` per tal d'accedir a la informació de `MongoDB`.
 
@@ -10,7 +33,7 @@ Resumint les bases de dades `NoSQL`, difereixen en diversos punts a les bases de
 
 En el nostre cas parlarem de bases de dades documentals. Tot i que aquesta primera presa de contacte es centrarà més en les bases de dades documentals, ho farem tenint en compte que en el futur farem servir `MongoDB`.
 
-# Instal·lació de MongoDB 5 a Ubuntu 20.04
+# Introducció a MongoDB <a name="introduccio-mongodb"></a>
 
 `MongoDB` és un dels populars servidors de bases de dades `NoSQL` utilitzats per desenvolupar aplicacions dinàmiques modernes. Fa ús de documents semblants a `JSON` i esquemes opcionals; objectes de dades emmagatzemats com a documents separats dins d'una col·lecció, a diferència de les files i columnes utilitzades a les bases de dades relacionals tradicionals.
 
@@ -18,7 +41,7 @@ En el nostre cas parlarem de bases de dades documentals. Tot i que aquesta prime
 
 `MongoDB` ofereix tant una edició comunitària que es pot descarregar i utilitzar gratuïtament com una edició Enterprise que forma part de la subscripció avançada de `MongoDB Enterprise`. Aquesta versió Enterprise inclou un suport complet per al vostre desplegament de MongoDB i ofereix funcions enfocades a l'empresa, com ara suport LDAP i Kerberos, xifratge en disc i auditoria.
 
-## Característiques i avantatges de la base de dades MongoDB
+## Característiques i avantatges de la base de dades MongoDB <a name="caracteristiques-avantatges"></a>
 * Ofereix una gran escalabilitat i flexibilitat; error automàtic i redundància de dades.
 * Ofereix un llenguatge de consulta expressiu que és fàcil d'aprendre i utilitzar.
 * Consultes ad-hoc per a analítiques en temps real.
@@ -27,7 +50,7 @@ En el nostre cas parlarem de bases de dades documentals. Tot i que aquesta prime
 * Admet la fragmentació que permet dividir grans conjunts de dades en múltiples col·leccions distribuïdes que, a continuació, faciliten les consultes.
 * Admet diversos motors d'emmagatzematge.
 
-### Noves funcions de MongoDB 5.0
+## Noves funcionalitats de MongoDB 5.0 <a name="noves-funcionalitats-mongodb-5"></a>
 
 `MongoDB 5.0` és l'última versió publicada el 13 de juliol de 2021. Hi ha una sèrie de correccions fetes a partir de les versions anteriors i també algunes funcions addicionals que les podeu trobar totes a les notes de llançament oficials de `MongoDB 5.0`. Algunes de les característiques addicionals inclouen:
 
@@ -37,11 +60,11 @@ En el nostre cas parlarem de bases de dades documentals. Tot i que aquesta prime
 * Introducció de l'etapa de pipeline `$setWindowFields` que permet realitzar operacions en un interval especificat de documents d'una col·lecció, coneguda com a finestra.
 * Afegeix la capacitat de configurar filtres d'auditoria en temps d'execució.
 
-# Instal·lació de MongoDB 5.0 a Ubuntu 20.04
+# Instal·lació de MongoDB 5.0 a Ubuntu 20.04 <a name="installacio-mongodb"></a>
 
 Els passos següents ens guiaran sobre com podem instal·lar MongoDB 5.0 a Ubuntu 20.04
 
-## Pas 1: importa la clau GPG de MongoDB
+## Pas 1: importa la clau GPG de MongoDB <a name="installacio-mongodb-pas1"></a>
 
 Primer hem d'importar la clau `GPG` pública de `MongDB` com es mostra a continuació:
 
@@ -57,7 +80,7 @@ sudo apt update
 sudo apt-get install gnupg
 ```
 
-## Pas 2: afegeix el repositori
+## Pas 2: afegeix el repositori <a name="installacio-mongodb-pas2"></a>
 
 Per poder instal·lar `MongoDB` amb apt, hem d'afegir el repositori `MongoDB`.
 
@@ -65,7 +88,7 @@ Per poder instal·lar `MongoDB` amb apt, hem d'afegir el repositori `MongoDB`.
 echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/5.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-5.0.list
 ```
 
-## Pas 3: instal·la el paquet
+## Pas 3: instal·la el paquet <a name="installacio-mongodb-pas3"></a>
 
 Ja hem afegit MongoDB GPG i repositori, procedim a instal·lar MongoDB. Actualitzeu primer els paquets
 
@@ -80,7 +103,7 @@ Si voleu instal·lar una versió específica de `MongoDB`, podeu passar la versi
 sudo apt-get install -y mongodb-org=5.0.2 mongodb-org-database=5.0.2 mongodb-org-server=5.0.2 mongodb-org-shell=5.0.2 mongodb-org-mongos=5.0.2 mongodb-org-tools=5.0.2
 ```
 
-## Pas 4: arrenca el servei
+## Pas 4: arrenca el servei <a name="installacio-mongodb-pas4"></a>
 
 Un cop finalitzat el procés d'instal·lació, procediu a iniciar i habilitar MongoDB.
 
@@ -130,11 +153,11 @@ $ sudo systemctl enable mongod
 Created symlink /etc/systemd/system/multi-user.target.wants/mongod.service → /lib/systemd/system/mongod.service.
 ```
 
-## Pas 5: configura la base de dades
+## Pas 5: configura la base de dades <a name="installacio-mongodb-pas5"></a>
 
 El fitxer de configuració de `MongoDB` es troba a `/etc/mongod.conf`. Aquí trobareu les configuracions per a la ruta `db`, la ruta dels registres. Sempre podeu fer canvis a aquest fitxer en funció de les vostres necessitats d'instal·lació. Reinicieu el servei `mongod` cada vegada que feu un canvi al fitxer.
 
-### Mongodb habilita l'autenticació de contrasenya
+### Habilita l'autenticació de contrasenya <a name="habilita-autenticacio-contrasenya"></a>
 
 Activem l'autenticació de contrasenya de `MongoDB` perquè els usuaris puguin iniciar sessió amb una contrasenya per llegir o editar la base de dades. Descomenteu `#security` i afegiu el contingut com a continuació:
 
@@ -149,7 +172,7 @@ Després d'això, reinicieu el servei `mongod`.
 sudo systemctl restart mongod
 ```
 
-### Habilita l'accés des d'una màquina remota
+### Habilita l'accés des d'una màquina remota <a name="habilita-acces-maquina-remota"></a>
 
 Per defecte, `MongoDB` només es pot accedir localment. Si voleu poder accedir a la base de dades de forma remota, farem un petit canvi al fitxer de configuració per incloure l'adreça `IP` o el nom d'amfitrió del servidor `MongoDB`, tal com es mostra a continuació.
 
@@ -166,7 +189,8 @@ Desa els canvis i reinicia el servei `mongod`. També heu de permetre al tallafo
 sudo ufw allow from trusted-server-ip to any port 27017
 ```
 
-## Pas 6: Creació d'usuaris i bases de dades
+## Pas 6: Creació d'usuaris i bases de dades <a name="creacio-usuaris-bases-dades-pas6"></a>
+
 Per accedir a l'intèrpret d'ordres de `MongoDB`, executeu l'ordre `mongosh` al terminal tal com es mostra.
 
 ```
@@ -188,11 +212,11 @@ config      111 kB
 local      73.7 kB
 ```
 
-Per crear un usuari i afegir un rol a MongoDB
+Per crear un usuari i afegir un rol a `MongoDB`
 
 Vegem com podem crear un usuari a `MongoDB` i donar-li rols d'administrador i permís per a totes les bases de dades:
 
-Crea un usuari admin:
+Crea un usuari `admin`:
 
 ```
 use admin
@@ -233,7 +257,7 @@ db.createUser({
 });
 ```
 
-## Importar una col·lecció
+### Importar una col·lecció <a name="importa-collecio"></a>
 
 ```
 mongoimport --db activitat1 --collection people --authenticationDatabase admin --username admin --password password --drop --file /vagrant/persons.json
@@ -259,7 +283,7 @@ db.Employees.insertOne({name: "hale" , age: 20 , department: "IT"})
 }
 ```
 
-### MongoDB insertOne i insertMany
+### insertOne i insertMany <a name="insertone-insertmany"></a>
 
 Tingueu en compte que `Collection.insert()` està obsolet i hauríeu d'utilitzar `insertOne`, `insertMany` o `bulkWrite`.
 
@@ -273,7 +297,7 @@ employees  0.000GB
 local      0.000GB
 ```
 
-## Pas 7: Afinació de MongoDB
+## Pas 7: Afinació de MongoDB <a name="afinacio-mongodb-pas7"></a>
 
 Un cop hàgiu instal·lat `MongoDB`, és important assegurar-vos que el seu rendiment estigui en configuracions òptimes. A mesura que la informació augmenta, la nostra instal·lació de `MongoDB` hauria de poder gestionar-la i processar-la com s'esperava. L'escala es pot produir tant horitzontalment com verticalment. L'escalat horitzontal significa l'addició de recursos del servidor com ara `RAM` i `CPU`, mentre que l'escalat vertical és la introducció de més servidors a la nostra instal·lació.
 
@@ -345,10 +369,7 @@ Les mides actuals de l'anterior ens haurien de permetre prendre una decisió sob
 
 Si observeu que els números augmenten i tendeixen cap a aquest nombre disponible de nuclis, és possible que els vostres servidors s'apropin a la saturació de la `CPU`.
 
-
-# Introducció
-
-## Què és MongoDB?
+# Introducció a MongoDB <a name="introduccio-a-mongodb"></a>
 
 `MongoDB` és una base de dades de documents de propòsit general de codi obert.
 `MongoDB` (de "humongous") és una base de dades de documents de codi obert i el líder `NoSQL` de base de dades, escrita en C++.
@@ -357,8 +378,7 @@ Si observeu que els números augmenten i tendeixen cap a aquest nombre disponibl
 L'empresa de programari `10gen` va començar a desenvolupar `MongoDB` el 2007 com a component d'una plataforma planificada com a producte de servei.
 El 2009, l'empresa va passar a un model de desenvolupament de codi obert, amb l'empresa oferint suport comercial i altres serveis. El 2013, `10gen` va canviar el seu nom a `MongoDB Inc`.
 
-## MongoDB: una base de dades documental
-
+# Característiques <a name="caracteristiques"></a>
 * Open source
 * Escalable
 * Document Data Model
@@ -377,7 +397,6 @@ El 2009, l'empresa va passar a un model de desenvolupament de codi obert, amb l'
 }
 ```
 
-## Característiques
 `MongoDB` és una base de dades de documents de propòsit general de codi obert.
 * Un registre a MongoDB és un document, que és una estructura de dades composta de camps i valors. Els documents `MongoDB` són similars als objectes `JSON`. Els valors dels camps poden incloure altres documents, matrius i matrius de documents.
 
@@ -421,7 +440,7 @@ El 2009, l'empresa va passar a un model de desenvolupament de codi obert, amb l'
 * La rèplica integrada amb migració automàtica per error proporciona una alta disponibilitat.
 * La fragmentació automàtica permet l'escala horitzontal per a grans desplegaments.
 
-# JSON: Javascript Object Notation
+# JSON: Javascript Object Notation <a name="json"></a>
 `MongoDB` utilitza `JSON` (o millor dit, `BSON`) per tractar amb documents.
 
 Però què és exactament JSON? Mireu el següent exemple senzill:
@@ -445,20 +464,21 @@ Els valors poden ser d'un dels tipus següents:
 5. `Objecte (Object)`: una col·lecció de claus no ordenada i separada per comes: parells de valors tancats amb claus.
 6. `null`: buit.
 
-# BSON
+# BSON <a name="bson"></a>
+
 `MongoDB` és un sistema gestor de base de dades orientat a documents. El que vol dir, en llenguatge d'estar per casa, que el que guardem a la base de dades són documents. `MongoDB` guarda els documents en `BSON`, que no és més que una implementació binària del conegut `JSON`. Per tant tots els documents guardats a la base de dades es poden tractar com faríem en `JavaScript`. De fet, ja anirem veient que per a realitzar consultes, a la consola de `MongoDB` utilitzarem `JavaScript`.
 
 Realment no necessiteu saber res sobre `BSON` per treballar amb `MongoDB`, així que sentiu-ho lliure d'ometre aquesta secció, però si, com jo, us pregunteu sobre el rendiment i "com coses funcionen" segueix llegint.
 
-## Per què BSON?
+## Per què BSON? <a name="per-que-bson"></a>
+
 Un dels motius és perquè es pot escanejar ràpidament.
 Tenint en compte que `JSON` és només una cadena, per trobar una clau específica que necessiteu escanejar cada caràcter d'aquesta cadena, fent un seguiment del nivell de nidificació, fins que trobes aquesta clau específica. Poden ser tones de dades que cal escanejar.
 `BSON`, però, emmagatzema la longitud dels valors per tal de trobar aquesta clau específica només pot saltar els valors passats i llegir la següent clau.
 http://bsonspec.org/
 
-Un document BSON comença amb la longitud del document, en aquest cas 23 bytes. Longituds
-s'emmagatzemen com a nombres enters de `32 bits`, `little endian`, de manera que `"23"` s'emmagatzemaria realment com `\x17\x00\x00\x00`.
-Mentre que per a la llegibilitat vaig escriure "23", les longituds de les notes són de `4 bytes` ja que són de `32 bits` nombres enters.
+Un document `BSON` comença amb la longitud del document, en aquest cas `23 bytes`. S'emmagatzemen com a nombres enters de `32 bits`, `little endian`, de manera que `"23"` s'emmagatzemaria realment com `\x17\x00\x00\x00`.
+Mentre que per a la llegibilitat vaig escriure `23`, les longituds de les notes són de `4 bytes` ja que són de `32 bits` nombres enters.
 Aleshores, per a cada clau: parell de valors, `BSON` especifica el tipus de valor com a clau d'un sol byte com a cadena acabada nul·la, la longitud del valor com a nombre enter de `32 bits` si escau i el valor mateix.
 Els documents, les matrius i les cadenes tenen una terminació nul·la.
 
@@ -495,7 +515,7 @@ Els documents es guarden en col·leccions, que podria assemblar-se a les taules 
 
 Com es pot veure, no tenim un esquema definit, de manera que l'enfocament que utilitzarem amb `MongoDB` és totalment diferent al que utilitzaríem amb un `RDBMS`. En no existir les relacions directament, hem de pensar una mica en com anem guardar els documents per no sobrecarregar la nostra base de dades fent consultes massa grans o duplicant consultes.
 
-## Data-Sets
+# Data-Sets <a name="datasets"></a>
 
 [Foursquare](datasets/foursquare.zip)
 
