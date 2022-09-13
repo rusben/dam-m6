@@ -329,7 +329,7 @@ public class ShowFiles {
 
     File[] roots = File.listRoots();
     for (File root : roots) {
-      System.out.println(root)
+      System.out.println(root);
     }
   }
 }
