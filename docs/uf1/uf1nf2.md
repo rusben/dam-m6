@@ -584,7 +584,7 @@ public class ArrayToFile {
 
 #### Exercici 6
 
-Implementa la classe FileReaderAlpha.java que llegeixi l'arxiu de alphabeta5465.txt i escriure en pantalla els caràcters un al costat (en majúscules) de l'altre amb un espai entre cada caràcter.
+Implementa la classe `FileReaderAlpha.java` que llegeixi l'arxiu de alphabeta5465.txt i escriure en pantalla els caràcters un al costat (en majúscules) de l'altre amb un espai entre cada caràcter.
 
 #### Exercici 7
 
@@ -621,10 +621,10 @@ Boutin
 19
 ```
 
-Generi un fitxer csv on la primera fila sigui nom, cognoms, edat i les següents les ocurrències que apareixen en el fitxer de lectura. Presuposem l'ús de 3 arrays String[] per tal d'emmagatzemar temporalment les ocurrències aparegudes després de la lectura. Posteriorment es llegiran aquests tres arrays i s'enregisrarà el seu contingut en el fitxer csv de sortida. Es demana implementar tres mètodes. `llegeixFitxer()`, `mostraPerPantalla()` i `escriuSortidaCSV()`
+Generi un fitxer csv on la primera fila sigui nom, cognoms, edat i les següents les ocurrències que apareixen en el fitxer de lectura. Presuposem l'ús de 3 arrays `String[]` per tal d'emmagatzemar temporalment les ocurrències aparegudes després de la lectura. Posteriorment es llegiran aquests tres arrays i s'enregisrarà el seu contingut en el fitxer csv de sortida. Es demana implementar tres mètodes. `llegeixFitxer()`, `mostraPerPantalla()` i `escriuSortidaCSV()`
 
 #### Exercici 13
-Implementa la classe `CSVToScreen.java` que en llegir un fitxer csv on els diferents camps es defineixen en la primera fila: firstname, lastname, username, password, email.
+Implementa la classe `CSVToScreen.java` que en llegir un fitxer csv on els diferents camps es defineixen en la primera fila: `firstname, lastname, username, password, email`.
 
 La sortida generada pel programa serà semblant a la següent:
 
@@ -643,11 +643,11 @@ Persona 2
 Cal tenir en compte que les columnes poden permutar i la sortida caldria que fos igual de coherent. Per això es decideix emmagatzemar els valors de la primera fila d'entrada en un array `String[]`.
 
 # Byte Streams classes <a name="byte-streams-classes"></a>
-Byte Stream Classes
+***Byte Stream Classes***
 
 Byte stream classes have been designed to provide functional features for creating and manipulating streams and files for reading and writing bytes. Since the streams are unidirectional they can transmit bytes in only one direction and therefore java provides two kinds of bytes stream classes i.e. input stream classes and output stream classes.
 
-Input Stream Classes
+***Input Stream Classes***
 
 Input stream classes that are used to read 8 bit bytes, include a super class known as InputStream and a number of subclasses for supporting various input related functions.
 
@@ -655,14 +655,14 @@ Input stream classes that are used to read 8 bit bytes, include a super class kn
 ![Input Streams classes](../images/input-streams-classes.jpg)
 
 
-Output Stream Classes
+***Output Stream Classes***
 
 Output stream classes are derived from the base class OutputStream. This is an abstract class and has several subclasses and these subclasses can be used for performing output operations.
 
 ![Output Streams classes](../images/output-streams-classes.jpg)
 
 
-File Streams:
+***File Streams***
 These handle writing and reading bytes to/from files.
 
 * FileInputStream:
@@ -670,7 +670,35 @@ These handle writing and reading bytes to/from files.
 A FileInputStream can be created with the FileInputStream (String constructor). The string argument should be the name of the file. After you create a file input stream you can read bytes from the stream by calling its read() method. This method returns an integer containing the next byte in the stream. If the method returns a -1 it signifies that end of the file stream has been reached.
 
 ```java
-// Falta código de ejemplo
+import java.io.FileInputStream;
+import java.io.IOException;
+
+public class InputBytes {
+  public static void main(String[] args) {
+    try {
+
+      FileInputStream fis = new FileInputStream("path/to/file.class");
+      boolean eof = false;
+
+      int count = 0;
+
+      while (!eof) {
+        int data = fis.read();
+        System.out.println(data + " ");
+
+        if (data == -1) eof = true;
+        else count++;
+      }
+      fis.close();
+      System.out.println("\nTotal number of bytes readed: "+count);
+
+    } catch(IOException e) {
+      System.out.println("ERROR");
+      e.printStackTrace();
+    }
+  }
+}
+
 ```
 
 * File Output Stream:
@@ -684,8 +712,25 @@ You can create a FileOutputStream that appends data after the end of an existing
 The file output streams write (int) method is used to write bytes to the stream. After the last byte has been written to the file the streams close() method closes the stream.
 
 ```java
-// Falta código de ejemplo
-```
+import java.io.IOException;
+
+public class OutputBytes {
+
+  public static void main(String[] args) {
+    int data[] = {65, 66, 67, 68, 69};
+
+    try {
+      FileOutputStream fos = new FileOutputStream("path/to/file");
+      for (int i = 0; i < data.length; i++) {
+        fos.write(data[i]);
+      }
+      fos.close();
+    } catch(IOException e) {
+      System.out.println("ERROR");
+      e.printStackTrace();
+    }
+  }
+}```
 
 ## Data Streams <a name="data-streams"></a>
 
@@ -726,9 +771,7 @@ public class WriteEven {
       e.printStackTrace();
     }
   }
-
 }
-
 ```
 
 ```java
@@ -761,7 +804,6 @@ public class ReadEven {
     }
   }
 }
-
 ```
 
 ```java
