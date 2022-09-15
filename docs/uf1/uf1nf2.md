@@ -81,13 +81,13 @@ Operacions bàsiques sobre fitxers:
 
 En els fitxers seqüencials els registres s'insereixen en ordre cronològic. Si cal afegir nous registres aquests s'afegeixen a partir final del fitxer:
 
-* Consultes: Per consultar un determinat registre és necessari començar la lectura des del primer registre, i continuar llegint seqüencialment fins a localitzar el registre buscat.
+* ***Consultes***: Per consultar un determinat registre és necessari començar la lectura des del primer registre, i continuar llegint seqüencialment fins a localitzar el registre buscat.
 
-* Altes: les altes es realitzen al final de l'últim registre inserit, només es permet afegir dades al final del fitxer.
+* ***Altes***: les altes es realitzen al final de l'últim registre inserit, només es permet afegir dades al final del fitxer.
 
-* Baixes: per donar de baixa un registre cal fer ús d'un fitxer auxiliar, llegint tots els registres i copiar tots a excepció del que vulguem donar de baixa. Finalment cal canviar el nom del fitxer auxiliar donant-li el nom del fitxer original.
+* ***Baixes***: per donar de baixa un registre cal fer ús d'un fitxer auxiliar, llegint tots els registres i copiar tots a excepció del que vulguem donar de baixa. Finalment cal canviar el nom del fitxer auxiliar donant-li el nom del fitxer original.
 
-* Modificacions: El procés de modificacions és similar al de baixes
+* ***Modificacions***: El procés de modificacions és similar al de baixes
 
 ## Creating a File <a name="creating-a-file"></a>
 
@@ -148,7 +148,7 @@ public class Exercise {
 }
 ```
 
-After using a PrintWriter object, you should free the resources it was using. To assist you with this, the PrintWriter class is equipped with the Close() method. Here is an example of calling:
+After using a `PrintWriter` object, you should free the resources it was using. To assist you with this, the `PrintWriter` class is equipped with the `close()` method. Here is an example of calling:
 
 ```java
 import java.io.File;
@@ -179,7 +179,7 @@ public class Exercise {
 
 ### Opening a File <a name="opening-a-file"></a>
 
-Besides creating a file, the second most common operation performed on a file consists of opening one. You can open a file using the File class. As done previously, first declare a File variable and pass the name of the file to its constructor. Here is an example:
+Besides creating a file, the second most common operation performed on a file consists of opening one. You can open a file using the `File` class. As done previously, first declare a `File` variable and pass the name of the file to its `constructor`. Here is an example:
 
 ```java
 import java.io.File;
@@ -194,7 +194,7 @@ public class Exercise {
 
 ### Reading from a File <a name="reading-from-a-file"></a>
 
-To support the ability to read a value from a file, you can use the Scanner class. To support this operation, the Scanner class is equipped with a constructor that takes a File object as argument. Therefore, you can pass it a File variable you will have previously declared. Here is an example of declaring and initializing a variable for it:
+To support the ability to read a value from a file, you can use the Scanner class. To support this operation, the Scanner class is equipped with a constructor that takes a `File` object as argument. Therefore, you can pass it a `File` variable you will have previously declared. Here is an example of declaring and initializing a variable for it:
 
 ```java
 import java.io.File;
@@ -210,7 +210,7 @@ public class Exercise {
 }
 ```
 
-The values of a file are stored in or more lines. To continuously read the lines from the file, one at a time, you can use a while loop. In the while loop, continuously use the Scanner object that can read a line of value(s). In the while statement, to check whether the Scanner object has not gotten to the last line, you can check the status of its hasNext() method. As long as this method returns true, the Scanner reader has not gotten to the end of the file. Once the Scanner object has arrived to the end, this method would return false. Here is an example of implementing this scenario:
+The values of a file are stored in or more lines. To continuously read the lines from the file, one at a time, you can use a while loop. In the while loop, continuously use the `Scanner` object that can read a line of value(s). In the while statement, to check whether the `Scanner` object has not gotten to the last line, you can check the status of its `hasNext()` method. As long as this method returns true, the `Scanner` reader has not gotten to the end of the file. Once the `Scanner` object has arrived to the end, this method would return false. Here is an example of implementing this scenario:
 
 ```java
 import java.io.File;
@@ -235,31 +235,31 @@ public class Exercise {
 }
 ```
 
-After using the Scanner object, to free the resources it was using, call its close() method. Here is an example:
+After using the `Scanner` object, to free the resources it was using, call its `close()` method. Here is an example:
 
 ```java
 import java.io.File;
 import java.util.Scanner;
 
 public class Exercise {
-    public static void main(String[] args)  throws Exception {
-	// Indicate that you are planning to opena file
-	File fleExample = new File("Example.xpl");
-        // Prepare a Scanner that will "scan" the document
-        Scanner opnScanner = new Scanner(fleExample);
+  public static void main(String[] args) throws Exception {
+    // Indicate that you are planning to opena file
+    File fleExample = new File("Example.xpl");
+    // Prepare a Scanner that will "scan" the document
+    Scanner opnScanner = new Scanner(fleExample);
 
-	// Read each line in the file
-        while( opnScanner.hasNext() ) {
-            // Read each line and display its value
-	    System.out.println("First Name:    " + opnScanner.nextLine());
-	    System.out.println("Last Name:     " + opnScanner.nextLine());
-	    System.out.println("Hourly Salary: " + opnScanner.nextLine());
-	    System.out.println("Is Full Time?: " + opnScanner.nextLine());
-	}
-            
-    	// De-allocate the memory that was used by the scanner
-        opnScanner.close();
+    // Read each line in the file
+    while (opnScanner.hasNext()) {
+      // Read each line and display its value
+      System.out.println("First Name:    " + opnScanner.nextLine());
+      System.out.println("Last Name:     " + opnScanner.nextLine());
+      System.out.println("Hourly Salary: " + opnScanner.nextLine());
+      System.out.println("Is Full Time?: " + opnScanner.nextLine());
     }
+
+    // De-allocate the memory that was used by the scanner
+    opnScanner.close();
+  }
 }
 ```
 
@@ -298,7 +298,7 @@ TREBALLADOR 2
 ```
 
 ## Java Streams <a name="java-streams"></a>
-The terms "input" and "output" can sometimes be a bit confusing. The input of one part of an application is often the output of another. Is an OutputStream a stream where output is written to, or output comes out from (for you to read)? After all, an InputStream outputs its data to the reading program, doesn't it? Personally, I found this a bit confusing back in the day when I first started out learning about Java IO.
+The terms 'input' and 'output' can sometimes be a bit confusing. The input of one part of an application is often the output of another. Is an `OutputStream` a stream where output is written to, or output comes out from (for you to read)? After all, an `InputStream` outputs its data to the reading program, doesn't it? Personally, I found this a bit confusing back in the day when I first started out learning about Java IO.
 
 In an attempt to clear out this possible confusion, I have tried to put some different names on input and output to try to link them conceptually to where the input comes from, and where the output goes.
 
@@ -327,12 +327,11 @@ Depending upon the direction of the data, streams are classified into two catego
 * Input Streams
 * Output Streams
 
-Input Streams: Bringing Information in. To bring in information, open a stream on an information source (a file, memory, or socket) and read the information serially.
+***Input Streams***: Bringing Information in. To bring in information, open a stream on an information source (a file, memory, or socket) and read the information serially.
 
 ![InputStream](../images/instream.jpg)
 
-Output Stream: Sending Information Out. A program can send information to an external destination by opening a stream to a destination and writing the information out serially.
-
+***Output Stream***: Sending Information Out. A program can send information to an external destination by opening a stream to a destination and writing the information out serially.
 
 ![OutputStream](../images/outstream.jpg)
 
@@ -342,11 +341,11 @@ A program that needs to read data from some source needs an `InputStream` or a `
 
 ![Esquema](../images/schema2.jpg)
 
-An InputStream or Reader is linked to a source of data. An OutputStream or Writer is linked to a destination of data.
+An `InputStream` or `Reader` is linked to a source of data. An `OutputStream` or `Writer` is linked to a destination of data.
 
 ## Stream classification
 
-Depending upon data type on which they operate, Java streams are classified into 2 categories:
+Depending upon data type on which they operate, `Java` streams are classified into 2 categories:
 
 ![Stream classification](../images/streamclassification.jpg)
 
