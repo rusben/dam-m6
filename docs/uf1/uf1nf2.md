@@ -1,6 +1,25 @@
 # Magatzems i fluxos de dades
+* [Introducció](#introduccio)
+* [Conceptes bàsics sobre fitxers seqüencials](#conceptes-basics-fitxers-sequencials)
+** [Creating a File](#creating-a-file)
+** [Writing to a File](#writing-to-a-file)
+** [Opening a File](#opening-a-file)
+** [Reading from a File](#reading-from-a-file)
+** [Exercicis](#exercicis)
+* [Java Streams](#java-streams)
+** [Standard Streams](#standard-streams)
+** [Character Streams classes](#character-streams)
+*** [Exercicis FileReader i FileWriter](#exercicis-file-reader-file-writer)
+** [Byte Streams classes](#byte-streams-classes)
+*** [Data Streams](#data-streams)
+*** [Object Streams](#object-streams)
+*** [Random Access File](#random-access-file)
+**** [Exemples](#exemples-random-access)
+*** [Exercicis](#exercicis-streams)
 
-## Introducció
+
+
+## Introducció <a name="introduccio"></a>
 En la primera part de la UF vam veure en Java (en el paquet `java.io`) que hi ha diferents classes que faciliten treballar amb fitxers des de diferents perspectives:
 
 * Fitxers d'accés seqüencial o accés aleatori,
@@ -43,7 +62,7 @@ Aquesta abstracció proporcionada pels fluxos fa que els programadors, quan vole
 
 Qualsevol programa que hagi de obtenir informació de qualsevol font necessita obrir un stream, igualment si necessita enviar informació obrirà un stream i s'escriurà la informació. La vinculació d'aquest stream amb el dispositiu físic la fa el sistema d'entrada / sortida de Java.
 
-# Conceptes bàsics sobre fitxers seqüencials
+# Conceptes bàsics sobre fitxers seqüencials <a name="conceptes-basics-fitxers-sequencials"></a>
 
 Començarem veient les operacions sobre fitxers seqüencials i després treballarem amb els aleatoris.
 
@@ -70,7 +89,7 @@ En els fitxers seqüencials els registres s'insereixen en ordre cronològic. Si 
 
 * Modificacions: El procés de modificacions és similar al de baixes
 
-## Creating a File
+## Creating a File <a name="creating-a-file"></a>
 
 If you want to create a new file, you must use a class that is equipped to write values to a file. To do this, you can use the PrintWriter class. The PrintWriter class is defined in the java.io package. Therefore, if you want to use it, you can import it in your document. This would be done as follows:
 
@@ -102,7 +121,7 @@ public class Exercise {
 }
 ```
 
-## Writing to a File
+## Writing to a File  <a name="writing-to-a-file"></a>
 
 After creating a `PrintWriter` object, you can write values to the file. To support this, the `PrintWriter` class is equipped with the `print()` and `println()` methods that is overloaded with various versions for each type of values (`boolean, char, char[], int, float, double, String, or Object`). Therefore, to write a value to a file, call the appropriate version of the `PrintWriter.print()` method and pass the desired value. Here are examples:
 
@@ -158,7 +177,7 @@ public class Exercise {
 }
 ```
 
-### Opening a File
+### Opening a File <a name="opening-a-file"></a>
 
 Besides creating a file, the second most common operation performed on a file consists of opening one. You can open a file using the File class. As done previously, first declare a File variable and pass the name of the file to its constructor. Here is an example:
 
@@ -173,7 +192,78 @@ public class Exercise {
 }
 ```
 
-### Exercicis
+### Reading from a File <a name="reading-from-a-file"></a>
+
+To support the ability to read a value from a file, you can use the Scanner class. To support this operation, the Scanner class is equipped with a constructor that takes a File object as argument. Therefore, you can pass it a File variable you will have previously declared. Here is an example of declaring and initializing a variable for it:
+
+```java
+import java.io.File;
+import java.util.Scanner;
+
+public class Exercise {
+    public static void main(String[] args)  throws Exception {
+	// Indicate that you are planning to opena file
+	File fleExample = new File("Example.xpl");
+        // Prepare a Scanner that will "scan" the document
+        Scanner opnScanner = new Scanner(fleExample);
+    }
+}
+```
+
+The values of a file are stored in or more lines. To continuously read the lines from the file, one at a time, you can use a while loop. In the while loop, continuously use the Scanner object that can read a line of value(s). In the while statement, to check whether the Scanner object has not gotten to the last line, you can check the status of its hasNext() method. As long as this method returns true, the Scanner reader has not gotten to the end of the file. Once the Scanner object has arrived to the end, this method would return false. Here is an example of implementing this scenario:
+
+```java
+import java.io.File;
+import java.util.Scanner;
+
+public class Exercise {
+    public static void main(String[] args)  throws Exception {
+	// Indicate that you are planning to opena file
+	File fleExample = new File("Example.xpl");
+        // Prepare a Scanner that will "scan" the document
+        Scanner opnScanner = new Scanner(fleExample);
+
+	// Read each line in the file
+        while(opnScanner.hasNext()) {
+            // Read each line and display its value
+	    System.out.println("First Name:    " + opnScanner.nextLine());
+	    System.out.println("Last Name:     " + opnScanner.nextLine());
+	    System.out.println("Hourly Salary: " + opnScanner.nextLine());
+	    System.out.println("Is Full Time?: " + opnScanner.nextLine());
+	}
+    }
+}
+```
+
+After using the Scanner object, to free the resources it was using, call its close() method. Here is an example:
+
+```java
+import java.io.File;
+import java.util.Scanner;
+
+public class Exercise {
+    public static void main(String[] args)  throws Exception {
+	// Indicate that you are planning to opena file
+	File fleExample = new File("Example.xpl");
+        // Prepare a Scanner that will "scan" the document
+        Scanner opnScanner = new Scanner(fleExample);
+
+	// Read each line in the file
+        while( opnScanner.hasNext() ) {
+            // Read each line and display its value
+	    System.out.println("First Name:    " + opnScanner.nextLine());
+	    System.out.println("Last Name:     " + opnScanner.nextLine());
+	    System.out.println("Hourly Salary: " + opnScanner.nextLine());
+	    System.out.println("Is Full Time?: " + opnScanner.nextLine());
+	}
+            
+    	// De-allocate the memory that was used by the scanner
+        opnScanner.close();
+    }
+}
+```
+
+### Exercicis <a name="exercicis"></a>
 
 #### Exercici 1
 Implementa la classe `NumsToFile1.java` que escriu els números de `1100 a 1200` en un arxiu que amb nom `Num11001200.txt` a l'escriptori.
@@ -207,7 +297,7 @@ TREBALLADOR 2
 
 ```
 
-## Java Streams
+## Java Streams <a name="java-streams"></a>
 The terms "input" and "output" can sometimes be a bit confusing. The input of one part of an application is often the output of another. Is an OutputStream a stream where output is written to, or output comes out from (for you to read)? After all, an InputStream outputs its data to the reading program, doesn't it? Personally, I found this a bit confusing back in the day when I first started out learning about Java IO.
 
 In an attempt to clear out this possible confusion, I have tried to put some different names on input and output to try to link them conceptually to where the input comes from, and where the output goes.
@@ -287,7 +377,26 @@ These purposes are nice to know about when reading through the `java.io` classes
 
 Having discussed sources, destinations, input, output and the various IO purposes targeted by the Java IO classes, here is a table listing most (if not all) Java IO classes divided by input, output, being byte based or character based, and any more specific purpose they may be addressing, like buffering, parsing etc.
 
-(FALTA LA TABLA)
+
+| | Byte Based |  | Character Based | |
+|-|------------|--|-----------------|--|
+| | Input |	Output |	Input |	Output |
+| Basic | 	InputStream  |	OutputStream |	Reader | Writer |
+|       |                |               | InputStreamReader | OutputStreamWriter |
+| Arrays | ByteArrayInputStream | ByteArrayOutputStream | CharArrayReader | CharArrayWriter |
+|  Files | FileInputStream | FileOutputStream | FileReader | FileWriter |
+|       | RandomAccessFile | RandomAccessFile |         |        |
+| Pipes | PipedInputStream | PipedOutputStream | PipedReader | PipedWriter |
+| Buffering | BufferedInputStream | BufferedOutputStream | BufferedReader | BufferedWriter |
+| Filtering | FilterInputStream | FilterOutputStream | FilterReader | FilterWriter |
+| Parsing | PushbackInputStream |               | PushbackReader |        | 	
+|       | StreamTokenizer |               | LineNumberReader |        | 
+| Strings |                |               | StringReader | StringWriter | 	 	 	 	
+| Data | DataInputStream | DataOutputStream |         |        |	
+| Data - Formatted |                | PrintStream |         | PrintWriter | 	
+| Objects | ObjectInputStream | ObjectOutputStream |         |        | 	 	
+| Utilities | SequenceInputStream |               |         |        | 	 	 	 	
+ 	 	 	 	
 
 ## Using a Stream
 
@@ -296,7 +405,7 @@ Having discussed sources, destinations, input, output and the various IO purpose
 3. Read/write data using this object's read/ write methods.
 4. Finally close the stream by calling its close() method.
 
-# Standard Streams
+# Standard Streams <a name="standard-streams"></a>
 
 All the programming languages provide support for standard I/O where user's program can take input from a keyboard and then produce output on the computer screen. If you are aware if C or C++ programming languages, then you must be aware of three standard devices STDIN, STDOUT and STDERR. Similar way Java provides following three standard streams
 
@@ -357,8 +466,7 @@ public class ReadConsole {
 
 Let's keep above code in `ReadConsole.java` file and try to compile and execute it as below. This program continues reading and outputting same character until we press `q`:
 
-# Character Stream Classes
-
+# Character Stream Classes <a name="character-streams"></a>
 
 Character stream classes can be used to read and write 16 bit Unicode characters.
 
@@ -472,7 +580,7 @@ public class ArrayToFile {
 }
 ```
 
-# Exercicis FileReader i FileWriter
+# Exercicis FileReader i FileWriter <a name="exercicis-file-reader-file-writer"></a>
 
 #### Exercici 6
 
@@ -534,7 +642,52 @@ Persona 2
 
 Cal tenir en compte que les columnes poden permutar i la sortida caldria que fos igual de coherent. Per això es decideix emmagatzemar els valors de la primera fila d'entrada en un array `String[]`.
 
-## Data Streams
+# Byte Streams classes <a name="byte-streams-classes"></a>
+Byte Stream Classes
+
+Byte stream classes have been designed to provide functional features for creating and manipulating streams and files for reading and writing bytes. Since the streams are unidirectional they can transmit bytes in only one direction and therefore java provides two kinds of bytes stream classes i.e. input stream classes and output stream classes.
+
+Input Stream Classes
+
+Input stream classes that are used to read 8 bit bytes, include a super class known as InputStream and a number of subclasses for supporting various input related functions.
+
+
+![Input Streams classes](../images/input-streams-classes.jpg)
+
+
+Output Stream Classes
+
+Output stream classes are derived from the base class OutputStream. This is an abstract class and has several subclasses and these subclasses can be used for performing output operations.
+
+![Output Streams classes](../images/output-streams-classes.jpg)
+
+
+File Streams:
+These handle writing and reading bytes to/from files.
+
+* FileInputStream:
+
+A FileInputStream can be created with the FileInputStream (String constructor). The string argument should be the name of the file. After you create a file input stream you can read bytes from the stream by calling its read() method. This method returns an integer containing the next byte in the stream. If the method returns a -1 it signifies that end of the file stream has been reached.
+
+```java
+// Falta código de ejemplo
+```
+
+* File Output Stream:
+
+    A file output stream can be created with FileOutputStream (String Constructor). The string argument should be the name of the file.
+
+Note: You have to be careful when specifying the file to which to write an output stream. If it is the same as an existing file, the original contents will be lost when you start writing data to the stream.
+
+You can create a FileOutputStream that appends data after the end of an existing file with the FileOutputStream (String, Boolean) constructor. The string specifies the file and the Boolean argument should equal to true to append data instead of overwriting any existing data.
+
+The file output streams write (int) method is used to write bytes to the stream. After the last byte has been written to the file the streams close() method closes the stream.
+
+```java
+// Falta código de ejemplo
+```
+
+## Data Streams <a name="data-streams"></a>
 
 These are Filter streams used to read/write primitive data types instead of raw bytes.
 
@@ -631,7 +784,7 @@ dos.writeChar(c);
 dos.writeByte(b);
 ```
 
-## Object Streams
+## Object Streams <a name="object-streams"></a>
 ### ObjectInputStream
 
 The Java `ObjectInputStream` class `java.io.ObjectInputStream` enables you to read Java objects from an `InputStream` instead of just raw bytes. You wrap an `InputStream` in a `ObjectInputStream` and then you can read objects from it. Of course the bytes read must represent a valid, serialized Java object. Otherwise reading objects will fail.
@@ -762,7 +915,7 @@ This example first creates an ObjectOutputStream connected to a FileOutputStream
 Then the example creates an `ObjectInputStream` connected to the same file the `ObjectOutputStream` was connected to. The example then reads in an object from the `ObjectInputStream` and casts it to a `Person` object. After that the `ObjectInputStream` is also closed, and the values read into the `Person` object are printed to `System.out`.
 
 
-## RandomAccessFile
+## RandomAccessFile <a name="random-access-file"></a>
 
 The `RandomAccessFile` class in the `java.io` API allows you to move around a file and read from it or write to it as you please. You can replace existing parts of a file too. This is not possible with the `FileInputStream` or `FileOutputStream`.
 
@@ -830,7 +983,7 @@ The `RandomAccessFile` has a `close()` method which must be called when you are 
 
 The proper exception handling of a `RandomAccessFile` is left out of this text for clarity. However, a `RandomAccessFile` must be closed properly after use, just like with a stream or `reader/writer`. This requires proper exception handling around the `close()` call.
 
-#### Examples
+#### Exemples <a name="exemples-random-access"></a>
 
 1. We want to make a program, given an initial file and a specific letter `X`, changing the file every letter `X` in capital letters.
 
@@ -1121,7 +1274,7 @@ public class ShowRandomFile {
 
 ```
 
-## Exercicis
+## Exercicis <a name="exercicis-streams"></a>
 
 ### Exercici 14
 Implementa la classe `CopyFilesBin.java` que copii un fitxer binari donat (i.e. un png) en un altre especificat emprant les classes corresponents.
