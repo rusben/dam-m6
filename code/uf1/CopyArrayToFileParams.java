@@ -1,6 +1,6 @@
 import java.io.*;
 
-public class CopyArrayToFile {
+public class CopyArrayToFileParams {
 
     public static void main(String[] args) {
 
