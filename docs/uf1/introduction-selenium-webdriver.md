@@ -128,15 +128,15 @@ Resum per localitzar elements
 
 | Variation |	Description |	Sample |
 |-----------|-------------|--------|
-| By.className | finds elements based on the value of the “class” attribute | findElement(By.className(“someClassName”)) |
-| By.cssSelector | finds elements based on the driver’s underlying CSS Selector engine | findElement(By.cssSelector(“input#email”)) |
-| By.id | locates elements by the value of their “id” attribute | findElement(By.id(“someId”)) |
-| By.linkText | finds a link element by the exact text it displays | findElement(By.linkText(“REGISTRATION”)) |
-| By.name | locates elements by the value of the “name” attribute | findElement(By.name(“someName”)) |
-| By.partialLinkText | locates elements that contain the given link text | findElement(By.partialLinkText(“REG”)) |
-| By.tagName | locates elements by their tag name | findElement(By.tagName(“div”)) |
-| By.xpath | locates elements via XPath | findElement(By.xpath(“//html/body/div/table/tbody/tr/td[2]/table/
-tbody/tr[4]/td/table/tbody/tr/td[2]/table/tbody/tr[2]/td[3]/ form/table/tbody/tr[5]”)) |
+| `By.className` | troba elements basats en el valor de l'atribut `class` | `findElement(By.className(“someClassName”))` |
+| `By.cssSelector` | troba elements basats en el motor de selecció CSS ​​subjacent del controlador | `findElement(By.cssSelector(“input#email”))` |
+| `By.id` | localitza els elements pel valor del seu atribut `id` | `findElement(By.id(“someId”))` |
+| `By.linkText` | troba un element d'enllaç pel text exacte que mostra | `findElement(By.linkText(“REGISTRATION”))` |
+| `By.name` |  localitza elements pel valor de l'atribut `nom` | `findElement(By.name(“someName”))` |
+| `By.partialLinkText` | localitza els elements que contenen el text de l'enllaç donat | `findElement(By.partialLinkText(“REG”))` |
+| `By.tagName` | localitza els elements pel seu nom d'etiqueta | `findElement(By.tagName(“div”))` |
+| `By.xpath` | localitza elements mitjançant XPath | `findElement(By.xpath(“//html/body/div/table/tbody/tr/td[2]/table/
+tbody/tr[4]/td/table/tbody/tr/td[2]/table/tbody/tr[2]/td[3]/ form/table/tbody/tr[5]”))` |
 
 ## Ordres comuns
 ### Instanciació d'elements web
@@ -175,6 +175,107 @@ Les ordres `get` obtenen informació important sobre la pàgina/element. Aquí h
 | `getCurrentUrl()` | <ul><li>No necessita paràmetres</li><li>Obtén la cadena que representa l'URL actual que està mirant el navegador</li></ul> |
 | `getText()` | <ul><li>Obtén el text interior de l'element que especifiqueu</li></ul> |
 
+### Ordres de navegació
+Aquestes ordres us permeten actualitzar, entrar i canviar entre diferents pàgines web.
+
+| Ordres | Ús |
+|--------|----|
+| `navigate().to()` | <ul><li>Obre automàticament una nova finestra del navegador i recupera la pàgina que especifiqueu entre els seus parèntesis.</li><li>Fa exactament el mateix que el mètode get().</li></ul> |
+| `navigate().refresh()` | <ul><li>No necessita paràmetres.</li><li>Actualitza la pàgina actual.</li></ul> |
+| `navigate().back()` | <ul><li>No necessita paràmetres.</li><li>Et porta enrere una pàgina a l'historial del navegador.</li></ul> |
+| `navigate().forward()` | <ul><li>No necessita paràmetres.</li><li>Us fa avançar una pàgina a l'historial del navegador.</li></ul> |
+
+### Tancar i sortir de finestres del navegador
+
+| Ordres | Ús |
+|--------|----|
+| close() | <ul><li>No necessita paràmetres.</li><li>Tanca només la finestra del navegador que WebDriver controla actualment.</li></ul> |
+| quit() | <ul><li>No necessita paràmetres.</li><li>Tanca totes les finestres que WebDriver ha obert.</li></ul> |
+
+### Waits
+Hi ha dos tipus de waits.
+* Wait implícit: s'utilitza per establir el temps d'espera predeterminat durant tot el programa
+* Wait explícit: s'utilitza per establir el temps d'espera només per a una instància concreta
+
+#### Wait implícit
+* És més senzill de codificar que Explicit Waits.
+* Normalment es declara a la part d'instanciació del codi.
+* Només necessitareu un paquet addicional per importar.
+
+Per començar a utilitzar una espera implícita, hauríeu d'importar aquest paquet al vostre codi.
+
+```java
+import java.util.concurrent.TimeUnit;
+```
+
+A continuació, a la part d'instanciació del vostre codi, afegiu-ho.
+
+```java
+driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+```
+
+#### Wait explícit
+
+Les esperes explícites es fan mitjançant les classes `WebDriverWait` i `ExpectedCondition`. Per al següent exemple de `Selenium WebDriver`, esperarem fins a 10 segons perquè un element l'identificador del qual sigui "nom d'usuari" sigui visible abans de passar a la següent ordre. Aquí teniu els passos.
+
+***Pas 1***
+Importeu aquests dos paquets:
+
+```java
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+```
+
+***Pas 2***
+Declarar una variable `WebDriverWait`. En aquest exemple, utilitzarem `myWaitVar` com a nom de la variable.
+```java
+WebDriver driver = new FirefoxDriver();
+WebDriverWait myWaitVar = new WebDriverWait(driver, 10);
+```
+
+***Pas 3***
+Utilitzeu `myWaitVar` amb `ExpectedConditions` a les parts on necessiteu que es produeixi l'espera explícita. En aquest cas, utilitzarem l'espera explícita a l'entrada del "nom d'usuari"  abans d'escriure el text "tutorial".
+
+```java
+myWaitVar.until(ExpectedConditions.visibilityOfElementLocated(By.id("username")));
+driver.findElement(By.id("username")).sendKeys("tutorial");
+```
+
+### Condicions
+
+Els mètodes següents s'utilitzen en operacions condicionals i en bucle:
+
+* `isEnabled()` – s'utilitza quan voleu verificar si un determinat element està habilitat o no abans d'executar una ordre.
+* `isDisplayed()` – s'utilitza quan voleu verificar si un determinat element es mostra o no abans d'executar una ordre.
+* `isSelected()` – s'utilitza quan voleu verificar si una casella de selecció, botó d'opció o opció en un quadre desplegable està seleccionada. No funciona en altres elements.
+
+### Ús de ExpectedConditions
+
+La classe `ExpectedConditions` ofereix un conjunt més ampli de condicions que podeu utilitzar juntament amb el mètode `until()` de `WebDriverWait`.
+
+A continuació es mostren alguns dels mètodes `ExpectedConditions` més comuns.
+
+* `alertIsPresent()` – espera fins que es mostri un quadre d'alerta.
+* `elementToBeClickable()` – Espera fins que un element sigui visible i, al mateix temps, habilitat. El codi Selenium de mostra a continuació esperarà fins que l'element amb `id="username"` es faci visible i s'habiliteu primer abans d'assignar aquest element com a variable `WebElement` anomenada `"txtUserName"`.
+* `frameToBeAvailableAndSwitchToIt()` – Espera fins que el marc donat ja estigui disponible i, a continuació, canvia automàticament a ell.
+
+### Captura d'excepcions
+
+Quan s'utilitza `isEnabled()`, `isDisplayed()` i `isSelected()`, `WebDriver` assumeix que l'element ja existeix a la pàgina. En cas contrari, llançarà una `NoSuchElementException`. Per evitar-ho, hauríem d'utilitzar un bloc `try-catch` perquè el programa no s'interrompi.
+
+```java
+WebElement txtbox_username = driver.findElement(By.id("username"));
+try {
+  if(txtbox_username.isEnabled()) {
+    txtbox_username.sendKeys("tutorial");
+  }
+} 
+catch(NoSuchElementException nsee) {
+  System.out.println(nsee.toString());
+}
+```
+
+Si utilitzeu esperes explícites, el tipus d'excepció que hauríeu de detectar és la `TimeoutException`.
 
 ## Referencias
 * https://www.selenium.dev/selenium/docs/api/java/org/openqa/selenium/package-summary.html
