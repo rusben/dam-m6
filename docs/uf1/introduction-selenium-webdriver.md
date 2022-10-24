@@ -127,7 +127,7 @@ Hem utilitzat el mètode `getTagName()` per extreure el nom de l'etiqueta d'aque
 Resum per localitzar elements
 
 | Variation |	Description |	Sample |
------------------------------------
+|-----------|-------------|--------|
 | By.className | finds elements based on the value of the “class” attribute | findElement(By.className(“someClassName”)) |
 | By.cssSelector | finds elements based on the driver’s underlying CSS Selector engine | findElement(By.cssSelector(“input#email”)) |
 | By.id | locates elements by the value of their “id” attribute | findElement(By.id(“someId”)) |
@@ -168,7 +168,7 @@ Cal tenir en compte les coses següents quan utilitzeu el mètode `click()`.
 Les ordres `get` obtenen informació important sobre la pàgina/element. Aquí hi ha algunes ordres importants `get` amb les quals heu d'estar familiaritzats.
 
 | Ordres | Ús |
----------------
+|--------|----|
 | `get()` | <ul><li>Obre automàticament una nova finestra del navegador i recupera la pàgina que especifiqueu entre els seus parèntesis.</li><li>És la contrapartida de l'ordre òpen` de Selenium IDE.</li><li>El paràmetre ha de ser un objecte String.</li></ul> |
 | `getTitle()` | <ul><li>No necessita paràmetres</li><li>Obtén el títol de la pàgina actual</li><li>Els espais en blanc inicials i posteriors es retallen</li><li>Retorna una cadena nul·la si la pàgina no té títol</li></ul> |
 | `getPageSource()` | <ul><li>No necessita paràmetres</li><li>Retorna el codi font de la pàgina com a valor String</li></ul> |
