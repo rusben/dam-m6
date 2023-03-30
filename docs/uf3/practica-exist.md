@@ -1,7 +1,7 @@
 # Práctica eXist
 ## Objetivos
 Aplicar los conocimientos adquiridos durante el transcurso de la `UF`, en concreto:
-* Uso de Hibernate y JPA.
+* Uso de eXist y XQuery.
 * Realización de consultas, gestión de resultados, modificaciones y procedimientos.
 * Gestión de transacciones y mensajes de error.
 
