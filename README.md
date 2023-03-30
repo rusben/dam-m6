@@ -1,4 +1,4 @@
-# dam-m6-2022
+# dam-m6
 <!-- [click on this link](#my-multi-word-header) -->
 
 * [UF1 - Persistencia en fitxers](docs/uf1/uf1.md)
