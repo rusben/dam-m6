@@ -12,16 +12,16 @@ En resum, l'API XQJ és una eina útil per als desenvolupadors de Java que neces
 
 ## Conceptes bàsics
 
-Hi ha quatre conceptes principals que cal entendre a l'API XQJ per fer sol·licituds a eXist: fonts de dades, connexions, expressions i seqüències de resultats:
+Hi ha quatre conceptes principals que cal entendre a l'`API XQJ` per fer sol·licituds a eXist: fonts de dades, connexions, expressions i seqüències de resultats:
 
 
-* ***`XQDataSource`***: la font de dades proporciona el controlador principal de XQJ i defineix com us connecteu al servidor. Amb la implementació net.xqj.exist.ExistXQDataSource de xqj.net, heu de definir dues propietats per poder connectar-vos a `eXist`
+* ***`XQDataSource`***: la font de dades proporciona el controlador principal de `XQJ` i defineix com us connecteu al servidor. Amb la implementació `net.xqj.exist.ExistXQDataSource` de `xqj.net`, heu de definir dues propietats per poder connectar-vos a `eXist`
 
-** `serverName`: aquest és el nom d'amfitrió o l'adreça IP del servidor eXist al qual us voleu connectar. Si esteu executant el vostre client XQJ a la mateixa màquina que eXist, podeu utilitzar localhost o 127.0.0.1 .
-** `port`: aquest és el port `TCP` al qual escolta el servidor eXist al qual us voleu connectar. Si no heu tornat a configurar aquesta configuració a eXist, serà 8080 per defecte.
+  * `serverName`: aquest és el nom d'amfitrió o l'adreça IP del servidor `eXist` al qual us voleu connectar. Si esteu executant el vostre client `XQJ` a la mateixa màquina que `eXist`, podeu utilitzar `localhost` o `127.0.0.1`
+  * `port`: aquest és el port `TCP` al qual escolta el servidor `eXist` al qual us voleu connectar. Si no heu tornat a configurar aquesta configuració a `eXist`, serà `8080` per defecte.
 
 
-Exemple: Configuració de `XQDataSource` per connectar-se a eXist
+Exemple: Configuració de `XQDataSource` per connectar-se a `eXist`
 ```java
 final XQDataSource xqs = new ExistXQDataSource();
 xqs.setProperty("serverName", "localhost");
