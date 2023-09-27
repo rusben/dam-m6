@@ -618,6 +618,7 @@ Barrueco
 Ferran
 Boutin
 19
+****
 ```
 
 Generi un fitxer csv on la primera fila sigui nom, cognoms, edat i les següents les ocurrències que apareixen en el fitxer de lectura. Presuposem l'ús de 3 arrays `String[]` per tal d'emmagatzemar temporalment les ocurrències aparegudes després de la lectura. Posteriorment es llegiran aquests tres arrays i s'enregisrarà el seu contingut en el fitxer csv de sortida. Es demana implementar tres mètodes. `llegeixFitxer()`, `mostraPerPantalla()` i `escriuSortidaCSV()`
