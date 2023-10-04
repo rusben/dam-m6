@@ -861,6 +861,15 @@ El títol és: John Doe
 #### Exercici 1
 Utilitzar el codi de l'exemple per crea-ne una classe anomenada `AlumnesDOM1.java`  que crei un fitxer `XML` amb `Alumnes`, que guardi els elements de cada `Alumne` que conté els nodes `<DNI>`, `<Nom>`, `<Cognom1>`, `<Cognom2>`, `<Ciutat>` i `<Assignatures>` en el node arrel anomenat `Alumnes`, així com el valor de l'atribut `Edat` de cada `<Alumne>`.
 
+El node `<Assignatures>` té el següent format:
+
+```xml
+<Assignatures>
+   <Assignatura>Accès a Dades</Assignatura>
+   <Assignatura>Programació de mòbils</Assignatura>
+</Assignatures>
+```
+
 #### Exercici 2
 Adaptar el codi de l'exemple pel cas de l'exercici d'accés aleatori. S'ha de treballar amb les dades inserides en aquell exercici, `ID`, `cognom`, `departament` i `sou`. Es demana implementar la classe `EmpleatsDOM1.java` codi per crear un fitxer `XML` anomenat `empleats.xml`.
 
