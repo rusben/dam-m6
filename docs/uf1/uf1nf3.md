@@ -870,6 +870,25 @@ El node `<Assignatures>` té el següent format:
 </Assignatures>
 ```
 
+El xml hauria de quedar així:
+
+```xml
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Alumnes>
+   <Alumne>
+        <DNI>Siddharta</DNI>
+        <Nom>Hermann Hesse</Nom>
+        <Cognom1></Cognom1>
+        <Cognom2></Cognom2>
+        <Ciutat></Ciutat>
+        <Assignatures>
+          <Assignatura> Mates </Assignatura>
+          <Assignatura> Català </Assignatura>
+        </Assignatures>
+   </Alumne>
+</Alumnes>
+```
+
 #### Exercici 2
 Adaptar el codi de l'exemple pel cas de l'exercici d'accés aleatori. S'ha de treballar amb les dades inserides en aquell exercici, `ID`, `cognom`, `departament` i `sou`. Es demana implementar la classe `EmpleatsDOM1.java` codi per crear un fitxer `XML` anomenat `empleats.xml`.
 
