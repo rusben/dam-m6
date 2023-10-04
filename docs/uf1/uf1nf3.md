@@ -876,11 +876,11 @@ El xml hauria de quedar així:
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Alumnes>
    <Alumne>
-        <DNI>Siddharta</DNI>
-        <Nom>Hermann Hesse</Nom>
-        <Cognom1></Cognom1>
-        <Cognom2></Cognom2>
-        <Ciutat></Ciutat>
+        <DNI>123456789</DNI>
+        <Nom>John</Nom>
+        <Cognom1>Doe</Cognom1>
+        <Cognom2>Foo</Cognom2>
+        <Ciutat>Barcelona</Ciutat>
         <Assignatures>
           <Assignatura> Mates </Assignatura>
           <Assignatura> Català </Assignatura>
