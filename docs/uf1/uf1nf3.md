@@ -1538,7 +1538,14 @@ Use the same `Museum` class used in the previous example.
 
 Until now, we just generated `XML` that contained elements of the type `String`, so we are going to see what actions are needed in order to allow `JAXB` to store other types that are not configured per default. In `Java 8`, one of the new features is the new `Date API`; this `API` offers many new possibilities and enhances the old one. One of the new classes coming with this `API` is the `java.time.LocalDate`. `JAXB` does not know how to manage this class, so we have to create an adapter in order to explain `JAXB` how to marshal and unmarshal it:
 
+
+***LocalDateAdapter.java***
 ```java
+package net.xeill.elpuig;
+
+import java.time.LocalDate;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+
 public class LocalDateAdapter extends XmlAdapter<String, LocalDate> {
   public LocalDate unmarshal(String sDate) throws Exception {
     return LocalDate.parse(sDate);
@@ -1552,38 +1559,155 @@ public class LocalDateAdapter extends XmlAdapter<String, LocalDate> {
 
 We just implement the marshal and unmarshal methods of the interface `XmlAdapter` with the proper types and results and afterwards, we indicate `JAXB` where to use it:
 
+***Exhibition.java***
 ```java
-@XmlJavaTypeAdapter(LocalDateAdapter.class)
-@XmlElement(name = "FROM")
-public void setFrom(LocalDate from) {
-  this.from = from;
+package net.xeill.elpuig;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.time.LocalDate;
+
+@XmlRootElement(name = "PERMANENT_EXHIBITION")
+public class Exhibition {
+
+    String name;
+    LocalDate from;
+
+    public String getName() {
+        return name;
+    }
+
+    @XmlElement(name = "NAME")
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public LocalDate getFrom() {
+        return from;
+    }
+
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    @XmlElement(name = "FROM")
+    public void setFrom(LocalDate from) {
+        this.from = from;
+    }
 }
 ```
 
-Assuming that `this.from` is `LocalDate` type.
+***Museum.java***
+```java
+package net.xeill.elpuig;
+
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+@XmlRootElement(name = "MUSEUM")
+public class Museum {
+
+    String name;
+    String city;
+    boolean childrenAllowed;
+    Exhibition exhibition;
+
+    public String getName() { return name; }
+
+    @XmlElement(name = "NAME")
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    @XmlElement(name = "CITY")
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    @XmlAttribute(name = "children_allowed")
+    public void setChildrenAllowed(boolean childrenAllowed) {
+        this.childrenAllowed = childrenAllowed;
+    }
+
+    public boolean getChildrenAllowed() {
+        return childrenAllowed;
+    }
+
+    public Exhibition getExhibition() {
+        return exhibition;
+    }
+
+    @XmlElement(name = "PERMANENT_EXHIBITION")
+    public void setExhibition(Exhibition exhibition) {
+        this.exhibition = exhibition;
+    }
+}
+```
+
+***Main.java***
+```java
+package net.xeill.elpuig;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import java.io.File;
+import java.time.LocalDate;
+import java.time.Month;
+
+public class Main {
+    public static void main(String[] args) {
+
+        Museum museum = new Museum();
+        museum.setName("Museum of Modern Art");
+        museum.setCity("New York");
+
+        Exhibition exhibition = new Exhibition();
+        exhibition.setName("Dinosaurs");
+        exhibition.setFrom(LocalDate.of(2030, Month.APRIL, 1));
+
+        museum.setExhibition(exhibition);
+
+        JAXBContext jaxbContext;
+        try {
+            jaxbContext = JAXBContext.newInstance(Museum.class);
+            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+            jaxbMarshaller.marshal(museum, new File("simple.xml"));
+            jaxbMarshaller.marshal(museum, System.out);
+
+        } catch (JAXBException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+}
+```
+
 The `XML` result would be:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <MUSEUM children_allowed="false">
-    <MUSEUM_NAME>Simple Museum</MUSEUM_NAME>
-    <CITY>Oviedo, Spain</CITY>
+    <CITY>New York</CITY>
     <PERMANENT_EXHIBITION>
-        <NAME>one exhibition</NAME>
-        <FROM>2014-01-01</FROM>
+        <FROM>2030-04-01</FROM>
+        <NAME>Dinosaurs</NAME>
     </PERMANENT_EXHIBITION>
+    <NAME>Museum of Modern Art</NAME>
 </MUSEUM>
 ```
 
 Summarizing, we know how to generate `XML` from `Java Objects`, we know also how to use lists within these `Java Objects` and also as root element of the `XML`, we saw how to adapt complex types in order that `JAXB` can work with them and we also made as well.
 
-The example bellow contains all the features explained in this article: A List of `Museums` containing names, cities, permanent and special exhibitions with dates (using java 8 `LocalDate`) and list of artists in each exhibition is stored in an `XML` file.
-
-## Exercici 8
-Implement and complete the `LocalDateAdapter.java`, `Exhibition.java`, `Museum.java` and `AdaptedNestedMarshall.java` class as above to produce the same `XML` file.
+The example bellow contains all the features explained in this article: A List of `Museums` containing names, cities, permanent and special exhibitions with dates using `LocalDate` is stored in an `XML` file.
 
 ## Exercici 9
-Implement `MuseumJAXBComplete.java`  and all classes as necessary  to produce the same xml file as below.
+Implement `MuseumJAXBComplete.java` and all classes as necessary to produce the same xml file as below.
 
 ```xml
 <MUSEUMS>
