@@ -1708,7 +1708,7 @@ Summarizing, we know how to generate `XML` from `Java Objects`, we know also how
 The example bellow contains all the features explained in this article: A List of `Museums` containing names, cities, permanent and special exhibitions with dates using `LocalDate` is stored in an `XML` file.
 
 ## Exercici MuseumJAXBComplete
-Implement `MuseumJAXBComplete.java` and all classes as necessary to produce the same xml file as below.
+Implement `MuseumJAXBComplete` with all the classes needed to produce the same `XML` file as below.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
