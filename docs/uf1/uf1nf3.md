@@ -1317,50 +1317,132 @@ In this example we are going to show how to use the `JAXB` marshal functionaliti
 
 As example, we are going to create a list of museums and store it in a specific `XML` file, each museum contains information like its name, about permanent and special exhibitions, city where is located, etc.
 
-First of all we indicate `JAXB` what `Java` elements we want to store in our `XML` file:
+We have to create a `maven` project with IntelliJ and use the following `pom.xml`:
+
+```xml
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>net.xeill.elpuig</groupId>
+  <artifactId>MuseumJAXB</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>MuseumJAXB</name>
+  <url>http://maven.apache.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+    </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.xml.bind</groupId>
+      <artifactId>jaxb-api</artifactId>
+      <version>2.3.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-impl</artifactId>
+      <version>2.3.8</version>
+    </dependency>
+
+  </dependencies>
+</project>
+
+```
+
+Create a `Museum` class and indicate `JAXB` which `Java` elements we want to store in our `XML` file:
 
 ```java
-@XmlRootElement(name="MUSEUM")
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "MUSEUM")
 public class Museum {
 
-  String name;
+    String name;
+    String city;
+    Boolean childrenAllowed;
 
-  @XmlElement(name="MUSEUM_NAME")
-  public void setName(String name) {
-    this.name = name;
-  }
+    @XmlElement(name = "NAME")
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  boolean childrenAllowed;
+    public String getName() { return name; }
 
-  @XmlAttribute(name = "children_allowed")
-  public void setChildrenAllowed(boolean childrenAllowed) {
-    this.childrenAllowed = childrenAllowed;
-  }
+    @XmlElement(name = "CITY")
+    public void setCity(String city) {
+        this.city = city;
+    }
 
-  ...
+    public String getCity() {
+        return city;
+    }
+
+    @XmlAttribute(name = "children_allowed")
+    public void setChildrenAllowed(Boolean childrenAllowed) {
+        this.childrenAllowed = childrenAllowed;
+    }
+
+    public Boolean getChildrenAllowed() {
+        return childrenAllowed;
+    }
 }
 ```
 
 In the code shown above, we can see three `JAXB` annotations:
 
 1. ***`@XmlRootElement(name="MUSEUM")`*** : indicates the root node in the xml structure, the name is the name that will appear in the xml, if no name is specified, the class name will be used.
-2. ***`@XmlElement(name="MUSEUM_NAME")`***: indicates a child node.
-3. ***`@XmlAttribute(name ="children_allowed")`***: indicates an attribute of the root node.
+2. ***`@XmlElement(name="NAME")`***: indicates a child node.
+3. ***`@XmlElement(name="CITY")`***: indicates a child node.
+4. ***`@XmlAttribute(name ="children_allowed")`***: indicates an attribute of the root node.
 
-Next step is to marshal this object and generate the `XML` with the desired structure:
+
+
+Next step is to marshal this object and generate the `XML` with the desired structure, create a `Main` class with the following content:
 
 ```java
-Museum simpleMuseum = new Museum();
-simpleMuseum.setName("Simple Museum");
-simpleMuseum.setCity("Oviedo, Spain");
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import java.io.File;
 
-JAXBContext jaxbContext = JAXBContext.newInstance(Museum.class);
-Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+public class Main {
+    public static void main(String[] args) {
+        Museum simpleMuseum = new Museum();
+        simpleMuseum.setName("Museum of Modern Art");
+        simpleMuseum.setCity("New York");
 
-jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        JAXBContext jaxbContext;
+        try {
+            jaxbContext = JAXBContext.newInstance(Museum.class);
+            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
-jaxbMarshaller.marshal(simpleMuseum, new File("simple.xml"));
-jaxbMarshaller.marshal(simpleMuseum, System.out);
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+            jaxbMarshaller.marshal(simpleMuseum, new File("simple.xml"));
+            jaxbMarshaller.marshal(simpleMuseum, System.out);
+
+        } catch (JAXBException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+
 ```
 
 The code is self explained and shows how a JAXB Marshaller can be used to generate an XML from a Java object. If the JAXB_FORMATTED_PROPERTY is set to true, this indicates JAXB to generate an XML with a proper indentation. The marshal method uses an object and an output file where to store the generated XML as parameters.
@@ -1368,9 +1450,9 @@ The generated XML would be:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<MUSEUM children_allowed="false">
-    <MUSEUM_NAME>Simple Museum</MUSEUM_NAME>
-    <CITY>Oviedo, Spain</CITY>
+<MUSEUM>
+    <CITY>New York</CITY>
+    <NAME>Museum of Modern Art</NAME>
 </MUSEUM>
 ```
 
