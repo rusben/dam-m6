@@ -1332,35 +1332,26 @@ We have to create a `maven` project with IntelliJ and use the following `pom.xml
   <name>MuseumJAXB</name>
   <url>http://maven.apache.org</url>
 
-    <properties>
+  <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
-    </properties>
+  </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
+       <dependency>
+           <groupId>javax.xml.bind</groupId>
+           <artifactId>jaxb-api</artifactId>
+           <version>2.3.1</version>
+       </dependency>
 
-    <dependency>
-      <groupId>javax.xml.bind</groupId>
-      <artifactId>jaxb-api</artifactId>
-      <version>2.3.1</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.sun.xml.bind</groupId>
-      <artifactId>jaxb-impl</artifactId>
-      <version>2.3.8</version>
-    </dependency>
-
+       <dependency>
+           <groupId>com.sun.xml.bind</groupId>
+           <artifactId>jaxb-impl</artifactId>
+           <version>2.3.8</version>
+       </dependency>
   </dependencies>
 </project>
-
 ```
 
 Create a `Museum` class and indicate `JAXB` which `Java` elements we want to store in our `XML` file:
@@ -1411,8 +1402,6 @@ In the code shown above, we can see three `JAXB` annotations:
 3. ***`@XmlElement(name="CITY")`***: indicates a child node.
 4. ***`@XmlAttribute(name ="children_allowed")`***: indicates an attribute of the root node.
 
-
-
 Next step is to marshal this object and generate the `XML` with the desired structure, create a `Main` class with the following content:
 
 ```java
@@ -1442,11 +1431,10 @@ public class Main {
         }
     }
 }
-
 ```
 
-The code is self explained and shows how a JAXB Marshaller can be used to generate an XML from a Java object. If the JAXB_FORMATTED_PROPERTY is set to true, this indicates JAXB to generate an XML with a proper indentation. The marshal method uses an object and an output file where to store the generated XML as parameters.
-The generated XML would be:
+The code is self explained and shows how a `JAXB Marshaller` can be used to generate an `XML` from a `Java` object. If the `JAXB_FORMATTED_PROPERTY` is set to `true`, this indicates `JAXB` to generate an `XML` with a proper indentation. The `marshal` method uses an object and an output file where to store the generated `XML` as parameters.
+The generated `XML` would be:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -1456,75 +1444,95 @@ The generated XML would be:
 </MUSEUM>
 ```
 
-## Exercicis
-### Exercici 6
-Implementa i completa el `Museum.java` class and the `SimpleMuseumJAXB.java` class com indica la teoria per a produir aquest mateix fitxer `XML`.
-
 ## How to store a list of museums
+We now know how to generate an `XML` from a `Java Object`, now we are going to show how to work with `Lists of Objects`. Create a `maven` project and use the following  `Main` class:
 
-We now know how to generate an `XML` from a `Java Object`, now we are going to show how to work with `Lists of Objects`.
-
+***Main.java***
 ```java
-Museum simpleMuseum = new Museum();
-simpleMuseum.setName("Simple Museum");
-simpleMuseum.setCity("Oviedo, Spain");
+package net.xeill.elpuig;
 
-Museum anotherSimpleMuseum = new Museum();
-anotherSimpleMuseum.setName("Another Simple Museum");
-anotherSimpleMuseum.setCity("Gijon, Spain");
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import java.io.File;
 
-Museums listOfMuseums = new Museums();
-listOfMuseums.add(simpleMuseum);
-listOfMuseums.add(anotherSimpleMuseum);
+public class Main {
+    public static void main(String[] args) {
+        Museum simpleMuseum = new Museum();
+        simpleMuseum.setName("Museum of Modern Art");
+        simpleMuseum.setCity("New York");
 
-JAXBContext jaxbContext = JAXBContext.newInstance(Museums.class);
-Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+        Museum anotherMuseum = new Museum();
+        anotherMuseum.setName("Dali's Museum");
+        anotherMuseum.setCity("Figueres");
 
-jaxbMarshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, true);
-jaxbMarshaller.marshal(listOfMuseums, new File("simple.xml"));
-jaxbMarshaller.marshal(listOfMuseums, System.out);
+        Museums museumsList = new Museums();
+        museumsList.add(simpleMuseum);
+        museumsList.add(anotherMuseum);
+
+        JAXBContext jaxbContext;
+        try {
+            jaxbContext = JAXBContext.newInstance(Museums.class);
+            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+            jaxbMarshaller.marshal(museumsList, new File("simple.xml"));
+            jaxbMarshaller.marshal(museumsList, System.out);
+
+        } catch (JAXBException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
 ```
 
 It is important to notice that `JAXB` is not able to manage directly `Lists` as root element, so we need to create a new class with the list that we want to store in order to indicate `JAXB` what kind of `XML` structure it has to generate. In this example this class is called `Museums` and contains a `List of Museum`:
 
+***Museums.java***
 ```java
-@XmlRootElement(name="MUSEUMS")
+package net.xeill.elpuig;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
+import java.util.List;
+
+@XmlRootElement(name = "MUSEUMS")
 public class Museums {
-  List<Museum> museums;
+    List<Museum> museums;
 
-  @XmlElement(name="MUSEUM")
-  public void setMuseums(List<Museum> museums) {
-    this.museums = museums;
-  }
+    public List<Museum> getMuseums() { return museums; }
 
-  public void add(Museum museum) {
-    if (this.museums == null) {
-      this.museums = new ArrayList<Museum>();
+    @XmlElement(name = "MUSEUM")
+    public void setMuseums(List<Museum> museums) { this.museums = museums; }
+
+    public void add(Museum museum) {
+        if (this.museums == null) {
+            this.museums = new ArrayList<Museum>();
+        }
+        this.museums.add(museum);
     }
-    this.museums.add(museum);
-  }
-  ...
 }
 ```
 
-The generated XML would be:
+The generated `XML` would be:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <MUSEUMS>
-  <MUSEUM>
-    <MUSEUM_NAME>Simple Museum</MUSEUM_NAME>
-    <CITY>Oviedo, Spain</CITY>
-  </MUSEUM>
-  <MUSEUM>
-    <MUSEUM_NAME>Another Simple Museum</MUSEUM_NAME>
-    <CITY>Gijon, Spain</CITY>
-  </MUSEUM>
+    <MUSEUM>
+        <CITY>New York</CITY>
+        <NAME>Museum of Modern Art</NAME>
+    </MUSEUM>
+    <MUSEUM>
+        <CITY>Figueres</CITY>
+        <NAME>Dali's Museum</NAME>
+    </MUSEUM>
 </MUSEUMS>
 ```
 
-## Exercici 7
-Implement the `Museums.java` class and the `ListMarshall.java` class as above to produce the same `XML` file.
+Use the same `Museum` class used in the previous example.
 
 ## How to store complex Java types as children nodes using an adapter:
 
@@ -1649,7 +1657,6 @@ The code shown bellow unmarshalls a given xml file into java objects. The classe
 </MUSEUMS>
 ```
 
-
 and the Java main program:
 
 ```java
@@ -1688,7 +1695,7 @@ Permanent Exhibition - Louvre Museum
 
 But this depends in the current `Java` code handling the `Museums` class.
 
-The method createUnmarshaller of the class JAXBContext creates an instance of the type Unmarshaller that allows us to proceed with our tasks. If the class Museums and its members are properly configured using the right JAXB annotations and field members, everything should work fine.
+The method `createUnmarshaller` from the class `JAXBContext` creates an instance of the type `Unmarshaller` that allows us to proceed with our tasks. If the class `Museums` and its members are properly configured using the right `JAXB` annotations and field members, everything should work fine.
 
 The `Museums` class contains a `List` of `Museum` items:
 
