@@ -1707,14 +1707,15 @@ Summarizing, we know how to generate `XML` from `Java Objects`, we know also how
 
 The example bellow contains all the features explained in this article: A List of `Museums` containing names, cities, permanent and special exhibitions with dates using `LocalDate` is stored in an `XML` file.
 
-## Exercici 9
+## Exercici MuseumJAXBComplete
 Implement `MuseumJAXBComplete.java` and all classes as necessary to produce the same xml file as below.
 
 ```xml
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <MUSEUMS>
-    <MUSEUM>
-        <MUSEUM_NAME>Prado Museum</MUSEUM_NAME>
-        <CITY>Madrid</CITY>
+    <MUSEUM children_allowed="true">
+        <CITY>Madrid, Spain</CITY>
+        <NAME>Prado</NAME>
         <PERMANENT_EXHIBITION>
             <NAME>Permanent Exhibition - Prado Museum</NAME>
             <ARTIST>Velazquez</ARTIST>
@@ -1726,14 +1727,14 @@ Implement `MuseumJAXBComplete.java` and all classes as necessary to produce the 
         </PERMANENT_EXHIBITION>
         <SPECIAL_EXHIBITION>
             <NAME>Game of Bowls (1908), by Henri Matisse</NAME>
-            <ARTIST>Mattise</ARTIST>
+            <ARTIST>Matisse</ARTIST>
             <FROM>1908-01-01</FROM>
             <TO>1908-12-31</TO>
         </SPECIAL_EXHIBITION>
     </MUSEUM>
-    <MUSEUM>
-        <MUSEUM_NAME>Reina Sofia Museum</MUSEUM_NAME>
-        <CITY>Madrid</CITY>
+    <MUSEUM children_allowed="true">
+        <CITY>Madrid, Spain</CITY>
+        <NAME>Reina Sofia</NAME>
         <PERMANENT_EXHIBITION>
             <NAME>Permanent Exhibition - Reina Sofia Museum</NAME>
             <ARTIST>Picasso</ARTIST>
@@ -1744,6 +1745,300 @@ Implement `MuseumJAXBComplete.java` and all classes as necessary to produce the 
         </PERMANENT_EXHIBITION>
     </MUSEUM>
 </MUSEUMS>
+```
+
+***LocalDateAdapter.java***
+```java
+package net.xeill.elpuig;
+
+import java.time.LocalDate;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+
+public class LocalDateAdapter extends XmlAdapter<String, LocalDate> {
+    public LocalDate unmarshal(String sDate) throws Exception {
+        return LocalDate.parse(sDate);
+    }
+
+    public String marshal(LocalDate date) throws Exception {
+        return date.toString();
+    }
+}
+```
+
+***Exhibition.java***
+```java
+package net.xeill.elpuig;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.time.LocalDate;
+
+@XmlTransient
+public class Exhibition {
+
+    String name;
+    LocalDate from;
+    LocalDate to;
+
+    public String getName() {
+        return name;
+    }
+
+    @XmlElement(name = "NAME")
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public LocalDate getFrom() {
+        return from;
+    }
+
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    @XmlElement(name = "FROM")
+    public void setFrom(LocalDate from) {
+        this.from = from;
+    }
+
+    public LocalDate getTo() {
+        return to;
+    }
+
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    @XmlElement(name = "TO")
+    public void setTo(LocalDate to) {
+        this.to = to;
+    }
+}
+
+```
+
+***PermanentExhibition.java***
+```java
+package net.xeill.elpuig;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+import java.time.LocalDate;
+import java.util.ArrayList;
+
+@XmlType(propOrder = {"name", "artists", "from", "to"})
+public class PermanentExhibition extends Exhibition {
+
+    private ArrayList<String> artists;
+
+    public PermanentExhibition() { }
+
+    public PermanentExhibition(String name) {
+        this.name = name;
+    }
+
+    public PermanentExhibition(String name, LocalDate from) {
+        this.name = name;
+        this.from = from;
+    }
+
+    public ArrayList<String> getArtists() {
+        return artists;
+    }
+
+    @XmlElement(name = "ARTIST")
+    public void setArtists(ArrayList<String> artists) {
+        this.artists = artists;
+    }
+
+    public void addArtist(String name) {
+        if (this.artists == null) {
+            this.artists = new ArrayList<String>();
+        }
+
+        this.artists.add(name);
+    }
+
+}
+```
+
+***SpecialExhibition.java***
+```java
+package net.xeill.elpuig;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlType(propOrder = {"name", "artist", "from", "to"})
+public class SpecialExhibition extends Exhibition {
+    private String artist;
+
+    public SpecialExhibition() { }
+
+    public SpecialExhibition(String name, String artist) {
+        this.name = name;
+        this.artist = artist;
+    }
+
+    public String getArtist() {
+        return artist;
+    }
+
+    @XmlElement(name = "ARTIST")
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
+
+}
+```
+
+***Museum.java***
+```java
+package net.xeill.elpuig;
+
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "MUSEUM")
+public class Museum {
+
+    String name;
+    String city;
+    boolean childrenAllowed;
+    PermanentExhibition permanentExhibition;
+    SpecialExhibition specialExhibition;
+
+    public Museum() { }
+
+    public Museum(String name, String city, boolean childrenAllowed) {
+        this.name = name;
+        this.city = city;
+        this.childrenAllowed = childrenAllowed;
+    }
+
+    public String getName() { return name; }
+
+    @XmlElement(name = "NAME")
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    @XmlElement(name = "CITY")
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    @XmlAttribute(name = "children_allowed")
+    public void setChildrenAllowed(boolean childrenAllowed) {
+        this.childrenAllowed = childrenAllowed;
+    }
+
+    public boolean getChildrenAllowed() {
+        return childrenAllowed;
+    }
+
+    public PermanentExhibition getPermanentExhibition() {
+        return permanentExhibition;
+    }
+
+    @XmlElement(name = "PERMANENT_EXHIBITION")
+    public void setPermanentExhibition(PermanentExhibition permanentExhibition) {
+        this.permanentExhibition = permanentExhibition;
+    }
+
+    public SpecialExhibition getSpecialExhibition() {
+        return specialExhibition;
+    }
+
+    @XmlElement(name = "SPECIAL_EXHIBITION")
+    public void setSpecialExhibition(SpecialExhibition specialExhibition) {
+        this.specialExhibition = specialExhibition;
+    }
+}
+
+```
+
+***Museums.java***
+```java
+package net.xeill.elpuig;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
+import java.util.List;
+
+@XmlRootElement(name = "MUSEUMS")
+public class Museums {
+    List<Museum> museums;
+
+    public List<Museum> getMuseums() { return museums; }
+
+    @XmlElement(name = "MUSEUM")
+    public void setMuseums(List<Museum> museums) { this.museums = museums; }
+
+    public void add(Museum museum) {
+        if (this.museums == null) {
+            this.museums = new ArrayList<Museum>();
+        }
+        this.museums.add(museum);
+    }
+}
+```
+
+***Main.java***
+```java
+package net.xeill.elpuig;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import java.io.File;
+import java.time.LocalDate;
+import java.time.Month;
+
+public class Main {
+    public static void main(String[] args) {
+        Museum museum = new Museum("Prado", "Madrid, Spain", true);
+
+        PermanentExhibition permanentExhibition = new PermanentExhibition("Permanent Exhibition - Prado Museum");
+        permanentExhibition.setFrom(LocalDate.of(1500, Month.JANUARY, 1));
+        permanentExhibition.setTo(LocalDate.of(2000, Month.DECEMBER, 31));
+        permanentExhibition.addArtist("Velazquez");
+        permanentExhibition.addArtist("Goya");
+        permanentExhibition.addArtist("Zurbaran");
+        permanentExhibition.addArtist("Tiziano");
+        museum.setPermanentExhibition(permanentExhibition);
+
+        SpecialExhibition specialExhibition = new SpecialExhibition("Game of Bowls (1908), by Henri Matisse", "Matisse");
+        specialExhibition.setFrom(LocalDate.of(1908, Month.JANUARY, 1));
+        specialExhibition.setTo(LocalDate.of(1908, Month.DECEMBER, 31));
+        museum.setSpecialExhibition(specialExhibition);
+
+        Museum anotherMuseum = new Museum("Reina Sofia", "Madrid, Spain", true);
+        PermanentExhibition anotherPermanentExhibition = new PermanentExhibition("Permanent Exhibition - Reina Sofia Museum");
+        anotherPermanentExhibition.setFrom(LocalDate.of(1900, Month.JANUARY, 1));
+        anotherPermanentExhibition.setTo(LocalDate.of(2014, Month.DECEMBER, 31));
+        anotherPermanentExhibition.addArtist("Picasso");
+        anotherPermanentExhibition.addArtist("Dali");
+        anotherPermanentExhibition.addArtist("Miro");
+        anotherMuseum.setPermanentExhibition(anotherPermanentExhibition);
+
+        Museums listMuseums = new Museums();
+        listMuseums.add(museum);
+        listMuseums.add(anotherMuseum);
+
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(Museums.class);
+            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            jaxbMarshaller.marshal(listMuseums, new File("complex.xml"));
+            jaxbMarshaller.marshal(listMuseums, System.out);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
 ```
 
 ## JAXB unmarshalling <a name="jaxb-marshalling"></a>
