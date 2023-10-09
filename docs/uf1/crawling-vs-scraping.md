@@ -39,8 +39,6 @@ Les pàgines web estàtiques i dinàmiques es poden recuperar enviant sol·licit
 Molts llocs web tenen grans col·leccions de pàgines generades de forma dinàmica a partir d'una font estructurada subjacent com una base de dades. Les dades de la mateixa categoria normalment es codifiquen en pàgines similars mitjançant un script o una plantilla comuns. En la mineria de dades, un programa que detecta aquestes plantilles en una font d'informació concreta, n'extreu el contingut i el tradueix a una forma relacional, s'anomena embolcall. Els algorismes de generació d'embolcalls assumeixen que les pàgines d'entrada d'un sistema d'inducció d'embolcalls s'ajusten a una plantilla comuna i que es poden identificar fàcilment en termes d'un esquema comú d'URL. A més, alguns llenguatges de consulta de dades semiestructurats, com XQuery i HTQL, es poden utilitzar per analitzar pàgines HTML i per recuperar i transformar el contingut de la pàgina.
 
 ### Anàlisi DOM
-Més informació: Document Object Model
-
 Mitjançant la inserció d'un navegador web complet, com ara Internet Explorer o el control del navegador Mozilla, els programes poden recuperar el contingut dinàmic generat pels scripts del costat del client. Aquests controls del navegador també analitzen pàgines web en un arbre DOM, en funció dels programes que poden recuperar parts de les pàgines. Es poden utilitzar idiomes com Xpath per analitzar l'arbre DOM resultant.
 Agregació vertical
 
