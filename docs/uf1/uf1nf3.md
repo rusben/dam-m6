@@ -2209,12 +2209,12 @@ And this is how we can unmarshal an `XML` file into `Java Objects`.
 
 `JAXB` offers several ways to marshal and unmarshal collections. In our example, we just created a `Museums` class that contains a `List` of `Museum` items, so `JAXB` can manage directly this class by simply using the annotations explained above. It is also possible to achieve something similar by using the annotations `@XmlElementWrapper` or `@XmlList`, but under my point of view, these ones are more complicated, offer less options and ties you in several ways in your class modelling.
 
-## Exercici 10
-Implement and complete the `JAXBJavaToXML.java` class and all other classes were necessary to produce the same `XML` file as below.
+## Exercici JAXBJavaToXML
+Implement and complete the classes necessary to produce the same `XML` file as below.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<continent xmlns:ns2="org.xeill.elpuig.jaxb.Continent">
+<continent xmlns:ns2="net.xeill.elpuig.jaxb.Continent">
     <continentName>Europe</continentName>
     <continentPopulation>7.42452E8</continentPopulation>
     <stateList>
@@ -2230,8 +2230,144 @@ Implement and complete the `JAXBJavaToXML.java` class and all other classes were
 </continent>
 ```
 
-## Exercici 11
-Implement and complete the `JAXBXMLToJava.java` class and all other classes were necessary to produce the same result due to unmarshalling the `XML` file produced in the last exercise.
+***State.java***
+```java
+package net.xeill.elpuig;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(namespace = "net.xeill.elpuig.jaxb.Continent")
+public class State {
+
+    private String stateName;
+    long statePopulation;
+
+    public State() { }
+
+    public State(String stateName, long statePopulation) {
+        super();
+        this.stateName = stateName;
+        this.statePopulation = statePopulation;
+    }
+
+    public String getStateName() {
+        return stateName;
+    }
+
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
+    }
+
+    public long getStatePopulation() {
+        return statePopulation;
+    }
+
+    public void setStatePopulation(long statePopulation) {
+        this.statePopulation = statePopulation;
+    }
+}
+
+```
+
+***Continent.java***
+```java
+package net.xeill.elpuig;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
+
+@XmlRootElement
+@XmlType(propOrder = {"continentName", "continentPopulation", "listOfStates"})
+public class Continent {
+
+    private String continentName;
+    private double continentPopulation;
+
+    private ArrayList<State> listOfStates;
+
+    public Continent() { }
+
+    public String getContinentName() {
+        return continentName;
+    }
+
+    @XmlElement
+    public void setContinentName(String continentName) {
+        this.continentName = continentName;
+    }
+
+    public double getContinentPopulation() {
+        return continentPopulation;
+    }
+
+    @XmlElement
+    public void setContinentPopulation(double continentPopulation) {
+        this.continentPopulation = continentPopulation;
+    }
+
+    public ArrayList<State> getListOfStates() {
+        return listOfStates;
+    }
+
+    // XmlElementWrapper Generates a wrapper element around XML representation
+    @XmlElementWrapper(name = "stateList")
+    // XmlElement sets the name of the entities in collection
+    @XmlElement(name = "state")
+    public void setListOfStates(ArrayList<State> listOfStates) {
+        this.listOfStates = listOfStates;
+    }
+}
+
+```
+
+***Main.java***
+```java
+package net.xeill.elpuig;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import java.io.File;
+import java.util.ArrayList;
+
+public class Main {
+    public static void main(String[] args) {
+        Continent continentEurope = new Continent();
+        continentEurope.setContinentName("Europe");
+        continentEurope.setContinentPopulation(742452000);
+
+        // Creating listOfStates
+        ArrayList<State> stateList = new ArrayList<State>();
+        State scotlandState = new State("Scotland", 5295000);
+        stateList.add(scotlandState);
+
+        State cataloniaState = new State("Catalonia", 7512982);
+        stateList.add(cataloniaState);
+
+        continentEurope.setListOfStates(stateList);
+
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(Continent.class);
+            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+
+            File XMLFile = new File("continent.xml");
+
+            jaxbMarshaller.marshal(continentEurope, XMLFile);
+            jaxbMarshaller.marshal(continentEurope, System.out);
+
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+## Exercici JAXBXMLToJava
+Implement and complete the classes necessary to produce the same result due to unmarshalling the `XML` file produced in the last exercise.
 
 ```console
 Continent Name: Europe
@@ -2240,19 +2376,186 @@ State:1 Scotland
 State:2 Catalonia
 ```
 
-## Exercici 12
-Implement `JAXBCountryToXML.java` class and all other classes were necessary to produce the same `XML` file as below.
+```java
+package net.xeill.elpuig;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import java.io.File;
+import java.util.ArrayList;
+
+public class Main {
+    public static void main(String[] args) {
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(Continent.class);
+            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+            File XMLFile = new File("continent.xml");
+
+            // This will create the Java object
+            Continent continentEurope = (Continent) unmarshaller.unmarshal(XMLFile);
+
+            System.out.println("Continent Name: " + continentEurope.getContinentName());
+            System.out.println("Continent Population: " + continentEurope.getContinentPopulation());
+
+            ArrayList<State> listOfStates = continentEurope.getListOfStates();
+
+            for (int i = 0; i < listOfStates.size(); i++) {
+                System.out.println("State:"+(i+1)+" "+listOfStates.get(i).getStateName());
+            }
+
+        } catch (JAXBException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+## Exercici JAXBCountryToXML
+Implement the classes necessary to produce the same `XML` file as below.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Country importance="1">
-<Country_Name>Spain</Country_Name>
-<Country_Capital>Madrid</Country_Capital>
-<Country_Foundation_Date>1469-10-19</Country_Foundation_Date>
-<Country_Continent>Europe</Country_Continent>
-<Country_Population>45000000</Country_Population>
-</Country>
+<country importance="1">
+    <name>Spain</name>
+    <capital>Madrid</capital>
+    <foundation_date>1469-10-04</foundation_date>
+    <continent>Europe</continent>
+    <population>45000000</population>
+</country>
 ```
+
+***Country.java***
+
+```java
+package net.xeill.elpuig;
+
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.time.LocalDate;
+
+@XmlRootElement
+@XmlType(propOrder = {"name", "capital", "foundationDate", "continent", "population"})
+public class Country {
+    private String name, capital, continent;
+    private LocalDate foundationDate;
+    private int importance, population;
+
+    public String getName() {
+        return name;
+    }
+
+    @XmlElement(name = "name")
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCapital() {
+        return capital;
+    }
+
+    @XmlElement(name = "capital")
+    public void setCapital(String capital) {
+        this.capital = capital;
+    }
+
+    public String getContinent() {
+        return continent;
+    }
+
+    @XmlElement(name = "continent")
+    public void setContinent(String continent) {
+        this.continent = continent;
+    }
+
+    public LocalDate getFoundationDate() {
+        return foundationDate;
+    }
+
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    @XmlElement(name = "foundation_date")
+    public void setFoundationDate(LocalDate foundationDate) {
+        this.foundationDate = foundationDate;
+    }
+
+    public int getImportance() {
+        return importance;
+    }
+
+    @XmlAttribute(name = "importance")
+    public void setImportance(int importance) {
+        this.importance = importance;
+    }
+
+    public int getPopulation() {
+        return population;
+    }
+
+    @XmlElement(name = "population")
+    public void setPopulation(int population) {
+        this.population = population;
+    }
+}
+
+```
+
+***LocalDateAdapter.java***
+
+```java
+package net.xeill.elpuig;
+
+import java.time.LocalDate;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+
+public class LocalDateAdapter extends XmlAdapter<String, LocalDate> {
+    public LocalDate unmarshal(String sDate) throws Exception {
+        return LocalDate.parse(sDate);
+    }
+
+    public String marshal(LocalDate date) throws Exception {
+        return date.toString();
+    }
+}
+```
+
+***Main.java***
+
+```java
+package net.xeill.elpuig;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import java.io.File;
+import java.time.LocalDate;
+
+public class Main {
+    public static void main(String[] args) {
+
+        Country country = new Country();
+        country.setName("Spain");
+        country.setCapital("Madrid");
+        country.setFoundationDate(LocalDate.of(1469, 10, 4));
+        country.setContinent("Europe");
+        country.setPopulation(45000000);
+        country.setImportance(1);
+
+        try {
+            JAXBContext jaxbContext = JAXBContext.newInstance(Country.class);
+            Marshaller marshaller = jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.marshal(country, new File("country.xml"));
+            marshaller.marshal(country, System.out);
+        } catch (JAXBException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
 
 ## Enllaços d'interés
 * https://en.wikipedia.org/wiki/Document_Object_Model
