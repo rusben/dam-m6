@@ -13,8 +13,6 @@ Les formes més noves de web scraping impliquen la supervisió de les fonts de d
 Hi ha mètodes que utilitzen alguns llocs web per evitar el `webscraping`, com ara detectar i no permetre que els robots rastregin (vegin) les seves pàgines. En resposta, hi ha sistemes de `webscraping` que es basen en l'ús de tècniques d'anàlisi `DOM`, visió per ordinador i processament del llenguatge natural per simular la navegació humana per permetre la recopilació de contingut de la pàgina web per a l'anàlisi fora de línia.
 
 ## Història
-Aquesta secció no cita cap font. Si us plau, ajudeu a millorar aquesta secció afegint cites a fonts fiables. El material sense font pot ser impugnat i eliminat. (Octubre de 2018) (Més informació sobre com i quan eliminar aquesta plantilla de missatge)
-
 La història del `webscraping` es remunta gairebé a l'època en què va néixer la `World Wide Web`.
 
 * Després del naixement de la `World Wide Web` l'any 1989, el juny de 1993 es va crear el primer robot web,  World Wide Web Wanderer, que només tenia la intenció de mesurar la mida de la web.
