@@ -1608,7 +1608,7 @@ public class Museum {
 
     String name;
     String city;
-    boolean childrenAllowed;
+    Boolean childrenAllowed;
     Exhibition exhibition;
 
     public String getName() { return name; }
@@ -1628,11 +1628,11 @@ public class Museum {
     }
 
     @XmlAttribute(name = "children_allowed")
-    public void setChildrenAllowed(boolean childrenAllowed) {
+    public void setChildrenAllowed(Boolean childrenAllowed) {
         this.childrenAllowed = childrenAllowed;
     }
 
-    public boolean getChildrenAllowed() {
+    public Boolean getChildrenAllowed() {
         return childrenAllowed;
     }
 
@@ -1901,13 +1901,13 @@ public class Museum {
 
     String name;
     String city;
-    boolean childrenAllowed;
+    Boolean childrenAllowed;
     PermanentExhibition permanentExhibition;
     SpecialExhibition specialExhibition;
 
     public Museum() { }
 
-    public Museum(String name, String city, boolean childrenAllowed) {
+    public Museum(String name, String city, Boolean childrenAllowed) {
         this.name = name;
         this.city = city;
         this.childrenAllowed = childrenAllowed;
@@ -1930,11 +1930,11 @@ public class Museum {
     }
 
     @XmlAttribute(name = "children_allowed")
-    public void setChildrenAllowed(boolean childrenAllowed) {
+    public void setChildrenAllowed(Boolean childrenAllowed) {
         this.childrenAllowed = childrenAllowed;
     }
 
-    public boolean getChildrenAllowed() {
+    public Boolean getChildrenAllowed() {
         return childrenAllowed;
     }
 
@@ -2052,39 +2052,58 @@ The code shown bellow unmarshalls a given xml file into java objects. The classe
 ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <MUSEUMS>
- <MUSEUM children_allowed="false">
-   <MUSEUM_NAME>Reina Sofia Museum</MUSEUM_NAME>
-   <CITY>Madrid</CITY>
-   <PERMANENT_EXHIBITION>
-      <NAME>Permanent Exhibition - Reina Sofia Museum</NAME>
-      <ARTIST>Picasso</ARTIST>
-      <ARTIST>Dali</ARTIST>
-      <ARTIST>Miro</ARTIST>
-      <FROM>1900-01-01</FROM>
-      <TO>2014-12-31</TO>
-   </PERMANENT_EXHIBITION>
- </MUSEUM>
- <MUSEUM>
-   <MUSEUM_NAME>Louvre Museum</MUSEUM_NAME>
-   <CITY>Paris</CITY>
-   <PERMANENT_EXHIBITION>
-      <NAME>Permanent Exhibition - Louvre Museum</NAME>
-      <ARTIST>Leonardo da Vinci</ARTIST>
-      <ARTIST>Caravaggio</ARTIST>
-      <ARTIST>Delacroix</ARTIST>
-   </PERMANENT_EXHIBITION>
- </MUSEUM>
+    <MUSEUM children_allowed="false">
+        <NAME>Reina Sofia Museum</NAME>
+        <CITY>Madrid</CITY>
+        <PERMANENT_EXHIBITION>
+            <NAME>Permanent Exhibition - Reina Sofia Museum</NAME>
+            <ARTIST>Picasso</ARTIST>
+            <ARTIST>Dali</ARTIST>
+            <ARTIST>Miro</ARTIST>
+            <FROM>1900-01-01</FROM>
+            <TO>2014-12-31</TO>
+        </PERMANENT_EXHIBITION>
+    </MUSEUM>
+    <MUSEUM>
+        <NAME>Louvre Museum</NAME>
+        <CITY>Paris</CITY>
+        <PERMANENT_EXHIBITION>
+            <NAME>Permanent Exhibition - Louvre Museum</NAME>
+            <ARTIST>Leonardo da Vinci</ARTIST>
+            <ARTIST>Caravaggio</ARTIST>
+            <ARTIST>Delacroix</ARTIST>
+        </PERMANENT_EXHIBITION>
+    </MUSEUM>
 </MUSEUMS>
 ```
 
-and the Java main program:
+
+***Main.java***
 
 ```java
-File file = new File("museums.xml");
-JAXBContext jaxbContext = JAXBContext.newInstance(Museums.class);
-Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-Museums museums = (Museums) jaxbUnmarshaller.unmarshal(file);
-System.out.println(museums);
+package net.xeill.elpuig;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import java.io.File;
+
+public class Main {
+    public static void main(String[] args) {
+
+        try {
+            File file = new File("museums.xml");
+            JAXBContext jaxbContext = JAXBContext.newInstance(Museums.class);
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+            Museums museums = (Museums) jaxbUnmarshaller.unmarshal(file);
+            System.out.println(museums);
+
+        } catch (JAXBException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+}
 ```
 
 The output produced would be something like:
@@ -2119,55 +2138,145 @@ The method `createUnmarshaller` from the class `JAXBContext` creates an instance
 
 The `Museums` class contains a `List` of `Museum` items:
 
+***Museums.java***
+
 ```java
-@XmlRootElement(name="MUSEUMS")
+package net.xeill.elpuig;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
+import java.util.List;
+
+@XmlRootElement(name = "MUSEUMS")
 public class Museums {
-    List museums;
-    /**
-     * element that is going to be marshaled in the xml
-     */
-    @XmlElement(name="MUSEUM")
-    public void setMuseums( List museums ) {
-        this.museums = museums;
+    List<Museum> museums;
+
+    public List<Museum> getMuseums() { return museums; }
+
+    @XmlElement(name = "MUSEUM")
+    public void setMuseums(List<Museum> museums) { this.museums = museums; }
+
+    public void add(Museum museum) {
+        if (this.museums == null) {
+            this.museums = new ArrayList<Museum>();
+        }
+        this.museums.add(museum);
     }
-   ...
+
+    @Override
+    public String toString() {
+        String result = "";
+
+        for (Museum m : museums) {
+            result += m.toString();
+            result += "\n";
+        }
+
+        return result;
+    }
 }
 ```
 
 And the `Museum` class contains fields that can be XML elements like the name or the city or XML attributes like the children allowance. These fields can be of any JAXB supported type:
 
-```java
-@XmlType( propOrder = { "name", "city", "permanent", "special" } )
-@XmlRootElement( name = "MUSEUM" )
-public class Museum {
-    String name;
+***Museum.java***
 
-    @XmlElement(name = "MUSEUM_NAME")
+```java
+package net.xeill.elpuig;
+
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "MUSEUM")
+public class Museum {
+
+    String name;
+    String city;
+    Boolean childrenAllowed;
+    PermanentExhibition permanentExhibition;
+    SpecialExhibition specialExhibition;
+
+    public Museum() { }
+
+    public Museum(String name, String city, Boolean childrenAllowed) {
+        this.name = name;
+        this.city = city;
+        this.childrenAllowed = childrenAllowed;
+    }
+
+    public String getName() { return name; }
+
+    @XmlElement(name = "NAME")
     public void setName(String name) {
         this.name = name;
     }
 
-    Boolean childrenAllowed;
+    public String getCity() {
+        return city;
+    }
+
+    @XmlElement(name = "CITY")
+    public void setCity(String city) {
+        this.city = city;
+    }
 
     @XmlAttribute(name = "children_allowed")
-    public void setChildrenAllowed(boolean childrenAllowed) {
+    public void setChildrenAllowed(Boolean childrenAllowed) {
         this.childrenAllowed = childrenAllowed;
     }
 
-    Exhibition special;
-
-    @XmlElement( name = "SPECIAL_EXHIBITION" )
-    public void setSpecial(Exhibition special) {
-        this.special = special;
+    public Boolean getChildrenAllowed() {
+        return childrenAllowed;
     }
-...
+
+    public PermanentExhibition getPermanentExhibition() {
+        return permanentExhibition;
+    }
+
+    @XmlElement(name = "PERMANENT_EXHIBITION")
+    public void setPermanentExhibition(PermanentExhibition permanentExhibition) {
+        this.permanentExhibition = permanentExhibition;
+    }
+
+    public SpecialExhibition getSpecialExhibition() {
+        return specialExhibition;
+    }
+
+    @XmlElement(name = "SPECIAL_EXHIBITION")
+    public void setSpecialExhibition(SpecialExhibition specialExhibition) {
+        this.specialExhibition = specialExhibition;
+    }
+
+    @Override
+    public String toString() {
+        String result =  "Name: " + name + "\n" +
+                "City: " + city + "\n";
+
+        if (childrenAllowed != null) {
+            result += !childrenAllowed ? "ATTENTION! Children are not allowed in this museum \n" : "";
+        }
+        result += (permanentExhibition != null) ? permanentExhibition.getName() + "\n" : "";
+        result += (specialExhibition != null) ? specialExhibition.getName() + "\n" : "";
+
+        return result;
+    }
 }
+
 ```
 
-In case we want to use a field of a non supported type we have to implement ourselves an Adapter that indicates `JAXB` how to manage this kind of objects. This adapter extends the XmlAdapter class and implements its marshal and unmarshal methods:
+In case we want to use a field of a non supported type we have to implement ourselves an `Adapter` that indicates `JAXB` how to manage this kind of objects. This adapter extends the `XmlAdapter` class and implements its marshal and unmarshal methods:
+
+***LocalDateAdapter.java***
 
 ```java
-public class LocalDateAdapter extends XmlAdapter {
+package net.xeill.elpuig;
+
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import java.time.LocalDate;
+
+public class LocalDateAdapter extends XmlAdapter<String, LocalDate> {
     public LocalDate unmarshal(String sDate) throws Exception {
         return LocalDate.parse(sDate);
     }
@@ -2175,16 +2284,6 @@ public class LocalDateAdapter extends XmlAdapter {
     public String marshal(LocalDate date) throws Exception {
         return date.toString();
     }
-}
-```
-
-This adapter is used in the following way:
-
-```java
-@XmlJavaTypeAdapter(LocalDateAdapter.class)
-@XmlElement(name = "FROM")
-public void setFrom(LocalDate from)  {
-    this.from = from;
 }
 ```
 
@@ -2200,7 +2299,7 @@ We are going to see some important points related to the configuration of the us
 
 ```java
 @XmlAttribute( name = "children_allowed" )
-public void setChildrenAllowed(boolean childrenAllowed) {
+public void setChildrenAllowed(Boolean childrenAllowed) {
     this.childrenAllowed = childrenAllowed;
 }
 ```
