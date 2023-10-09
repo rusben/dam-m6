@@ -2041,7 +2041,7 @@ public class Main {
 }
 ```
 
-## JAXB unmarshalling <a name="jaxb-marshalling"></a>
+## JAXB unmarshalling <a name="jaxb-unmarshalling"></a>
 
 We are going to see how to do the complementary operation: unmarshal `XML` files into `Java Objects` and what should be taken into consideration while doing this operation.
 
