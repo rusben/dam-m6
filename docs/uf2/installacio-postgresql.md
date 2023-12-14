@@ -43,7 +43,7 @@ cat /etc/postgresql/14/main/postgresql.conf | grep listen_addresses
 ## Editem el fitxer de configuració postgresql.conf
 
 ```console
-vim /etc/postgresql/14/main/postgresql.conf
+sudo vim /etc/postgresql/14/main/postgresql.conf
 ```
 
 La següent línia s'ha de canviar:
@@ -60,7 +60,7 @@ listen_addresses = '*'
 
 ## Reiniciem el servei postgres:
 ```console
-invoke-rc.d postgresql reload
+sudo invoke-rc.d postgresql reload
 ```
 
 Busquem el fitxer pg_hba.conf
@@ -82,7 +82,7 @@ host all all all md5
 
 ## Reiniciem postgresql
 ```console
-invoke-rc.d postgresql reload
+sudo invoke-rc.d postgresql reload
 ```
 
 ## Connexió a la base de dades
