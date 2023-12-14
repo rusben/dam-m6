@@ -37,13 +37,13 @@ GRANT ALL PRIVILEGES ON DATABASE "ddbb" to usuario;
 ## Modifiquem la configuració per a que la nostra base de dades pugui rebre connexions des de fora de la màquina.
 
 ```console
-cat /etc/postgresql/12/main/postgresql.conf | grep listen_addresses
+cat /etc/postgresql/14/main/postgresql.conf | grep listen_addresses
 ```
 
 ## Editem el fitxer de configuració postgresql.conf
 
 ```console
-vim /etc/postgresql/12/main/postgresql.conf
+vim /etc/postgresql/14/main/postgresql.conf
 ```
 
 La següent línia s'ha de canviar:
@@ -66,12 +66,12 @@ invoke-rc.d postgresql reload
 Busquem el fitxer pg_hba.conf
 ```console
 locate pg_hba.conf
-/etc/postgresql/12/main/pg_hba.conf
+/etc/postgresql/14/main/pg_hba.conf
 ```
 
 # Editem el fitxer
 ```console
-sudo vim /etc/postgresql/12/main/pg_hba.conf
+sudo vim /etc/postgresql/14/main/pg_hba.conf
 ```
 
 Afegim la línia
