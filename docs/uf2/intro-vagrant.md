@@ -18,33 +18,33 @@ D'aquesta manera és molt senzill desplegar infraestructura a partir d'un fitxer
 Per a cada projecte `vagrant` utilitza un directori, com a exemple podem crear el directori `ubuntu-focal` per treballar amb una MV d'`Ubuntu 20.04 Focal Fossa`.
 
 ```console
-[alumne@elpuig ~]$ mkdir ubuntu-focal
-[alumne@elpuig ~]$ cd ubuntu-focal/
+[alumne@elpuig ~]$ mkdir ubuntu-jammy
+[alumne@elpuig ~]$ cd ubuntu-jammy/
 ```
 
 La configuració del projecte s'escriu al fitxer `Vagrantfile` que podem crear directament amb l'ordre `vagrant init <box>` indicant una de les MVs que es troben a `Vagrant Cloud`. Per exemple, la distribució Ubuntu manté imatges oficials a https://app.vagrantup.com/ubuntu.
 
 ```console
-[alumne@elpuig ubuntu-focal]$ vagrant init ubuntu/focal64
+[alumne@elpuig ubuntu-jammy]$ vagrant init ubuntu/jammy64
 A `Vagrantfile` has been placed in this directory. You are now
 ready to `vagrant up` your first virtual environment! Please read
 the comments in the Vagrantfile as well as documentation on
 `vagrantup.com` for more information on using Vagrant.
-[alumne@elpuig ubuntu-focal]$ ll
+[alumne@elpuig ubuntu-jammy]$ ll
 total 4
--rw-rw-r--. 1 vcarceler vcarceler 3020 15 jul. 14:23 Vagrantfile
-[alumne@elpuig ubuntu-focal]$
+-rw-rw-r--. 1 alumne alumne 3020 15 jul. 14:23 Vagrantfile
+[alumne@elpuig ubuntu-jammy]$
 ```
 
 Ara podem aixecar tota la infraestructura (afegint el paràmetre `--provider=virtualbox` perquè en algunes màquines el provider per defecte és `libvirt`) amb `vagrant up`:
 
 ```console
-[alumne@elpuig ubuntu-focal]$ vagrant up --provider=virtualbox
+[alumne@elpuig ubuntu-jammy]$ vagrant up --provider=virtualbox
 Bringing machine 'default' up with 'virtualbox' provider...
-==> default: Importing base box 'ubuntu/focal64'...
+==> default: Importing base box 'ubuntu/jammy64'...
 ==> default: Matching MAC address for NAT networking...
-==> default: Checking if box 'ubuntu/focal64' version '20210709.0.0' is up to date...
-==> default: Setting the name of the VM: ubuntu-focal_default_1626352374768_57256
+==> default: Checking if box 'ubuntu/jammy' version '20210709.0.0' is up to date...
+==> default: Setting the name of the VM: ubuntu-jammy_default_1626352374768_57256
 ==> default: Clearing any previously set network interfaces...
 ==> default: Preparing network interfaces based on configuration...
     default: Adapter 1: nat
@@ -66,14 +66,14 @@ Bringing machine 'default' up with 'virtualbox' provider...
 ==> default: Machine booted and ready!
 ==> default: Checking for guest additions in VM...
 ==> default: Mounting shared folders...
-    default: /vagrant => /home/vcarceler/ubuntu-focal
+    default: /vagrant => /home/alumne/ubuntu-jammy
 [alumne@elpuig ubuntu-focal]$
 ```
 
 Aquesta comanda descàrrega (les màquines descarregades es guarden a `~/.vagrant.d/`) —si cal— la màquina utilitzada, crea una MV a `VirtualBox`, la configura, l'encén i la prepara amb la clau pública del host per poder iniciar sessió amb `ssh`.
 
 ```console
-[alumne@elpuig ubuntu-focal]$ vagrant ssh
+[alumne@elpuig ubuntu-jammy]$ vagrant ssh
 Welcome to Ubuntu 20.04.2 LTS (GNU/Linux 5.4.0-77-generic x86_64)
 
  * Documentation:  https://help.ubuntu.com
@@ -92,13 +92,13 @@ Welcome to Ubuntu 20.04.2 LTS (GNU/Linux 5.4.0-77-generic x86_64)
 To see these additional updates run: apt list --upgradable
 
 
-vagrant@ubuntu-focal:~$
+vagrant@ubuntu-jammy:~$
 ```
 
-A més, per defecte s'ha compartit el directori del projecte (`~/ubuntu-focal`) entre la màquina física i la màquina virtual. Així resulta molt senzill compartir fitxers ja que el directori del projecte estarà muntat a la MV al directori `/vagrant`:
+A més, per defecte s'ha compartit el directori del projecte (`~/ubuntu-jammy`) entre la màquina física i la màquina virtual. Així resulta molt senzill compartir fitxers ja que el directori del projecte estarà muntat a la MV al directori `/vagrant`:
 
 ```console
-vagrant@ubuntu-focal:~$ ll /vagrant
+vagrant@ubuntu-jammy:~$ ll /vagrant
 total 8
 drwxrwxr-x  1 vagrant vagrant   38 Jul 15 12:32 ./
 drwxr-xr-x 20 root    root    4096 Jul 15 12:33 ../
