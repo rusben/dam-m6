@@ -20,6 +20,7 @@ Los pasos a seguir son los siguientes:
  * Una opción que permita borrar las tablas de la base de datos y su información.
  * Una opción que permita crear las tablas de la base de datos.
  * Una opción que permita poblar masivamente las tablas de la base de datos leyendo los ficheros generados en la primera práctica.
+ * Una opción que permita crear registros en la base de datos en cada una de las tablas.
  * Diferentes opciones de consulta sobre la información. Ejemplos:
    - Seleccionar todos los elementos que contengan un texto concreto.
    - Seleccionar todos los elementos que cumplan una condición.
