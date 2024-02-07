@@ -12,7 +12,7 @@ El proyecto de partida es la práctica `JPAMagazinesAnnotations`. utilizaremos e
 
 Los pasos a seguir son los siguientes:
 
-* Definir el esquema de la base de datos. Al menos debe existir una relación uno-ene, o una ene-ene.
+* Definir el esquema de la base de datos. Al menos debe existir una relación uno-ene y una ene-ene.
 * Creación de una base de datos. (Esta opción puede realizarse directamente en PostgreSQL). El resto de opciones deberían realizarse mediante un menú de terminal específicamente creado para nuestra práctica.
 * Definir las sentencias de creación de las tablas que guardarán la información. El proyecto deberá incluir un archivo `schema.sql` con las sentencias de creación de la base de datos.
 * Conexión con la base de datos mediante una unidad de persistencia definida en el archivo `persistence.xml`.
