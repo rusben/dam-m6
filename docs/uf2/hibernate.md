@@ -55,7 +55,7 @@ Crea un nuevo proyecto Java en tu IDE preferido (Eclipse, IntelliJ, NetBeans, et
 Agrega las bibliotecas de `Hibernate` al proyecto. Puedes descargarlas desde el sitio web oficial de `Hibernate` o usar una herramienta de gestión de dependencias como Maven o Gradle.
 
 ### Paso 2: Configuración de `Hibernate`
-Crea un archivo de configuración hibernate.cfg.xml en el directorio de recursos de tu proyecto. Aquí tienes un ejemplo básico de cómo podría verse:
+Crea un archivo de configuración `hibernate.cfg.xml` en el directorio de `resources` de tu proyecto. Aquí tienes un ejemplo básico de cómo podría verse:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -65,10 +65,10 @@ Crea un archivo de configuración hibernate.cfg.xml en el directorio de recursos
 <hibernate-configuration>
     <session-factory>
         <!-- Configuración de la conexión a la base de datos -->
-        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/tu_base_de_datos</property>
-        <property name="hibernate.connection.username">tu_usuario</property>
-        <property name="hibernate.connection.password">tu_contraseña</property>
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://192.168.22.120:5432/ddbb</property>
+        <property name="hibernate.connection.username">usuario</property>
+        <property name="hibernate.connection.password">password</property>
         <!-- Dialecto SQL -->
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <!-- Mapeo de las clases de entidad -->
@@ -156,13 +156,20 @@ Este es solo un tutorial básico para comenzar con Hibernate desde cero. Puedes 
 Crea un nuevo proyecto Maven en tu entorno de desarrollo preferido (Eclipse, IntelliJ, etc.). Asegúrate de agregar la dependencia de Hibernate en tu archivo pom.xml.
 
 ```xml
-<dependencies>
-    <dependency>
-        <groupId>org.hibernate</groupId>
-        <artifactId>hibernate-core</artifactId>
-        <version>5.5.7.Final</version>
-    </dependency>
-</dependencies>
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.3.2</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>5.6.5.Final</version>
+        </dependency>
+    </dependencies>
 ```
 
 ### Paso 2: Configuración de Hibernate
@@ -173,13 +180,13 @@ Crea un archivo de configuración `hibernate.cfg.xml` en la carpeta `src/main/re
 <hibernate-configuration>
     <session-factory>
         <!-- Configuración de conexión a la base de datos -->
-        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/tu_base_de_datos</property>
-        <property name="hibernate.connection.username">tu_usuario</property>
-        <property name="hibernate.connection.password">tu_contraseña</property>
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://192.168.22.120:5432/ddbb</property>
+        <property name="hibernate.connection.username">usuario</property>
+        <property name="hibernate.connection.password">password</property>
 
         <!-- Configuración de dialecto -->
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
 
         <!-- Habilitar la creación de tablas automáticamente -->
         <property name="hibernate.hbm2ddl.auto">update</property>
@@ -217,7 +224,7 @@ public class TuClase {
 ```
 
 ### Paso 4: Operaciones CRUD
-Operaciones CRUD en Main (Main.java): En tu aplicación Java, realiza operaciones CRUD utilizando Hibernate.
+Operaciones CRUD en Main (`Main.java`): En tu aplicación Java, realiza operaciones CRUD utilizando Hibernate.
 
 ```java
 import org.hibernate.Session;
@@ -371,3 +378,63 @@ En este ejemplo:
 * Se confirma la transacción al finalizar.
 
 Asegúrate de ajustar el nombre de la unidad de persistencia (`tuUnidadDePersistencia`) según tu configuración. Este ejemplo proporciona una base, pero ajusta según tus necesidades específicas y modelo de datos.
+
+
+## Aclaraciones sobre `hibernate.cfg.xml` y `persistence.xml`
+`hibernate.cfg.xml` y `persistence.xml` son archivos de configuración utilizados en el contexto de la persistencia de datos en aplicaciones Java, pero se asocian con tecnologías diferentes y cumplen propósitos ligeramente diferentes. Aquí está la diferencia entre ellos:
+
+### `hibernate.cfg.xml`
+
+* **Asociación con Hibernate:** `hibernate.cfg.xml` es utilizado específicamente por el framework de persistencia Hibernate.
+* **Configuración Detallada:** este archivo proporciona una configuración detallada de Hibernate, incluyendo detalles de la conexión a la base de datos, propiedades de Hibernate y referencias a las clases de entidad.
+    
+* **Ejemplo**
+```xml
+<!-- hibernate.cfg.xml -->
+<hibernate-configuration>
+    <session-factory>
+        <!-- Configuración de conexión a la base de datos -->
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://192.168.22.120:5432/ddbb</property>
+        <property name="hibernate.connection.username">usuario</property>
+        <property name="hibernate.connection.password">password</property>
+
+        <!-- Configuración de dialecto -->
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+
+        <!-- Mapeo de clases de entidad -->
+        <mapping class="com.example.EntityClass"/>
+    </session-factory>
+</hibernate-configuration>
+```
+
+### `persistence.xml`
+* **Asociación con JPA (Java Persistence API):** `persistence.xml` es utilizado por la API de persistencia JPA, que es un estándar de persistencia de datos en Java y es independiente del proveedor.
+* **Configuración General:** este archivo proporciona una configuración general para la unidad de persistencia JPA, incluyendo el nombre de la unidad de persistencia, las propiedades de conexión y las clases de entidad.
+
+* **Ejemplo**
+
+```xml
+<!-- persistence.xml -->
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+    http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd"
+    version="2.2">
+    <persistence-unit name="myPersistenceUnit">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <class>com.example.EntityClass</class>
+        <properties>
+            <!-- Configuración de conexión a la base de datos -->
+            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://192.168.22.120:5432/ddbb"/>
+            <property name="javax.persistence.jdbc.user" value="usuario"/>
+            <property name="javax.persistence.jdbc.password" value="password"/>
+            <!-- Configuración de dialecto -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+        </properties>
+    </persistence-unit>
+</persistence>
+```
+
+De esta forma podemos resumir que `hibernate.cfg.xml` está específicamente asociado con `Hibernate` y proporciona configuraciones detalladas específicas de `Hibernate`, mientras que `persistence.xml` es utilizado por `JPA` y proporciona configuraciones generales para la unidad de persistencia `JPA`, incluyendo el proveedor de `JPA` (que podría ser `Hibernate` u otro) y la configuración de las propiedades de conexión.
