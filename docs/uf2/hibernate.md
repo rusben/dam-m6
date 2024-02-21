@@ -1,9 +1,8 @@
 # Hibernate
-
-`Hibernate` es un framework de mapeo objeto-relacional (ORM) para Java que facilita el mapeo de objetos Java a tablas de bases de datos relacionales y viceversa. Fue creado para simplificar el desarrollo de aplicaciones Java que interactúan con bases de datos, eliminando la necesidad de escribir consultas SQL directamente. Aquí hay una explicación básica de la teoría detrás de `Hibernate`:
+`Hibernate` es un framework de mapeo objeto-relacional (`ORM`) para `Java` que facilita el mapeo de objetos `Java` a tablas de bases de datos relacionales y viceversa. Fue creado para simplificar el desarrollo de aplicaciones Java que interactúan con bases de datos, eliminando la necesidad de escribir consultas `SQL` directamente. Aquí hay una explicación básica de la teoría detrás de `Hibernate`:
 
 **1. Mapeo Objeto-Relacional (ORM):**
-`Hibernate` implementa el patrón de diseño ORM, que permite a los desarrolladores trabajar con objetos Java en lugar de tablas de bases de datos directamente. Los objetos Java se mapean a las tablas de la base de datos y las operaciones CRUD (Crear, Leer, Actualizar, Eliminar) se realizan en objetos Java en lugar de en consultas SQL.
+`Hibernate` implementa el patrón de diseño `ORM`, que permite a los desarrolladores trabajar con objetos Java en lugar de tablas de bases de datos directamente. Los objetos Java se mapean a las tablas de la base de datos y las operaciones CRUD (Crear, Leer, Actualizar, Eliminar) se realizan en objetos `Java` en lugar de en consultas `SQL`.
 
 **2. Entidades y Clases de Entidad:**
 En `Hibernate`, una clase de entidad es una clase Java que está mapeada a una tabla en la base de datos. Cada instancia de esta clase representa una fila en la tabla. Las clases de entidad generalmente tienen atributos que representan columnas en la tabla y métodos que proporcionan funcionalidad asociada con esa entidad.
@@ -12,12 +11,12 @@ En `Hibernate`, una clase de entidad es una clase Java que está mapeada a una t
 * Identificadores y Generadores: La anotación `@Id` se usa para especificar la clave primaria de la entidad, y `@GeneratedValue` especifica cómo se generará ese identificador (por ejemplo, autoincremental en la base de datos).
 
 **3. Archivo de Configuración de `Hibernate`:**
-Hibernate utiliza un archivo de configuración (por ejemplo, `hibernate.cfg.xml`) para especificar la configuración de la base de datos, como la URL de conexión, el nombre de usuario, la contraseña, el dialecto SQL, etc.
+`Hibernate` utiliza un archivo de configuración (por ejemplo, `hibernate.cfg.xml`) para especificar la configuración de la base de datos, como la `URL` de conexión, el nombre de usuario, la contraseña, el dialecto `SQL`, etc.
 
 **4. `SessionFactory`:**
-`Hibernate` utiliza el patrón de diseño Singleton para crear una instancia de `SessionFactory`. Esta instancia es una factoría de sesiones de Hibernate y se usa para obtener instancias de Session, que son necesarias para interactuar con la base de datos.
+`Hibernate` utiliza el patrón de diseño Singleton para crear una instancia de `SessionFactory`. Esta instancia es una factoría de sesiones de `Hibernate` y se usa para obtener instancias de Session, que son necesarias para interactuar con la base de datos.
 
-* `Session`: Una `Session` en `Hibernate` es una interfaz entre la aplicación Java y la base de datos. Proporciona métodos para realizar operaciones de CRUD, consultas `HQL` (`Hibernate Query Language`) y administrar la transacción. Las sesiones se obtienen de la `SessionFactory`.
+* `Session`: Una `Session` en `Hibernate` es una interfaz entre la aplicación `Java` y la base de datos. Proporciona métodos para realizar operaciones de CRUD, consultas `HQL` (`Hibernate Query Language`) y administrar la transacción. Las sesiones se obtienen de la `SessionFactory`.
 
 **5. Operaciones CRUD:**
 * *Guardar* (`save`): Almacena un nuevo objeto en la base de datos.
@@ -34,7 +33,7 @@ Hibernate utiliza un archivo de configuración (por ejemplo, `hibernate.cfg.xml`
 Optimización de Consultas: `Hibernate` permite cargar datos de manera diferida para mejorar el rendimiento.   
 
 **8. Transacciones:**
-En `Hibernate`, las transacciones se utilizan para agrupar operaciones de base de datos en unidades atómicas y garantizar la consistencia de los datos. Las transacciones se inician, se confirman o se revierten utilizando métodos proporcionados por la Session.
+En `Hibernate`, las transacciones se utilizan para agrupar operaciones de base de datos en unidades atómicas y garantizar la consistencia de los datos. Las transacciones se inician, se confirman o se revierten utilizando métodos proporcionados por la `Session`.
 
 **9. Ciclo de Vida del Objeto:**
 * `Transient`: El objeto no está asociado con ninguna sesión de `Hibernate`.
@@ -45,14 +44,14 @@ En `Hibernate`, las transacciones se utilizan para agrupar operaciones de base d
 `Hibernate Query Language` (`HQL`) es un lenguaje de consulta orientado a objetos similar a `SQL` pero orientado a entidades en lugar de tablas. Permite a los desarrolladores realizar consultas complejas en sus objetos Java sin preocuparse por la estructura de la base de datos subyacente.
 
 **11. Mapeo de Relaciones:**
-`Hibernate` admite varios tipos de relaciones entre entidades, como relaciones uno a uno, uno a muchos y muchos a muchos. Estas relaciones se definen mediante anotaciones en las clases de entidad o mediante archivos de mapeo XML.
+`Hibernate` admite varios tipos de relaciones entre entidades, como relaciones uno a uno, uno a muchos y muchos a muchos. Estas relaciones se definen mediante anotaciones en las clases de entidad o mediante archivos de mapeo `XML`.
 
 ## Proyecto de ejemplo 1
-`Hibernate` simplifica el desarrollo de aplicaciones Java que interactúan con bases de datos relacionales al proporcionar una capa de abstracción entre el código Java y la base de datos subyacente, lo que permite a los desarrolladores trabajar con objetos Java en lugar de escribir consultas SQL directamente.
+`Hibernate` simplifica el desarrollo de aplicaciones `Java` que interactúan con bases de datos relacionales al proporcionar una capa de abstracción entre el código `Java` y la base de datos subyacente, lo que permite a los desarrolladores trabajar con objetos `Java` en lugar de escribir consultas `SQL` directamente.
 
 ### Paso 1: Configuración del Proyecto
-Crea un nuevo proyecto Java en tu IDE preferido (Eclipse, IntelliJ, NetBeans, etc.).
-Agrega las bibliotecas de `Hibernate` al proyecto. Puedes descargarlas desde el sitio web oficial de `Hibernate` o usar una herramienta de gestión de dependencias como Maven o Gradle.
+Crea un nuevo proyecto Java en tu `IDE` preferido (`Eclipse`, `IntelliJ`, `NetBeans`, etc.).
+Agrega las bibliotecas de `Hibernate` al proyecto. Puedes descargarlas desde el sitio web oficial de `Hibernate` o usar una herramienta de gestión de dependencias como `Maven` o `Gradle`.
 
 ### Paso 2: Configuración de `Hibernate`
 Crea un archivo de configuración `hibernate.cfg.xml` en el directorio de `resources` de tu proyecto. Aquí tienes un ejemplo básico de cómo podría verse:
@@ -78,7 +77,7 @@ Crea un archivo de configuración `hibernate.cfg.xml` en el directorio de `resou
 ```
 
 ### Paso 3: Crear Clases de Entidad
-Crea clases Java para las entidades que deseas mapear a la base de datos. Por ejemplo, si tienes una tabla Cliente, crea una clase Cliente correspondiente en tu proyecto Java.
+Crea clases Java para las entidades que deseas mapear a la base de datos. Por ejemplo, si tienes una tabla `Cliente`, crea una clase `Cliente` correspondiente en tu proyecto `Java`.
 
 ```java
 import javax.persistence.*;
@@ -100,8 +99,8 @@ public class Cliente {
 }
 ```
 
-### Paso 4: Crear una sesión de Hibernate y realizar operaciones CRUD
-En tu clase principal, crea una sesión de Hibernate y utiliza esa sesión para realizar operaciones CRUD en la base de datos.
+### Paso 4: Crear una sesión de `Hibernate` y realizar operaciones CRUD
+En tu clase principal, crea una sesión de `Hibernate` y utiliza esa sesión para realizar operaciones `CRUD` en la base de datos.
 
 ```java
 import org.hibernate.Session;
@@ -145,15 +144,15 @@ public class Main {
 ```
 
 ### Paso 5: Ejecutar la aplicación y verificar la base de datos
-Ejecuta tu aplicación Java y verifica que se haya guardado correctamente el cliente en la base de datos.
+Ejecuta tu aplicación `Java` y verifica que se haya guardado correctamente el cliente en la base de datos.
 
-Este es solo un tutorial básico para comenzar con Hibernate desde cero. Puedes expandirlo agregando más entidades, relaciones entre entidades, consultas HQL, etc., según las necesidades de tu aplicación.
+Este es solo un tutorial básico para comenzar con `Hibernate` desde cero. Puedes expandirlo agregando más entidades, relaciones entre entidades, consultas `HQL`, etc., según las necesidades de tu aplicación.
 
 
 ## Proyecto de ejemplo 2
 
 ### Paso 1: Configuración del Proyecto
-Crea un nuevo proyecto Maven en tu entorno de desarrollo preferido (Eclipse, IntelliJ, etc.). Asegúrate de agregar la dependencia de Hibernate en tu archivo pom.xml.
+Crea un nuevo proyecto `Maven` en tu entorno de desarrollo preferido (`Eclipse`, `IntelliJ`, etc.). Asegúrate de agregar la dependencia de `Hibernate` en tu archivo `pom.xml`.
 
 ```xml
     <dependencies>
@@ -224,7 +223,7 @@ public class TuClase {
 ```
 
 ### Paso 4: Operaciones CRUD
-Operaciones CRUD en Main (`Main.java`): En tu aplicación Java, realiza operaciones CRUD utilizando Hibernate.
+Operaciones `CRUD` en `Main` (`Main.java`): En tu aplicación `Java`, realiza operaciones `CRUD` utilizando Hibernate.
 
 ```java
 import org.hibernate.Session;
@@ -269,16 +268,16 @@ public class Main {
 ```
 
 ### Paso 5: Relaciones y Consultas (Opcionales)
-Puedes explorar relaciones más avanzadas entre entidades (OneToOne, ManyToOne, ManyToMany) y aprender a realizar consultas `HQL`.
+Puedes explorar relaciones más avanzadas entre entidades (`OneToOne`, `ManyToOne`, `ManyToMany`) y aprender a realizar consultas `HQL`.
 
 ### Paso 6: Ejecutar y Verificar
-Ejecuta tu aplicación y verifica que las tablas se creen automáticamente en tu base de datos. Realiza operaciones CRUD para asegurarte de que todo funcione correctamente.
+Ejecuta tu aplicación y verifica que las tablas se creen automáticamente en tu base de datos. Realiza operaciones `CRUD` para asegurarte de que todo funcione correctamente.
 
-Este tutorial te proporciona una introducción básica a `Hibernate`. Para temas más avanzados, como relaciones complejas, consultas avanzadas y optimizaciones, te recomendaría explorar la documentación oficial de Hibernate y tutoriales más detallados. Además, considera el uso de herramientas de gestión de bases de datos y scripts de migración en entornos de producción.
+Este tutorial te proporciona una introducción básica a `Hibernate`. Para temas más avanzados, como relaciones complejas, consultas avanzadas y optimizaciones, te recomendaría explorar la documentación oficial de `Hibernate` y tutoriales más detallados. Además, considera el uso de herramientas de gestión de bases de datos y scripts de migración en entornos de producción.
 
 
 ## Proyecto de ejemplo 3
-Supongamos que tienes dos entidades, Student y Course, con una relación Many-to-Many y una tabla de unión llamada student_course.
+Supongamos que tienes dos entidades, `Student` y `Course`, con una relación `ManyToMany` y una tabla de unión llamada `student_course`.
 ### Paso 1: Define las Entidades:
 ```java
 // Student.java
@@ -373,7 +372,7 @@ En este ejemplo:
 * Se crea una instancia de `EntityManager` utilizando `EntityManagerFactory`.
 * Se inicia una transacción con `EntityTransaction`.
 * Se crean instancias de estudiantes (`Student`) y cursos (`Course`).
-* Se asocian los estudiantes con los cursos a través de la relación Many-to-Many.
+* Se asocian los estudiantes con los cursos a través de la relación `ManyToMany`.
 * Al usar `em.persist`, `JPA` manejará automáticamente la persistencia de las entidades y las relaciones, incluyendo las entradas en la tabla de unión (`student_course`).
 * Se confirma la transacción al finalizar.
 
@@ -384,9 +383,8 @@ Asegúrate de ajustar el nombre de la unidad de persistencia (`tuUnidadDePersist
 `hibernate.cfg.xml` y `persistence.xml` son archivos de configuración utilizados en el contexto de la persistencia de datos en aplicaciones Java, pero se asocian con tecnologías diferentes y cumplen propósitos ligeramente diferentes. Aquí está la diferencia entre ellos:
 
 ### `hibernate.cfg.xml`
-
-* **Asociación con Hibernate:** `hibernate.cfg.xml` es utilizado específicamente por el framework de persistencia Hibernate.
-* **Configuración Detallada:** este archivo proporciona una configuración detallada de Hibernate, incluyendo detalles de la conexión a la base de datos, propiedades de Hibernate y referencias a las clases de entidad.
+* **Asociación con Hibernate:** `hibernate.cfg.xml` es utilizado específicamente por el framework de persistencia `Hibernate`.
+* **Configuración Detallada:** este archivo proporciona una configuración detallada de `Hibernate`, incluyendo detalles de la conexión a la base de datos, propiedades de Hibernate y referencias a las clases de entidad.
     
 * **Ejemplo**
 ```xml
@@ -409,8 +407,8 @@ Asegúrate de ajustar el nombre de la unidad de persistencia (`tuUnidadDePersist
 ```
 
 ### `persistence.xml`
-* **Asociación con JPA (Java Persistence API):** `persistence.xml` es utilizado por la API de persistencia JPA, que es un estándar de persistencia de datos en Java y es independiente del proveedor.
-* **Configuración General:** este archivo proporciona una configuración general para la unidad de persistencia JPA, incluyendo el nombre de la unidad de persistencia, las propiedades de conexión y las clases de entidad.
+* **Asociación con JPA (Java Persistence API):** `persistence.xml` es utilizado por la `API` de persistencia `JPA`, que es un estándar de persistencia de datos en `Java` y es independiente del proveedor.
+* **Configuración General:** este archivo proporciona una configuración general para la unidad de persistencia `JPA`, incluyendo el nombre de la unidad de persistencia, las propiedades de conexión y las clases de entidad.
 
 * **Ejemplo**
 
