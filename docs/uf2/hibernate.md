@@ -380,11 +380,11 @@ Asegúrate de ajustar el nombre de la unidad de persistencia (`tuUnidadDePersist
 
 
 ## Aclaraciones sobre `hibernate.cfg.xml` y `persistence.xml`
-`hibernate.cfg.xml` y `persistence.xml` son archivos de configuración utilizados en el contexto de la persistencia de datos en aplicaciones Java, pero se asocian con tecnologías diferentes y cumplen propósitos ligeramente diferentes. Aquí está la diferencia entre ellos:
+`hibernate.cfg.xml` y `persistence.xml` son archivos de configuración utilizados en el contexto de la persistencia de datos en aplicaciones `Java`, pero se asocian con tecnologías diferentes y cumplen propósitos ligeramente diferentes. Aquí está la diferencia entre ellos:
 
 ### `hibernate.cfg.xml`
 * **Asociación con Hibernate:** `hibernate.cfg.xml` es utilizado específicamente por el framework de persistencia `Hibernate`.
-* **Configuración Detallada:** este archivo proporciona una configuración detallada de `Hibernate`, incluyendo detalles de la conexión a la base de datos, propiedades de Hibernate y referencias a las clases de entidad.
+* **Configuración Detallada:** este archivo proporciona una configuración detallada de `Hibernate`, incluyendo detalles de la conexión a la base de datos, propiedades de `Hibernate` y referencias a las clases de entidad.
     
 * **Ejemplo**
 ```xml
