@@ -2,49 +2,49 @@
 
 `Hibernate` es un framework de mapeo objeto-relacional (ORM) para Java que facilita el mapeo de objetos Java a tablas de bases de datos relacionales y viceversa. Fue creado para simplificar el desarrollo de aplicaciones Java que interactúan con bases de datos, eliminando la necesidad de escribir consultas SQL directamente. Aquí hay una explicación básica de la teoría detrás de `Hibernate`:
 
-1. Mapeo Objeto-Relacional (ORM):
+**1. Mapeo Objeto-Relacional (ORM):**
 `Hibernate` implementa el patrón de diseño ORM, que permite a los desarrolladores trabajar con objetos Java en lugar de tablas de bases de datos directamente. Los objetos Java se mapean a las tablas de la base de datos y las operaciones CRUD (Crear, Leer, Actualizar, Eliminar) se realizan en objetos Java en lugar de en consultas SQL.
 
-2. Entidades y Clases de Entidad:
+**2. Entidades y Clases de Entidad:**
 En `Hibernate`, una clase de entidad es una clase Java que está mapeada a una tabla en la base de datos. Cada instancia de esta clase representa una fila en la tabla. Las clases de entidad generalmente tienen atributos que representan columnas en la tabla y métodos que proporcionan funcionalidad asociada con esa entidad.
 
 * `@Entity`: Se utiliza para marcar una clase de Java como una entidad que será gestionada por `Hibernate`.
 * Identificadores y Generadores: La anotación `@Id` se usa para especificar la clave primaria de la entidad, y `@GeneratedValue` especifica cómo se generará ese identificador (por ejemplo, autoincremental en la base de datos).
 
-3. Archivo de Configuración de `Hibernate`:
+**3. Archivo de Configuración de `Hibernate`:**
 Hibernate utiliza un archivo de configuración (por ejemplo, `hibernate.cfg.xml`) para especificar la configuración de la base de datos, como la URL de conexión, el nombre de usuario, la contraseña, el dialecto SQL, etc.
 
-4. SessionFactory:
+**4. `SessionFactory`:**
 `Hibernate` utiliza el patrón de diseño Singleton para crear una instancia de `SessionFactory`. Esta instancia es una factoría de sesiones de Hibernate y se usa para obtener instancias de Session, que son necesarias para interactuar con la base de datos.
 
-* Session: Una `Session` en `Hibernate` es una interfaz entre la aplicación Java y la base de datos. Proporciona métodos para realizar operaciones de CRUD, consultas `HQL` (`Hibernate Query Language`) y administrar la transacción. Las sesiones se obtienen de la `SessionFactory`.
+* `Session`: Una `Session` en `Hibernate` es una interfaz entre la aplicación Java y la base de datos. Proporciona métodos para realizar operaciones de CRUD, consultas `HQL` (`Hibernate Query Language`) y administrar la transacción. Las sesiones se obtienen de la `SessionFactory`.
 
-5. Operaciones CRUD:
-* Guardar (`save`): Almacena un nuevo objeto en la base de datos.
-* Actualizar (`update`): Modifica un objeto existente en la base de datos.
-* Leer (`get`, `load`, `createQuery`): Recupera objetos de la base de datos.
-* Eliminar (`delete`): Elimina un objeto de la base de datos.
+**5. Operaciones CRUD:**
+* *Guardar* (`save`): Almacena un nuevo objeto en la base de datos.
+* *Actualizar* (`update`): Modifica un objeto existente en la base de datos.
+* *Leer* (`get`, `load`, `createQuery`): Recupera objetos de la base de datos.
+* *Eliminar* (`delete`): Elimina un objeto de la base de datos.
 
-6. Relaciones entre Entidades:
+**6. Relaciones entre Entidades:**
 * `OneToOne`: Una entidad tiene una relación con exactamente una otra entidad.
 * `ManyToOne`: Múltiples entidades se asocian con una sola entidad.
 * `ManyToMany`: Múltiples entidades se asocian con múltiples entidades.
 
-7. Carga Perezosa (Lazy Loading):
+**7. Carga Perezosa (Lazy Loading):**
 Optimización de Consultas: `Hibernate` permite cargar datos de manera diferida para mejorar el rendimiento.   
 
-8. Transacciones:
+**8. Transacciones:**
 En `Hibernate`, las transacciones se utilizan para agrupar operaciones de base de datos en unidades atómicas y garantizar la consistencia de los datos. Las transacciones se inician, se confirman o se revierten utilizando métodos proporcionados por la Session.
 
-9. Ciclo de Vida del Objeto:
+**9. Ciclo de Vida del Objeto:**
 * `Transient`: El objeto no está asociado con ninguna sesión de `Hibernate`.
 * `Persistent`: El objeto está asociado con una sesión de `Hibernate` y se reflejarán los cambios en la base de datos.
 * `Detached`: El objeto estaba asociado con una sesión, pero la sesión se cerró.
 
-10. Consultas HQL:
+**10. Consultas HQL:**
 `Hibernate Query Language` (`HQL`) es un lenguaje de consulta orientado a objetos similar a `SQL` pero orientado a entidades en lugar de tablas. Permite a los desarrolladores realizar consultas complejas en sus objetos Java sin preocuparse por la estructura de la base de datos subyacente.
 
-11. Mapeo de Relaciones:
+**11. Mapeo de Relaciones:**
 `Hibernate` admite varios tipos de relaciones entre entidades, como relaciones uno a uno, uno a muchos y muchos a muchos. Estas relaciones se definen mediante anotaciones en las clases de entidad o mediante archivos de mapeo XML.
 
 ## Proyecto de ejemplo 1
