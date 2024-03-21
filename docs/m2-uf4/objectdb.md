@@ -45,13 +45,13 @@ A continuación, se ofrecen algunas características clave y conceptos important
 * **Instalación y configuración básica**: La instalación de `ObjectDB` generalmente implica descargar el archivo JAR del sitio web oficial de `ObjectDB` y agregarlo al classpath de su aplicación. La configuración básica incluye la configuración de la ubicación de la base de datos y otros parámetros de configuración.
 * **Configuración avanzada y optimización**: `ObjectDB` proporciona una variedad de opciones de configuración avanzada que pueden afectar el rendimiento y el comportamiento de la base de datos. Esto incluye ajustes de memoria, configuración de índices y ajustes de rendimiento.
 
-## Operaciones Básicas:
+## Operaciones Básicas
 
 * **Creación y conexión a una base de datos**: Para crear una nueva base de datos `ObjectDB`, se puede utilizar una conexión de base de datos específica o simplemente se puede acceder a una base de datos existente. La conexión a la base de datos se realiza utilizando la URL de conexión y las credenciales apropiadas.
 * **Guardar y recuperar objetos**: Para guardar un objeto en `ObjectDB`, simplemente se instancia y se almacena en la base de datos utilizando las operaciones de persistencia proporcionadas. Para recuperar objetos, se pueden realizar consultas utilizando un lenguaje de consulta específico de ObjectDB o utilizando métodos de búsqueda más simples.
 * **Actualización y eliminación de objetos**: La actualización de objetos en ObjectDB se realiza modificando los campos de los objetos y luego guardando los cambios en la base de datos. La eliminación de objetos se realiza eliminando el objeto de la base de datos.
 
-## Transacciones:
+## Transacciones
 * **Conceptos básicos de transacciones**: Una transacción en `ObjectDB` es una serie de operaciones que se ejecutan como una unidad atómica. Esto significa que todas las operaciones dentro de una transacción se realizan en su totalidad o no se realizan en absoluto. Las transacciones deben cumplir con las propiedades `ACID` (Atomicidad, Consistencia, Aislamiento y Durabilidad).
 * **Control de transacciones en ObjectDB**: `ObjectDB` proporciona soporte para transacciones mediante el uso de entidades de gestión de transacciones como `EntityManager` en el contexto de `JPA` (`Java Persistence API`). Las transacciones se inician, se confirman o se deshacen explícitamente, según las necesidades de la aplicación.
 
@@ -79,19 +79,19 @@ En `ObjectDB`, el concepto de `cascade` se refiere a la propagación automática
 
 Existen diferentes tipos de operaciones que pueden ser cascadas en `ObjectDB`:
 
-### `CascadeType.ALL`:
+### `CascadeType.ALL`
 * Esta configuración de cascade indica que todas las operaciones de persistencia (guardar, actualizar, eliminar) realizadas en el objeto principal deben propagarse automáticamente a los objetos relacionados.
 * Por lo tanto, si se guarda, actualiza o elimina el objeto principal, las mismas operaciones se aplicarán a los objetos relacionados.
 
-### `CascadeType.PERSIST`:
+### `CascadeType.PERSIST`
 * Esta configuración de cascade indica que solo las operaciones de persistencia de guardar deben propagarse automáticamente a los objetos relacionados.
 * Si se guarda el objeto principal, las operaciones de guardar también se aplicarán a los objetos relacionados, pero las actualizaciones y eliminaciones no se propagarán.
 
-### `CascadeType.MERGE`:
+### `CascadeType.MERGE`
 * Esta configuración de cascade indica que solo las operaciones de persistencia de fusionar (actualizar) deben propagarse automáticamente a los objetos relacionados.
 * Si se actualiza el objeto principal, las operaciones de actualización también se aplicarán a los objetos relacionados, pero las operaciones de guardar y eliminar no se propagarán.
 
-### `CascadeType.REMOVE`:
+### `CascadeType.REMOVE`
 * Esta configuración de cascade indica que solo las operaciones de persistencia de eliminar deben propagarse automáticamente a los objetos relacionados.
 * Si se elimina el objeto principal, las operaciones de eliminación también se aplicarán a los objetos relacionados, pero las operaciones de guardar y actualizar no se propagarán.
 
@@ -116,7 +116,7 @@ El uso de cascade en `ObjectDB` es útil para simplificar y automatizar la gesti
 * **Uso eficiente de la memoria y almacenamiento**: `ObjectDB` utiliza técnicas de optimización de memoria y almacenamiento para minimizar el uso de recursos y mejorar el rendimiento. Esto incluye técnicas como el almacenamiento en caché de consultas y resultados, la compresión de datos y la gestión eficiente de la memoria.
 
 ### Índices en ObjectDB
-En `ObjectDB`, los índices juegan un papel crucial en el rendimiento de las consultas, ya que ayudan a acelerar la recuperación de datos al proporcionar un acceso más rápido a los objetos almacenados en la base de datos. Aquí hay una explicación detallada sobre cómo funcionan los índices en ObjectDB:
+En `ObjectDB`, los índices juegan un papel crucial en el rendimiento de las consultas, ya que ayudan a acelerar la recuperación de datos al proporcionar un acceso más rápido a los objetos almacenados en la base de datos. Aquí hay una explicación detallada sobre cómo funcionan los índices en `ObjectDB`:
 
 #### ¿Qué es un índice en ObjectDB?
 Un índice en `ObjectDB` es una estructura de datos que almacena valores de campos específicos de objetos en la base de datos y sus ubicaciones físicas en el archivo de la base de datos. Esto permite una recuperación más rápida de objetos que coinciden con ciertos criterios de consulta.
@@ -140,7 +140,7 @@ Los índices en `ObjectDB` son una herramienta fundamental para mejorar el rendi
 ## Integración con Java y Otros Frameworks
 
 * **Integración con aplicaciones Java**: `ObjectDB` se integra perfectamente con aplicaciones Java utilizando `API` como `JPA` (Java Persistence API) o `API` nativas de `ObjectDB`. Esto permite a los desarrolladores utilizar `ObjectDB` en sus aplicaciones Java sin introducir dependencias adicionales o complejidades innecesarias.
-* **Uso de `ObjectDB` con frameworks populares**: `ObjectDB` es compatible con una variedad de frameworks Java, incluidos Spring, Hibernate, EclipseLink, entre otros. Esto facilita la integración de ObjectDB en aplicaciones existentes basadas en estos frameworks, lo que permite a los desarrolladores aprovechar las características y capacidades de ObjectDB dentro de sus aplicaciones.
+* **Uso de `ObjectDB` con frameworks populares**: `ObjectDB` es compatible con una variedad de frameworks Java, incluidos Spring, Hibernate, EclipseLink, entre otros. Esto facilita la integración de ObjectDB en aplicaciones existentes basadas en estos frameworks, lo que permite a los desarrolladores aprovechar las características y capacidades de `ObjectDB` dentro de sus aplicaciones.
 
 ## Seguridad y Mantenimiento
 
@@ -148,7 +148,7 @@ Los índices en `ObjectDB` son una herramienta fundamental para mejorar el rendi
 * **Copias de seguridad y recuperación**: `ObjectDB` admite la realización de copias de seguridad y la recuperación de datos mediante la copia de archivos de base de datos o el uso de herramientas de respaldo especializadas. Esto garantiza la integridad y disponibilidad de los datos en caso de fallas o pérdidas inesperadas.
 * **Monitoreo y mantenimiento de la base de datos**: `ObjectDB` proporciona herramientas y utilidades para monitorear y mantener la salud de la base de datos. Esto incluye herramientas de diagnóstico y supervisión, registros de eventos y alertas para detectar y resolver problemas de rendimiento o integridad de los datos.
 
-* **Locking**: el concepto de `locking` se refiere a la capacidad de controlar el acceso concurrente a los objetos en la base de datos para garantizar la consistencia y la integridad de los datos. El locking se utiliza para evitar que múltiples transacciones modifiquen los mismos objetos simultáneamente, lo que podría llevar a situaciones de inconsistencia o corrupción de datos. `ObjectDB` utiliza una estrategia de locking optimista por defecto, pero también ofrece la posibilidad de utilizar locking pessimista según las necesidades de la aplicación.
+* **Locking**: el concepto de `locking` se refiere a la capacidad de controlar el acceso concurrente a los objetos en la base de datos para garantizar la consistencia y la integridad de los datos. El `locking` se utiliza para evitar que múltiples transacciones modifiquen los mismos objetos simultáneamente, lo que podría llevar a situaciones de inconsistencia o corrupción de datos. `ObjectDB` utiliza una estrategia de `locking` optimista por defecto, pero también ofrece la posibilidad de utilizar `locking` pessimista según las necesidades de la aplicación.
 
 ## Casos de Uso y Ejemplos Prácticos
 * **Ejemplos de aplicación de ObjectDB en diferentes contextos**: `ObjectDB` se puede utilizar en una amplia variedad de casos de uso, incluidas aplicaciones empresariales, aplicaciones web, aplicaciones móviles, sistemas embebidos y más. Ejemplos prácticos podrían incluir sistemas de gestión de contenidos, sistemas de comercio electrónico, aplicaciones de seguimiento y análisis de datos, entre otros.
