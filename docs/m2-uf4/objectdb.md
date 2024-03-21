@@ -23,7 +23,7 @@ A continuación, se ofrecen algunas características clave y conceptos important
 
 ### Breve historia y contexto
 
-ObjectDB es un sistema de gestión de bases de datos orientado a objetos que se desarrolló como una solución específica para abordar las limitaciones de las bases de datos relacionales en entornos donde se utilizan lenguajes de programación orientados a objetos, como Java. Surgió en respuesta a la necesidad de una integración más fluida entre la lógica de la aplicación y la persistencia de datos. Su desarrollo comenzó a principios de los años 2000 y desde entonces ha evolucionado para ofrecer un rendimiento optimizado y una experiencia de desarrollo simplificada para aplicaciones Java.
+`ObjectDB` es un sistema de gestión de bases de datos orientado a objetos que se desarrolló como una solución específica para abordar las limitaciones de las bases de datos relacionales en entornos donde se utilizan lenguajes de programación orientados a objetos, como Java. Surgió en respuesta a la necesidad de una integración más fluida entre la lógica de la aplicación y la persistencia de datos. Su desarrollo comenzó a principios de los años 2000 y desde entonces ha evolucionado para ofrecer un rendimiento optimizado y una experiencia de desarrollo simplificada para aplicaciones Java.
 
 ### Ventajas de utilizar ObjectDB en comparación con otras soluciones de bases de datos
 
@@ -35,49 +35,49 @@ ObjectDB es un sistema de gestión de bases de datos orientado a objetos que se 
 ## Conceptos Fundamentales
 
 * **Principios de la base de datos orientada a objetos**: Las bases de datos orientadas a objetos tratan los objetos como elementos fundamentales de la persistencia de datos. Esto significa que los objetos se almacenan directamente en la base de datos y se pueden recuperar sin necesidad de transformaciones adicionales.
-* **Estructura de datos en ObjectDB**: ObjectDB almacena objetos directamente en archivos de base de datos. Cada objeto tiene un identificador único y se puede acceder de manera eficiente a través de índices. No hay necesidad de traducir entre estructuras de datos en memoria y tablas de base de datos.
-* **Modelado de datos en ObjectDB**: Para modelar datos en ObjectDB, se definen clases Java que representan entidades persistentes. Estas clases se pueden anotar con metadatos de persistencia para indicar cómo se debe almacenar cada campo en la base de datos.
-* **Ciclo de vida de los objetos en ObjectDB**: Los objetos en ObjectDB pasan por diferentes estados, como "nuevo", "administrado", "desconectado" y "eliminado". El estado de un objeto determina cómo se comportará en relación con la base de datos, como cuándo se guardará o eliminará.
+* **Estructura de datos en ObjectDB**: `ObjectDB` almacena objetos directamente en archivos de base de datos. Cada objeto tiene un identificador único y se puede acceder de manera eficiente a través de índices. No hay necesidad de traducir entre estructuras de datos en memoria y tablas de base de datos.
+* **Modelado de datos en ObjectDB**: Para modelar datos en `ObjectDB`, se definen clases Java que representan entidades persistentes. Estas clases se pueden anotar con metadatos de persistencia para indicar cómo se debe almacenar cada campo en la base de datos.
+* **Ciclo de vida de los objetos en ObjectDB**: Los objetos en `ObjectDB` pasan por diferentes estados, como "nuevo", "administrado", "desconectado" y "eliminado". El estado de un objeto determina cómo se comportará en relación con la base de datos, como cuándo se guardará o eliminará.
 
 ## Configuración
 
-* **Requisitos de sistema**: ObjectDB se puede ejecutar en una variedad de sistemas operativos que admiten entornos Java. Se requiere una instalación de Java para ejecutar ObjectDB.
-* **Instalación y configuración básica**: La instalación de ObjectDB generalmente implica descargar el archivo JAR del sitio web oficial de ObjectDB y agregarlo al classpath de su aplicación. La configuración básica incluye la configuración de la ubicación de la base de datos y otros parámetros de configuración.
-* **Configuración avanzada y optimización**: ObjectDB proporciona una variedad de opciones de configuración avanzada que pueden afectar el rendimiento y el comportamiento de la base de datos. Esto incluye ajustes de memoria, configuración de índices y ajustes de rendimiento.
+* **Requisitos de sistema**: `ObjectDB` se puede ejecutar en una variedad de sistemas operativos que admiten entornos Java. Se requiere una instalación de Java para ejecutar ObjectDB.
+* **Instalación y configuración básica**: La instalación de `ObjectDB` generalmente implica descargar el archivo JAR del sitio web oficial de `ObjectDB` y agregarlo al classpath de su aplicación. La configuración básica incluye la configuración de la ubicación de la base de datos y otros parámetros de configuración.
+* **Configuración avanzada y optimización**: `ObjectDB` proporciona una variedad de opciones de configuración avanzada que pueden afectar el rendimiento y el comportamiento de la base de datos. Esto incluye ajustes de memoria, configuración de índices y ajustes de rendimiento.
 
 ## Operaciones Básicas:
 
-* **Creación y conexión a una base de datos**: Para crear una nueva base de datos ObjectDB, se puede utilizar una conexión de base de datos específica o simplemente se puede acceder a una base de datos existente. La conexión a la base de datos se realiza utilizando la URL de conexión y las credenciales apropiadas.
-* **Guardar y recuperar objetos**: Para guardar un objeto en ObjectDB, simplemente se instancia y se almacena en la base de datos utilizando las operaciones de persistencia proporcionadas. Para recuperar objetos, se pueden realizar consultas utilizando un lenguaje de consulta específico de ObjectDB o utilizando métodos de búsqueda más simples.
+* **Creación y conexión a una base de datos**: Para crear una nueva base de datos `ObjectDB`, se puede utilizar una conexión de base de datos específica o simplemente se puede acceder a una base de datos existente. La conexión a la base de datos se realiza utilizando la URL de conexión y las credenciales apropiadas.
+* **Guardar y recuperar objetos**: Para guardar un objeto en `ObjectDB`, simplemente se instancia y se almacena en la base de datos utilizando las operaciones de persistencia proporcionadas. Para recuperar objetos, se pueden realizar consultas utilizando un lenguaje de consulta específico de ObjectDB o utilizando métodos de búsqueda más simples.
 * **Actualización y eliminación de objetos**: La actualización de objetos en ObjectDB se realiza modificando los campos de los objetos y luego guardando los cambios en la base de datos. La eliminación de objetos se realiza eliminando el objeto de la base de datos.
 
 ## Transacciones:
-* **Conceptos básicos de transacciones**: Una transacción en ObjectDB es una serie de operaciones que se ejecutan como una unidad atómica. Esto significa que todas las operaciones dentro de una transacción se realizan en su totalidad o no se realizan en absoluto. Las transacciones deben cumplir con las propiedades ACID (Atomicidad, Consistencia, Aislamiento y Durabilidad).
-* **Control de transacciones en ObjectDB**: ObjectDB proporciona soporte para transacciones mediante el uso de entidades de gestión de transacciones como `EntityManager` en el contexto de JPA (Java Persistence API). Las transacciones se inician, se confirman o se deshacen explícitamente, según las necesidades de la aplicación.
+* **Conceptos básicos de transacciones**: Una transacción en `ObjectDB` es una serie de operaciones que se ejecutan como una unidad atómica. Esto significa que todas las operaciones dentro de una transacción se realizan en su totalidad o no se realizan en absoluto. Las transacciones deben cumplir con las propiedades `ACID` (Atomicidad, Consistencia, Aislamiento y Durabilidad).
+* **Control de transacciones en ObjectDB**: `ObjectDB` proporciona soporte para transacciones mediante el uso de entidades de gestión de transacciones como `EntityManager` en el contexto de `JPA` (`Java Persistence API`). Las transacciones se inician, se confirman o se deshacen explícitamente, según las necesidades de la aplicación.
 
 ## Eager Loading y Lazy Loading
-En ObjectDB, así como en otros sistemas de persistencia de objetos, "eager loading" y "lazy loading" son dos estrategias utilizadas para cargar objetos relacionados desde la base de datos. Estas estrategias tienen diferentes enfoques y se utilizan en diferentes situaciones para optimizar el rendimiento y minimizar el uso de recursos. Aquí está una explicación detallada de cada una:
+En `ObjectDB`, así como en otros sistemas de persistencia de objetos, `eager loading` y `lazy loading` son dos estrategias utilizadas para cargar objetos relacionados desde la base de datos. Estas estrategias tienen diferentes enfoques y se utilizan en diferentes situaciones para optimizar el rendimiento y minimizar el uso de recursos. Aquí está una explicación detallada de cada una:
 
 ### Eager Loading (Carga Ansiosa)
-* En el eager loading, los objetos relacionados se cargan de la base de datos en el mismo momento que se carga el objeto principal.
+* En el `eager loading`, los objetos relacionados se cargan de la base de datos en el mismo momento que se carga el objeto principal.
 * Esto significa que cuando se accede a un objeto principal y se navega a sus objetos relacionados, todos los objetos relacionados se cargan de inmediato, independientemente de si se van a utilizar o no.
 * El eager loading es útil cuando se sabe que se necesitarán los objetos relacionados en la mayoría de los casos, ya que reduce la cantidad de consultas a la base de datos al cargar todo de una vez.
 * Sin embargo, puede causar sobrecarga de memoria si se cargan grandes cantidades de datos innecesarios.
 
 ### Lazy Loading (Carga Perezosa)
-* En el lazy loading, los objetos relacionados no se cargan de la base de datos hasta que se accede a ellos por primera vez.
+* En el `lazy loading`, los objetos relacionados no se cargan de la base de datos hasta que se accede a ellos por primera vez.
 * Esto significa que cuando se carga un objeto principal, sus objetos relacionados no se cargan inicialmente, sino que se cargan de manera incremental según sea necesario.
-* El lazy loading es útil cuando los objetos relacionados pueden ser grandes o cuando no se necesitan siempre. Permite cargar solo los datos que se necesitan en un momento dado, lo que ahorra memoria y reduce la sobrecarga de la red.
+* El `lazy loading` es útil cuando los objetos relacionados pueden ser grandes o cuando no se necesitan siempre. Permite cargar solo los datos que se necesitan en un momento dado, lo que ahorra memoria y reduce la sobrecarga de la red.
 * Sin embargo, puede resultar en múltiples consultas a la base de datos si se accede a muchos objetos relacionados en diferentes momentos, lo que puede afectar al rendimiento.
 
 En ObjectDB, las estrategias de carga pueden ser configuradas a nivel de consulta o a nivel de relación utilizando anotaciones como `@OneToMany`, `@ManyToOne`, etc. Por ejemplo, para configurar lazy loading en una relación `@OneToMany`, puedes usar la anotación `fetch = FetchType.LAZY`.
 
-Tanto el eager loading como el lazy loading son estrategias importantes para el acceso eficiente a los objetos relacionados en una base de datos. La elección entre una u otra depende de los requisitos específicos de la aplicación, como el rendimiento, la eficiencia de la memoria y el comportamiento de acceso a los datos.
+Tanto el `eager loading` como el `lazy loading` son estrategias importantes para el acceso eficiente a los objetos relacionados en una base de datos. La elección entre una u otra depende de los requisitos específicos de la aplicación, como el rendimiento, la eficiencia de la memoria y el comportamiento de acceso a los datos.
 
 ## Cascade
 En `ObjectDB`, el concepto de `cascade` se refiere a la propagación automática de operaciones de persistencia (como guardar, actualizar o eliminar) desde un objeto principal a los objetos relacionados. Esto significa que cuando se realiza una operación en un objeto principal, las mismas operaciones se aplican automáticamente a los objetos relacionados según la configuración de cascada especificada.
 
-Existen diferentes tipos de operaciones que pueden ser cascadas en ObjectDB:
+Existen diferentes tipos de operaciones que pueden ser cascadas en `ObjectDB`:
 
 ### `CascadeType.ALL`:
 * Esta configuración de cascade indica que todas las operaciones de persistencia (guardar, actualizar, eliminar) realizadas en el objeto principal deben propagarse automáticamente a los objetos relacionados.
@@ -95,7 +95,7 @@ Existen diferentes tipos de operaciones que pueden ser cascadas en ObjectDB:
 * Esta configuración de cascade indica que solo las operaciones de persistencia de eliminar deben propagarse automáticamente a los objetos relacionados.
 * Si se elimina el objeto principal, las operaciones de eliminación también se aplicarán a los objetos relacionados, pero las operaciones de guardar y actualizar no se propagarán.
 
-En ObjectDB, el cascade se especifica utilizando la anotación @OneToMany, @OneToOne, @ManyToMany, o @ManyToOne, dependiendo de la relación entre las entidades. Por ejemplo:
+En `ObjectDB`, el cascade se especifica utilizando la anotación @OneToMany, @OneToOne, @ManyToMany, o @ManyToOne, dependiendo de la relación entre las entidades. Por ejemplo:
 
 ```java
 
@@ -108,7 +108,7 @@ public class Padre {
 
 En este ejemplo, cuando se realizan operaciones de persistencia en un objeto Padre, las mismas operaciones se aplicarán automáticamente a los objetos Hijo relacionados, debido a la configuración de cascade CascadeType.ALL en la relación `@OneToMany`.
 
-El uso de cascade en ObjectDB es útil para simplificar y automatizar la gestión de relaciones entre objetos y garantizar la integridad de los datos al realizar operaciones de persistencia. Sin embargo, es importante tener cuidado al usar cascade, ya que puede resultar en operaciones no deseadas si no se configura correctamente.
+El uso de cascade en `ObjectDB` es útil para simplificar y automatizar la gestión de relaciones entre objetos y garantizar la integridad de los datos al realizar operaciones de persistencia. Sin embargo, es importante tener cuidado al usar cascade, ya que puede resultar en operaciones no deseadas si no se configura correctamente.
 
 ## Optimización y Rendimiento
 
@@ -119,10 +119,10 @@ El uso de cascade en ObjectDB es útil para simplificar y automatizar la gestió
 En `ObjectDB`, los índices juegan un papel crucial en el rendimiento de las consultas, ya que ayudan a acelerar la recuperación de datos al proporcionar un acceso más rápido a los objetos almacenados en la base de datos. Aquí hay una explicación detallada sobre cómo funcionan los índices en ObjectDB:
 
 #### ¿Qué es un índice en ObjectDB?
-Un índice en ObjectDB es una estructura de datos que almacena valores de campos específicos de objetos en la base de datos y sus ubicaciones físicas en el archivo de la base de datos. Esto permite una recuperación más rápida de objetos que coinciden con ciertos criterios de consulta.
+Un índice en `ObjectDB` es una estructura de datos que almacena valores de campos específicos de objetos en la base de datos y sus ubicaciones físicas en el archivo de la base de datos. Esto permite una recuperación más rápida de objetos que coinciden con ciertos criterios de consulta.
 
 #### ¿Por qué son importantes los índices?
-Los índices son importantes porque mejoran el rendimiento de las consultas al permitir un acceso más rápido a los datos. Sin índices, ObjectDB tendría que escanear todos los objetos en la base de datos para encontrar aquellos que coincidan con los criterios de consulta, lo que puede ser ineficiente, especialmente en bases de datos grandes.
+Los índices son importantes porque mejoran el rendimiento de las consultas al permitir un acceso más rápido a los datos. Sin índices, `ObjectDB` tendría que escanear todos los objetos en la base de datos para encontrar aquellos que coincidan con los criterios de consulta, lo que puede ser ineficiente, especialmente en bases de datos grandes.
 
 #### Tipos de índices en ObjectDB:
 * **Índices de campo único**: Estos índices se crean en un solo campo de un objeto. Son útiles para consultas que filtran resultados por un campo específico, como un `ID` único o un nombre.
@@ -148,7 +148,7 @@ Los índices en `ObjectDB` son una herramienta fundamental para mejorar el rendi
 * **Copias de seguridad y recuperación**: `ObjectDB` admite la realización de copias de seguridad y la recuperación de datos mediante la copia de archivos de base de datos o el uso de herramientas de respaldo especializadas. Esto garantiza la integridad y disponibilidad de los datos en caso de fallas o pérdidas inesperadas.
 * **Monitoreo y mantenimiento de la base de datos**: `ObjectDB` proporciona herramientas y utilidades para monitorear y mantener la salud de la base de datos. Esto incluye herramientas de diagnóstico y supervisión, registros de eventos y alertas para detectar y resolver problemas de rendimiento o integridad de los datos.
 
-* **Locking**: el concepto de `locking` se refiere a la capacidad de controlar el acceso concurrente a los objetos en la base de datos para garantizar la consistencia y la integridad de los datos. El locking se utiliza para evitar que múltiples transacciones modifiquen los mismos objetos simultáneamente, lo que podría llevar a situaciones de inconsistencia o corrupción de datos. ObjectDB utiliza una estrategia de locking optimista por defecto, pero también ofrece la posibilidad de utilizar locking pessimista según las necesidades de la aplicación.
+* **Locking**: el concepto de `locking` se refiere a la capacidad de controlar el acceso concurrente a los objetos en la base de datos para garantizar la consistencia y la integridad de los datos. El locking se utiliza para evitar que múltiples transacciones modifiquen los mismos objetos simultáneamente, lo que podría llevar a situaciones de inconsistencia o corrupción de datos. `ObjectDB` utiliza una estrategia de locking optimista por defecto, pero también ofrece la posibilidad de utilizar locking pessimista según las necesidades de la aplicación.
 
 ## Casos de Uso y Ejemplos Prácticos
 * **Ejemplos de aplicación de ObjectDB en diferentes contextos**: `ObjectDB` se puede utilizar en una amplia variedad de casos de uso, incluidas aplicaciones empresariales, aplicaciones web, aplicaciones móviles, sistemas embebidos y más. Ejemplos prácticos podrían incluir sistemas de gestión de contenidos, sistemas de comercio electrónico, aplicaciones de seguimiento y análisis de datos, entre otros.
@@ -216,16 +216,16 @@ Las `Named Queries` en `ObjectDB` son una característica poderosa que permite d
 * **Portabilidad**: Las aplicaciones desarrolladas utilizando `JDO` pueden ser portables entre diferentes proveedores de `JDO`, lo que significa que los desarrolladores pueden cambiar fácilmente entre diferentes implementaciones de `JDO` sin tener que cambiar el código de la aplicación.
 
 ### `ObjectDB JDO`
-* ObjectDB JDO es una implementación del estándar JDO que proporciona soporte completo para la persistencia de objetos en la base de datos `ObjectDB`.
-* ObjectDB JDO permite a los desarrolladores utilizar las características estándar de `JDO` para persistir y recuperar objetos en una base de datos `ObjectDB`, lo que incluye la transparencia de la persistencia, la gestión de transacciones y el modelado de datos flexible.
-* ObjectDB JDO se integra fácilmente con aplicaciones Java existentes y proporciona un alto rendimiento y escalabilidad para aplicaciones que requieren persistencia de objetos.
+* `ObjectDB JDO` es una implementación del estándar JDO que proporciona soporte completo para la persistencia de objetos en la base de datos `ObjectDB`.
+* `ObjectDB JDO` permite a los desarrolladores utilizar las características estándar de `JDO` para persistir y recuperar objetos en una base de datos `ObjectDB`, lo que incluye la transparencia de la persistencia, la gestión de transacciones y el modelado de datos flexible.
+* `ObjectDB JDO` se integra fácilmente con aplicaciones Java existentes y proporciona un alto rendimiento y escalabilidad para aplicaciones que requieren persistencia de objetos.
 
 ### Uso de `ObjectDB JDO`
 Para utilizar `ObjectDB JDO` en una aplicación Java, los desarrolladores deben incluir la biblioteca `ObjectDB JDO` en el classpath de la aplicación.
 Una vez que `ObjectDB JDO` está en el classpath, los desarrolladores pueden utilizar las API estándar de `JDO` para persistir y recuperar objetos en la base de datos `ObjectDB`.
 Esto incluye la creación de instancias de `PersistenceManagerFactory`, la obtención de instancias de `PersistenceManager` para realizar operaciones de persistencia y la definición de clases de entidades persistentes utilizando anotaciones o archivos de metadatos de `JDO`.
 
-`ObjectDB JDO` es una implementación del estándar `JDO` que proporciona una forma fácil y eficiente de persistir objetos en una base de datos `ObjectDB` utilizando API estándar de Java. Con ObjectDB `JDO`, los desarrolladores pueden aprovechar las características de `JDO` para construir aplicaciones Java escalables y de alto rendimiento con persistencia de objetos integrada.
+`ObjectDB JDO` es una implementación del estándar `JDO` que proporciona una forma fácil y eficiente de persistir objetos en una base de datos `ObjectDB` utilizando API estándar de Java. Con `ObjectDB JDO`, los desarrolladores pueden aprovechar las características de `JDO` para construir aplicaciones Java escalables y de alto rendimiento con persistencia de objetos integrada.
 
 ## `ObjectDB Explorer`
 `ObjectDB Explorer` es una herramienta de administración y visualización gráfica para bases de datos ObjectDB. Proporciona una interfaz de usuario intuitiva que permite a los usuarios interactuar con la base de datos de una manera visual, lo que facilita la visualización y manipulación de datos sin necesidad de escribir consultas o comandos SQL.
@@ -244,7 +244,7 @@ Los usuarios pueden filtrar y ordenar los datos para analizarlos y comprender me
 
 ### Edición de datos
 Los usuarios pueden realizar ediciones en los datos directamente desde la interfaz de `ObjectDB Explorer`, lo que incluye agregar, modificar o eliminar registros de la base de datos.
-Esto proporciona una forma conveniente de actualizar y mantener los datos sin necesidad de escribir comandos SQL manualmente.
+Esto proporciona una forma conveniente de actualizar y mantener los datos sin necesidad de escribir comandos `SQL` manualmente.
 
 ### Ejecución de consultas
 `ObjectDB Explorer` permite a los usuarios ejecutar consultas directamente desde la interfaz gráfica.
@@ -289,7 +289,7 @@ Los usuarios también pueden realizar copias de seguridad y restauraciones de la
 * `ObjectDB Doctor` es una herramienta esencial para diagnosticar y reparar problemas en las bases de datos ObjectDB. Proporciona una forma eficaz de identificar y solucionar problemas de integridad de datos, garantizando así la fiabilidad y estabilidad de las aplicaciones que utilizan bases de datos ObjectDB.
 
 ## `ObjectDB Embedded Database`
-`ObjectDB Embedded Database` es una versión de la base de datos `ObjectDB` que se integra directamente en la aplicación como una biblioteca Java, lo que permite el uso de ObjectDB sin necesidad de un servidor de base de datos externo. En lugar de ejecutarse como un servicio independiente, la base de datos se incrusta dentro de la aplicación Java y se ejecuta en el mismo proceso que la aplicación.
+`ObjectDB Embedded Database` es una versión de la base de datos `ObjectDB` que se integra directamente en la aplicación como una biblioteca `Java`, lo que permite el uso de ObjectDB sin necesidad de un servidor de base de datos externo. En lugar de ejecutarse como un servicio independiente, la base de datos se incrusta dentro de la aplicación Java y se ejecuta en el mismo proceso que la aplicación.
 
 ### Integración directa
 * `ObjectDB Embedded Database` se integra directamente en la aplicación Java como una biblioteca de clases.
