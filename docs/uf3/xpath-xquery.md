@@ -114,6 +114,39 @@ Atributos de los empleados:
     </student>
     <!-- Otros estudiantes -->
 </students>
+
+<courses>
+    <course id="CS101">
+        <name>Computer Science</name>
+        <professor>
+            <name>Dr. Smith</name>
+        </professor>
+        <student_id>1001</student_id>
+        <!-- Otros datos del curso -->
+    </course>
+    <course id="PH101">
+        <name>Physics</name>
+        <professor>
+            <name>Dr. Johnson</name>
+        </professor>
+        <student_id>1002</student_id>
+        <!-- Otros datos del curso -->
+    </course>
+    <!-- Otros cursos -->
+</courses>
+
+<professors>
+    <professor id="2001">
+        <name>Dr. Adams</name>
+        <!-- Otros datos del profesor -->
+    </professor>
+    <professor id="2002">
+        <name>Dr. Davis</name>
+        <!-- Otros datos del profesor -->
+    </professor>
+    <!-- Otros profesores -->
+</professors>
+
 ```
 
 Atributos de los estudiantes:
@@ -198,31 +231,31 @@ Atributos de los estudiantes:
 1. Obtener el título de una película específica:
 
 ```xpath
-/movies/movie[@id="1"]/title/text()
+//movies/movie[@id="1"]/title/text()
 ```
 
 2. Listar los directores de las películas de un género determinado:
 
 ```xpath
-/movies/movie[genre="Drama"]/director/text()
+//movies/movie[genre="Drama"]/director/text()
 ```
 
 3. Encontrar los títulos de las películas que tienen una calificación superior a 8:
 
 ```xpath
-/movies/movie[number(rating) > 8]/title/text()
+//movies/movie[number(rating) > 8]/title/text()
 ```
 
 4. Obtener los años de lanzamiento de las películas dirigidas por un director específico:
 
 ```xpath
-/movies/movie[director="Francis Ford Coppola"]/year/text()
+//movies/movie[director="Francis Ford Coppola"]/year/text()
 ```
 
 5. Encontrar los géneros de las películas que fueron lanzadas después de 2000:
 
 ```xpath
-/movies/movie[number(year) > 2000]/genre/text()
+//movies/movie[number(year) > 2000]/genre/text()
 ```
 
 ### Ejercicios: Registro de Libros
@@ -230,31 +263,31 @@ Atributos de los estudiantes:
 1. Obtener el autor de un libro específico:
 
 ```xpath
-/books/book[@id="1"]/author/text()
+//books/book[@id="1"]/author/text()
 ```
 
 2. Listar los títulos de los libros de un género determinado:
 
 ```xpath
-/books/book[genre="Dystopian"]/title/text()
+//books/book[genre="Dystopian"]/title/text()
 ```
 
 3. Encontrar los autores de los libros que tienen una calificación superior a 4.5:
 
 ```xpath
-/books/book[number(rating) > 4.5]/author/text()
+//books/book[number(rating) > 4.5]/author/text()
 ```
 
 4. Obtener los años de publicación de los libros escritos por un autor específico:
 
 ```xpath
-/books/book[author="Harper Lee"]/year/text()
+//books/book[author="Harper Lee"]/year/text()
 ```
 
 5. Encontrar los géneros de los libros que fueron publicados después de 2000:
 
 ```xpath
-/books/book[number(year) > 2000]/genre/text()
+//books/book[number(year) > 2000]/genre/text()
 ```
 
 ### Ejercicios: Registro de Canciones
@@ -262,31 +295,31 @@ Atributos de los estudiantes:
 1. Obtener el título de una canción específica:
 
 ```xpath
-/songs/song[@id="1"]/title/text()
+//songs/song[@id="1"]/title/text()
 ```
 
 2. Listar los artistas de las canciones de un género determinado:
 
 ```xpath
-/songs/song[genre="Pop"]/artist/text()
+//songs/song[genre="Pop"]/artist/text()
 ```
 
 3. Encontrar los títulos de las canciones que tienen una calificación superior a 4.7:
 
 ```xpath
-/songs/song[number(rating) > 4.7]/title/text()
+//songs/song[number(rating) > 4.7]/title/text()
 ```
 
 4.  Obtener los años de lanzamiento de las canciones interpretadas por un artista específico:
 
 ```xpath
-/songs/song[artist="Queen"]/year/text()
+//songs/song[artist="Queen"]/year/text()
 ```
 
 5.  Encontrar los géneros de las canciones que fueron lanzadas después de 2000:
 
 ```xpath
-/songs/song[number(year) > 2000]/genre/text()
+//songs/song[number(year) > 2000]/genre/text()
 ```
 
 ### Ejercicios: Registro de Estudiantes
@@ -321,6 +354,46 @@ count(//student[course_id = 'CS101'])
 //student[tutor_id = '2001']/name/text()
 ```
 
+6. Obtener la calificación de un estudiante específico en una asignatura dada.
+```xpath
+//student[@id="1001"]/grades/subject[@name="Math"]/grade/text()
+```
+
+7. Listar los nombres de los profesores de un curso determinado.
+```xpath
+//course[@name="Computer Science"]/professor/name/text()
+```
+
+8. Encontrar los nombres de los estudiantes que tienen más de 90 en cualquier asignatura.
+```xpath
+//student[grades/subject/grade > 90]/name/text()
+```
+
+9. Obtener los nombres de los estudiantes que están matriculados en un curso específico.
+```xpath
+//student[course_id="CS101"]/name/text()
+```
+
+10. Encontrar el nombre del curso en el que está inscrito un estudiante con un ID específico.
+```xpath
+//course[student_id="1001"]/name/text()
+```
+
+11. Encontrar los estudiantes que tienen más de 3 ausencias.
+```xpath
+//student[absences > 3]/name/text()
+```
+
+12. Obtener el nombre del tutor de un estudiante específico.
+```xpath
+//student[@id="1001"]/tutor/name/text()
+```
+
+13. Encontrar los IDs de los estudiantes que están bajo la tutoría de un tutor específico.
+```xpath
+ //student[tutor_id="2001"]/id/text()
+```
+  
 ### Ejercicios: Lista de Empleados
 
 1. Obtener los nombres completos de todos los empleados.
