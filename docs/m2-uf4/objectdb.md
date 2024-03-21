@@ -27,10 +27,10 @@ ObjectDB es un sistema de gestión de bases de datos orientado a objetos que se 
 
 ### Ventajas de utilizar ObjectDB en comparación con otras soluciones de bases de datos
 
-* Mapeo directo de objetos: En ObjectDB, los objetos Java se almacenan directamente en la base de datos sin necesidad de mapeo objeto-relacional (ORM). Esto elimina la necesidad de traducir manualmente entre las estructuras de datos en memoria y las tablas de la base de datos.
-* Alto rendimiento: ObjectDB está diseñado específicamente para entornos Java, lo que significa que puede optimizar su rendimiento para trabajar de manera eficiente con objetos Java. Esto puede traducirse en operaciones de lectura y escritura más rápidas en comparación con las bases de datos relacionales.
-* Soporte completo para objetos complejos: ObjectDB puede manejar de manera eficiente estructuras de datos complejas, como colecciones anidadas, herencia de clases y objetos embebidos, sin requerir esquemas complicados o cambios en el diseño de objetos.
-* Simplicidad de uso: Al eliminar la necesidad de un ORM y simplificar el proceso de persistencia de objetos, ObjectDB puede reducir la complejidad del código y acelerar el desarrollo de aplicaciones.
+* **Mapeo directo de objetos:** En `ObjectDB`, los objetos Java se almacenan directamente en la base de datos sin necesidad de mapeo objeto-relacional (`ORM`). Esto elimina la necesidad de traducir manualmente entre las estructuras de datos en memoria y las tablas de la base de datos.
+* **Alto rendimiento:** `ObjectDB` está diseñado específicamente para entornos `Java`, lo que significa que puede optimizar su rendimiento para trabajar de manera eficiente con objetos `Java`. Esto puede traducirse en operaciones de lectura y escritura más rápidas en comparación con las bases de datos relacionales.
+* **Soporte completo para objetos complejos:** `ObjectDB` puede manejar de manera eficiente estructuras de datos complejas, como colecciones anidadas, herencia de clases y objetos embebidos, sin requerir esquemas complicados o cambios en el diseño de objetos.
+* **Simplicidad de uso:** Al eliminar la necesidad de un `ORM` y simplificar el proceso de persistencia de objetos, `ObjectDB` puede reducir la complejidad del código y acelerar el desarrollo de aplicaciones.
 
 ## Conceptos Fundamentales
 
