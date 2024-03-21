@@ -51,9 +51,9 @@ Varios productos ofrecen diferentes características para las bases de datos nat
 `XPath` se utiliza para seleccionar elementos y atributos específicos dentro de un documento `XML`, mientras que `XQuery` se utiliza para realizar consultas más complejas y para manipular y transformar datos `XML`. Ambos lenguajes se basan en expresiones `XPath`, pero `XQuery` es un lenguaje más completo y complejo que `XPath`, y puede manejar consultas más complejas y operaciones sobre múltiples documentos `XML`
 
 
-# Colecciones de datos
+## Colecciones de datos
 
-## Colección de Datos 1: Lista de Empleados
+### Colección de Datos 1: Lista de Empleados
 
 ```xml
 <employees>
@@ -84,7 +84,7 @@ Atributos de los empleados:
 * years_of_experience: Años de experiencia del empleado.
 * supervisor_id: Identificador del supervisor del empleado.
 
-## Colección de Datos 2: Registro de Estudiantes
+### Colección de Datos 2: Registro de Estudiantes
 
 ```xml
 <students>
@@ -158,7 +158,7 @@ Atributos de los estudiantes:
 * absences: Número de ausencias del estudiante.
 * tutor_id: Identificador del tutor del estudiante.
 
-## Colección de Datos 3: Registro de Películas
+### Colección de Datos 3: Registro de Películas
 
 ```xml
 <movies>
@@ -180,7 +180,7 @@ Atributos de los estudiantes:
 </movies>
 ```
 
-## Colección de Datos 4: Registro de Libros
+### Colección de Datos 4: Registro de Libros
 
 ```xml
 <books>
@@ -202,7 +202,7 @@ Atributos de los estudiantes:
 </books>
 ```
 
-## Colección de Datos 5: Registro de Canciones
+### Colección de Datos 5: Registro de Canciones
 
 ```xml
 <songs>
@@ -224,7 +224,45 @@ Atributos de los estudiantes:
 </songs>
 ```
 
-## Soluciones
+### Colección de Datos 6: Registro de automóviles
+
+```xml
+<cars>
+    <car>
+        <id>1</id>
+        <brand>Toyota</brand>
+        <model>Corolla</model>
+        <year>2020</year>
+        <sales>15000</sales>
+        <price>20000</price>
+        <color>Red</color>
+        <mileage>5000</mileage>
+    </car>
+    <car>
+        <id>2</id>
+        <brand>Ford</brand>
+        <model>Mustang</model>
+        <year>2019</year>
+        <sales>20000</sales>
+        <price>35000</price>
+        <color>Blue</color>
+        <mileage>10000</mileage>
+    </car>
+    <car>
+        <id>3</id>
+        <brand>Honda</brand>
+        <model>Civic</model>
+        <year>2018</year>
+        <sales>18000</sales>
+        <price>25000</price>
+        <color>Black</color>
+        <mileage>8000</mileage>
+    </car>
+    <!-- Otros coches -->
+</cars>
+```
+
+## Ejercicios XPath
 
 ### Ejercicios: Registro de Películas
 
@@ -424,4 +462,143 @@ count(//employee[years_of_experience > 5])
 
 ```xpath
 //employee[department_id = 'D002']/name/text()
+```
+
+## Ejercicios XQuery
+
+### Ejercicios: Registro de automóviles
+
+1. Obtener todos los coches:
+
+```xquery
+for $car in doc('cars.xml')/cars/car
+return $car
+```
+
+2. Obtener los modelos de todos los coches de la marca "Toyota":
+
+```xquery
+for $car in doc('cars.xml')/cars/car[brand = 'Toyota']
+return $car/model/text()
+```
+
+3. Contar el número total de coches vendidos:
+
+```xquery
+sum(doc('cars.xml')/cars/car/sales)
+```
+
+4. Obtener los coches vendidos en el año 2020:
+
+```xquery
+for $car in doc('cars.xml')/cars/car[year = 2020]
+return $car
+```
+
+5. Encontrar el coche más vendido:
+
+```xquery
+let $max-sales := max(doc('cars.xml')/cars/car/sales)
+return doc('cars.xml')/cars/car[sales = $max-sales]
+```
+
+6. Listar las marcas de coches disponibles:
+
+```xquery
+distinct-values(doc('cars.xml')/cars/car/brand)
+```
+
+7. Obtener los coches cuyas ventas están entre 15000 y 20000:
+
+```xquery
+for $car in doc('cars.xml')/cars/car[sales >= 15000 and sales <= 20000]
+return $car
+```
+
+8. Encontrar el año del coche más antiguo:
+
+```xquery
+min(doc('cars.xml')/cars/car/year)
+```
+
+9. Obtener los modelos de coches ordenados alfabéticamente:
+
+```xquery
+for $car in doc('cars.xml')/cars/car
+order by $car/model
+return $car/model/text()
+```
+
+10. Calcular el total de ventas de coches de la marca "Ford":
+
+```xquery
+sum(doc('cars.xml')/cars/car[brand = 'Ford']/sales)
+```
+
+11. Encontrar los coches cuyo precio es mayor a $30000:
+
+```xquery
+for $car in doc('cars.xml')/cars/car[price > 30000]
+return $car
+```
+
+12. Obtener el color de los coches vendidos en el año 2019:
+
+```xquery
+for $car in doc('cars.xml')/cars/car[year = 2019]
+return $car/color/text()
+```
+
+13. Listar los coches ordenados por precio de menor a mayor:
+
+```xquery
+for $car in doc('cars.xml')/cars/car
+order by $car/price
+return $car
+```
+
+14. Encontrar los coches con menos de 10000 millas recorridas:
+
+```xquery
+for $car in doc('cars.xml')/cars/car[mileage < 10000]
+return $car
+```
+
+15. Contar el número total de coches de color rojo:
+
+```xquery
+count(doc('cars.xml')/cars/car[color = 'Red'])
+```
+
+16. Obtener los coches de la marca "Toyota" vendidos en el año 2020:
+
+```xquery
+for $car in doc('cars.xml')/cars/car[brand = 'Toyota' and year = 2020]
+return $car
+```
+
+17. Encontrar el coche más caro:
+
+```xquery
+let $max-price := max(doc('cars.xml')/cars/car/price)
+return doc('cars.xml')/cars/car[price = $max-price]
+```
+18. Obtener los coches cuyo año de fabricación sea anterior a 2017:
+
+```xquery
+for $car in doc('cars.xml')/cars/car[year < 2017]
+return $car
+```
+
+19. Calcular el promedio de millas recorridas por los coches:
+
+```xquery
+avg(doc('cars.xml')/cars/car/mileage)
+```
+
+20. Encontrar los modelos de coches que tienen un precio mayor a $25000:
+
+```xquery
+for $car in doc('cars.xml')/cars/car[price > 25000]
+return $car/model/text()
 ```
