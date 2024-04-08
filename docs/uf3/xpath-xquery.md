@@ -602,3 +602,201 @@ avg(doc('cars.xml')/cars/car/mileage)
 for $car in doc('cars.xml')/cars/car[price > 25000]
 return $car/model/text()
 ```
+### Ejercicios: Registro de Películas
+1. Obtener el título de una película específica.
+```xquery
+for $movie in //movies/movie[@id="1"]
+return $movie/title/text()
+```
+
+2. Listar los directores de las películas de un género determinado.
+```xquery
+for $movie in //movies/movie[genre="Drama"]
+return $movie/director/text()
+```
+
+3. Encontrar los títulos de las películas que tienen una calificación superior a 8.
+```xquery
+for $movie in //movies/movie[number(rating) > 8]
+return $movie/title/text()
+```
+
+4. Obtener los años de lanzamiento de las películas dirigidas por un director específico.
+```xquery
+for $movie in //movies/movie[director="Francis Ford Coppola"]
+return $movie/year/text()
+```
+
+5. Encontrar los géneros de las películas que fueron lanzadas después de 2000.
+```xquery
+for $movie in //movies/movie[number(year) > 2000]
+return $movie/genre/text()
+```
+
+### Ejercicios: Registro de Libros
+
+1. Obtener el autor de un libro específico.
+```xquery
+for $book in //books/book[@id="1"]
+return $book/author/text()
+```
+
+2. Listar los títulos de los libros de un género determinado.
+```xquery
+for $book in //books/book[genre="Dystopian"]
+return $book/title/text()
+```
+
+3. Encontrar los autores de los libros que tienen una calificación superior a 4.5.
+```xquery
+for $book in //books/book[number(rating) > 4.5]
+return $book/author/text()
+```
+
+4. Obtener los años de publicación de los libros escritos por un autor específico.
+```xquery
+for $book in //books/book[author="Harper Lee"]
+return $book/year/text()
+```
+
+5. Encontrar los géneros de los libros que fueron publicados después de 2000.
+```xquery
+for $book in //books/book[number(year) > 2000]
+return $book/genre/text()
+```
+
+### Ejercicios: Registro de Canciones
+
+1. Obtener el título de una canción específica.
+```xquery
+for $song in //songs/song[@id="1"]
+return $song/title/text()
+```
+
+2. Listar los artistas de las canciones de un género determinado.
+```xquery
+for $song in //songs/song[genre="Pop"]
+return $song/artist/text()
+```
+
+3. Encontrar los títulos de las canciones que tienen una calificación superior a 4.7.
+```xquery
+for $song in //songs/song[number(rating) > 4.7]
+return $song/title/text()
+```
+
+4. Obtener los años de lanzamiento de las canciones interpretadas por un artista específico.
+```xquery
+for $song in //songs/song[artist="Queen"]
+return $song/year/text()
+```
+
+5. Encontrar los géneros de las canciones que fueron lanzadas después de 2000.
+```xquery
+for $song in //songs/song[number(year) > 2000]
+return $song/genre/text()
+```
+
+### Ejercicios: Registro de Estudiantes
+
+1. Obtener los nombres completos de todos los estudiantes.
+```xquery
+for $student in //student
+return $student/name/text()
+```
+
+2. Obtener el nombre completo de los estudiantes que tienen una calificación superior a 90 en matemáticas.
+```xquery
+for $student in //student[grades/subject[@name='Math']/grade > 90]
+return $student/name/text()
+```
+
+3. Contar el número total de estudiantes que están en el curso "CS101".
+```xquery
+count(//student[course_id = 'CS101'])
+```
+
+4. Obtener los nombres completos de los estudiantes que tienen más de 3 ausencias.
+```xquery
+for $student in //student[absences > 3]
+return $student/name/text()
+```
+
+5. Obtener el nombre completo de los estudiantes que tienen un tutor con el ID "2001".
+```xquery
+for $student in //student[tutor_id = '2001']
+return $student/name/text()
+```
+
+6. Obtener la calificación de un estudiante específico en una asignatura dada.
+```xquery
+//student[@id="1001"]/grades/subject[@name="Math"]/grade/text()
+```
+
+7. Listar los nombres de los profesores de un curso determinado.
+```xquery
+//course[@name="Computer Science"]/professor/name/text()
+```
+
+8. Encontrar los nombres de los estudiantes que tienen más de 90 en cualquier asignatura.
+```xquery
+for $student in //student[grades/subject/grade > 90]
+return $student/name/text()
+```
+
+9. Obtener los nombres de los estudiantes que están matriculados en un curso específico.
+```xquery
+for $student in //student[course_id="CS101"]
+return $student/name/text()
+```
+
+10. Encontrar el nombre del curso en el que está inscrito un estudiante con un ID específico.
+```xquery
+//course[student_id="1001"]/name/text()
+```
+
+11. Encontrar los estudiantes que tienen más de 3 ausencias.
+```xquery
+for $student in //student[absences > 3]
+return $student/name/text()
+```
+
+12. Obtener el nombre del tutor de un estudiante específico.
+```xquery
+//student[@id="1001"]/tutor/name/text()
+```
+
+13. Encontrar los IDs de los estudiantes que están bajo la tutoría de un tutor específico.
+```xquery
+//student[tutor_id="2001"]/id/text()
+```
+
+### Ejercicios Lista de Empleados
+1. Obtener los nombres completos de todos los empleados.
+```xquery
+for $employee in //employee
+return $employee/name/text()
+```
+
+2. Obtener los nombres de los departamentos donde trabajan los empleados que tienen un salario mayor a $50000.
+```xquery
+for $employee in //employee[salary > 50000]
+return $employee/department_id/text()
+```
+
+3. Contar el número total de empleados que tienen más de 5 años de experiencia.
+```xquery
+count(//employee[years_of_experience > 5])
+```
+
+4. Obtener los nombres completos de los empleados que tienen un supervisor con el ID "2002".
+```xquery
+for $employee in //employee[supervisor_id = '2002']
+return $employee/name/text()
+```
+
+5. Obtener los nombres de los empleados que trabajan en el departamento con el ID "D002".
+```xquery
+for $employee in //employee[department_id = 'D002']
+return $employee/name/text()
+```
