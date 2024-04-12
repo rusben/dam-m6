@@ -786,3 +786,135 @@ db.books.find({"author": {"$not": {"$size": 1}}})
 db.books.find({"author.1": {"$exists": true}})
 db.books.find({author : {$exists:true}, $where : "this.author.length > 1"}, {})
 ```
+
+## Modificacions
+1. Executa la següent operació, captura el seu resultat i interpreta la operació realitzada prèviament
+```
+db.products.insert([
+{
+nombre: "Portátil Asus",
+cantidad: 25,
+precio: 459.99
+},
+{
+nombre: "Portátil HP",
+cantidad: 1,
+precio: 765.50
+}
+])
+
+db.products.find().pretty()
+```
+
+2. Executa la següent operació, captura el seu resultat i interpreta la operació realitzada prèviament
+```
+db.products.save({
+    _id: 890,
+    nombre: "Portátil Lenovo",
+    cantidad: 7,
+    precio: 800
+})
+
+db.products.find().pretty()
+```
+
+3. Executa la següent operació, captura el seu resultat i interpreta la operació realitzada prèviament 
+```
+db.products.remove({_id:890})
+db.products.find().pretty()
+```
+
+4. Executa la següent operació, captura el seu resultat i interpreta la operació realitzada prèviament 
+```
+db.products.insert([
+    {
+        nombre: "HDD Seagate",
+        cantidad: 45,
+        precio: 79.99,
+        tipo: "HDD"
+    },
+    {
+        nombre: "HDD Maxtor",
+        cantidad: 20,
+        precio: 65.50,
+        tipo: "HDD"
+    }
+])   
+
+db.products.find().pretty()
+```
+
+5. Actualitza el número d'unitats del HDD Maxtor a 30
+```
+db.products.update({nombre:"HDD Maxtor"},{cantidad:30})
+db.products.find().pretty()
+```
+
+6. Substitueix el producte en questió pel HDD Maxtor, ignorant el que hi haguès abans.
+```
+db.products.update({
+    _id: ObjectId("51e64cd2403754f2073712da")
+},
+{
+    nombre: "HDD Maxtor",
+    cantidad: 30,
+    precio: 65.5,
+    tipo: "HDD"
+})
+
+db.products.find().pretty()
+```
+
+7. Canvia nomès els valors cantidad i precio
+```
+db.products.update({
+    _id: ObjectId("51e64cd2403754f2073712da")
+},
+{
+    $set: {
+        cantidad: 35,
+        precio: 60
+    }
+})
+
+db.products.find().pretty()
+```
+
+8. Deixa a 0 les existències de discs durs
+```
+db.products.update({tipo:"HDD"},{$set:{cantidad:0}})
+db.products.find().pretty()
+```
+
+9. Canvia la el valor de la clau quantitat a 10 de tots els objectes que el valor de ‘tipo’ sigui
+‘HDD’
+```
+db.products.update({tipo:"HDD"},{$set:{cantidad:10}},{multi:true})
+db.products.find().pretty()
+```
+
+10. Actualitza els objectes que tinguin tipus ‘RAM’ amb els valors establerts, si no troba cap
+coincidencia, crea un de nou.
+```
+db.products.update({
+    tipo: "RAM"
+},
+{
+    nombre: "Kingston 2Gb",
+    cantidad: 50,
+    precio: 26.50,
+    tipo: "RAM"
+},
+{
+    upsert: true
+})
+
+db.products.find().pretty()
+```
+
+11. Actualitza els objectes que tinguin tipus ‘RAM’ amb els valors establerts, si no troba cap
+coincidencia, crea un de nou.
+```
+db.products.update({ tipo: "RAM" }, { nombre: "Kingston 4Gb", cantidad: 50, precio: 26.50, tipo: "RAM" }, { upsert: true })
+db.products.find().pretty()
+```
