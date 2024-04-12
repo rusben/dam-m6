@@ -948,8 +948,8 @@ db.students.aggregate([
 
 2. Mostra per a cada gènere el nombre d'estudiants segons el model de resultat següent:
 ```
-{ "gender" : "H", "description": "Hombre", "students" : 2895 }
-{ "gender" : "M", "description" : "Mujer", "students" : 348 }
+{ "gender" : "H", "description" : "Hombre", "students" : 2895 }
+{ "gender" : "M", "description" : "Mujer", "students" : 348 }
  
 db.students.aggregate([
   {
