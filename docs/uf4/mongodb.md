@@ -527,6 +527,7 @@ Si observeu que els números augmenten i tendeixen cap a aquest nombre disponibl
 
 # Exercicis
 1. Incorporar les dades del fitxer persons.json a una base de dades anomenada activitat1 i a la col·lecció `people`
+
    ./mongoimport db activitat1 collection people < /home/usuari/persons.json --jsonArray
 
 2. Ens connectem al servidor mongo a la base de dades activitat1
