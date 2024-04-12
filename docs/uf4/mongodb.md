@@ -665,3 +665,124 @@ db.people.find({tags:{$in:["laborum","sunt"]}},{name:{$slice:3}})
 ```
 db.people.find({tags:{$in:["laborum","sunt"]}},{name:{$slice:3} })
 ```
+
+## D A T A B A S E: imdb | C O L L E C T I O N: people
+1. Buscar las personas que sólo han actuado (no dirigido)
+```
+db.people.find({"hasActed": {$exists: true}, "hasDirected": {$exists: false}})
+```
+
+2. Buscar las personas que sólo han dirigido (no actuado)
+```
+db.people.find({"hasActed": {$exists: false}, "hasDirected": {$exists: true}})
+```
+
+3. Buscar las personas que han actuado y dirigido
+```
+db.people.find({"hasActed": {$exists: true}, "hasDirected": {$exists: true}})
+```
+
+4. Buscar las personas que ni han actuado ni dirigido
+```
+db.people.find({"hasActed": {$exists: false}, "hasDirected": {$exists: false}})
+```
+
+## D A T A B A S E: edx | C O L L E C T I O N: bios
+1. Buscar las personas con premios otorgados en el año 2001
+```
+db.bios.find({"awards.year": 2001})
+```
+
+2. Buscar las personas que hayan obtenido el premio 'Turing Award'
+```
+db.bios.find({"awards.award": "Turing Award"})
+```
+
+3. Buscar las personas que haya obtenido un premio del tipo 'National Medal of'
+```
+db.bios.find({"awards.award": /^National Medal of/i})
+db.bios.find({"awards.award": {$regex : "National Medal of *"}},{})
+```
+
+4. Buscar las personas con fecha de nacimiento de la que no conste su fecha de defunción
+```
+db.bios.find({"birthYear": {"$exists": true}, "deathYear": {"$exists": false}})
+db.bios.find({"$and": [{"birthYear": {"$exists": true}},{"deathYear": {"$exists": false}}]})
+```
+
+5. Buscar las personas de la colección bios que destaquen en el terreno de OOP
+```
+db.bios.find({"contribs": "OOP"})
+```
+
+6. Buscar las personas de la colección bios que destaquen en el terreno de Java, Ruby o Python
+```
+db.bios.find({"contribs": {"$in": ["Java", "Ruby", "Python"]}})
+db.bios.find({$or : [ {contribs: "Python"},{contribs : "Ruby"},{ contribs : "Java"}]},{})
+```
+
+7. Buscar las personas de la colección bios que destaquen en el terreno de OOP y Simula
+```
+db.bios.find({"contribs": {"$all": ["OOP", "Simula"]}})
+db.bios.find({"$and": [{"contribs": "OOP"}, {"contribs": "Simula"}]})
+```
+
+8. Buscar las personas de la colección bios sin premios logrados
+```
+db.bios.find({"$or": [{"awards": {"$exists": false}}, {"awards": {"$size": 0}}]})
+```
+
+9. Buscar las personas de la colección bios con 1 premio conseguido
+```
+db.bios.find({"awards": {"$size": 1}})
+```
+
+10. Buscar las personas de la colección bios con 3 o más premios conseguidos
+```
+db.bios.find({"awards.2": {"$exists": true}})
+db.bios.find({awards : {$exists : true}, $where : "this.awards.length >= 3"})
+db.bios.find({$where:"if(this.awards && this.awards.length>2){return this;}"})
+```
+
+11. Buscar las personas de la colección bios con entre 2 y 4 premios conseguidos
+```
+db.bios.find({"$or": [{"awards": {"$size": 2}}, {"awards": {"$size": 3}}, {"awards": {"$size": 4}}]})
+db.bios.find({"$and": [{"awards.1": {"$exists": true}}, {"awards.4": {"$exists": false}}]})
+db.bios.find({"awards.1": {"$exists": true}, "awards.4": {"$exists": false}})
+db.bios.find({awards : {$exists : true}, $where : "this.awards.length >=2 this.awards.length <=4"},{})
+db.bios.find({$where:"if(this.awards && this.awards.length>1 && this.awards.length<5){return this;}"})
+```
+
+## D A T A B A S E: edx | C O L L E C T I O N: books
+1. Buscar todos los libros con precio superior a 100 USD
+```
+db.books.find({$and : [{"price.currency" : "USD"}, {"price.msrp" : {$gt : 100}}]},{})
+```
+
+2. Buscar todos los libros publicados por "Martin Fowler"
+```
+db.books.find({"author": "Martin Fowler"})
+```
+
+3. Buscar los libros que tengan el tag 'programming', 'agile' y "java"
+```
+db.books.find({"tags": {"$all": ["programming", "agile", "java"]}})
+```
+
+4. Buscar aquellos libros que han sido escritos por Martin Fowler y Kent Beck (2)
+```
+db.books.find({"author": {"$all": ["Martin Fowler", "Kent Beck"]}})
+```
+
+5. Buscar los libros escritos por 3 autores
+```
+db.books.find({"author": {"$size": 3}})
+db.books.find({author : {$exists:true}, $where : "this.author.length == 3"}, {}).pretty()
+```
+
+6. Buscar los libros escritos por mas de un autor
+```
+db.books.find({"author": {"$not": {"$size": 1}}})
+db.books.find({"author.1": {"$exists": true}})
+db.books.find({author : {$exists:true}, $where : "this.author.length > 1"}, {})
+```
