@@ -527,16 +527,16 @@ Si observeu que els números augmenten i tendeixen cap a aquest nombre disponibl
 
 # Exercicis
 1. Incorporar les dades del fitxer persons.json a una base de dades anomenada activitat1 i a la col·lecció `people`
- ./mongoimport db activitat1 collection people < /home/usuari/persons.json --jsonArray
+   ./mongoimport db activitat1 collection people < /home/usuari/persons.json --jsonArray
 
 2. Ens connectem al servidor mongo a la base de dades activitat1
- ./mongo localhost/activitat1
+   ./mongo localhost/activitat1
 
 3. Mostrem tot el contingut de la col·lecció people
- db.people.find()
+   db.people.find()
 
 4. Mostrem tot el contingut de la col·lecció people d'una manera més llegible.
- db.people.find().pretty()
+   db.people.find().pretty()
 
 5. Mostrem les persones de 34 anys d'una manera llegible
  db.people.find({age : 34}).pretty()
