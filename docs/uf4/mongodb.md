@@ -21,6 +21,7 @@
   * [Pas 7: Afinació de MongoDB](#afinacio-mongodb-pas7)
 
 * [Data-Sets](#datasets)
+* [Exercicis](#exercicis)
 
 # Objectius generals <a name="objectius-generals"></a>
 * Conèixer les operacions bàsiques per tal de realitzar operacions `CRUD` amb `MongoDB`.
@@ -524,8 +525,11 @@ Si observeu que els números augmenten i tendeixen cap a aquest nombre disponibl
 
 [digg](datasets/digg.zip)
 
+[persons](datasets/persons.json)
 
-# Exercicis
+[products](datasets/products.json)
+
+# Exercicis <a name="exercicis"></a>
 1. Incorporar les dades del fitxer persons.json a una base de dades anomenada activitat1 i a la col·lecció `people`
 ```
 ./mongoimport db activitat1 collection people < /home/usuari/persons.json --jsonArray
