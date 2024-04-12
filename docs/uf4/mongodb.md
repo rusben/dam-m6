@@ -527,84 +527,85 @@ Si observeu que els números augmenten i tendeixen cap a aquest nombre disponibl
 
 # Exercicis
 1. Incorporar les dades del fitxer persons.json a una base de dades anomenada activitat1 i a la col·lecció `people`
+```
+./mongoimport db activitat1 collection people < /home/usuari/persons.json --jsonArray
+```
 
-   ./mongoimport db activitat1 collection people < /home/usuari/persons.json --jsonArray
-
-2. Ens connectem al servidor mongo a la base de dades activitat1
+3. Ens connectem al servidor mongo a la base de dades activitat1
    ./mongo localhost/activitat1
 
-3. Mostrem tot el contingut de la col·lecció people
+4. Mostrem tot el contingut de la col·lecció people
    db.people.find()
 
-4. Mostrem tot el contingut de la col·lecció people d'una manera més llegible.
+5. Mostrem tot el contingut de la col·lecció people d'una manera més llegible.
    db.people.find().pretty()
 
-5. Mostrem les persones de 34 anys d'una manera llegible
+6. Mostrem les persones de 34 anys d'una manera llegible
  db.people.find({age : 34}).pretty()
 
-6. Mostrem les persones de 34 anys i que siguin actius.
+7. Mostrem les persones de 34 anys i que siguin actius.
  db.people.find({age : 34, isActive : true}).pretty()
 
-7. Mostrem el nom, l'edat i si són actius de les persones de 34 anys que siguin actius.
+8. Mostrem el nom, l'edat i si són actius de les persones de 34 anys que siguin actius.
  db.people.find( {age : 34, isActive : true}, {name : 1, age : 1})
 
-8. Mostrem el nom, l'edat i si són actius de les persones de 34 anys que siguin actius però desactivant el camp _id de la projecció.
+9. Mostrem el nom, l'edat i si són actius de les persones de 34 anys que siguin actius però desactivant el camp _id de la projecció.
  db.people.find( {age : 34, isActive : true}, {name : 1, age : 1, _id : 0})
 
-9. Mostra una persona que compleixi els requeriments anteriors.
+10. Mostra una persona que compleixi els requeriments anteriors.
  db.people.findOne( {age : 34, isActive : true}, {name : 1, age : 1, _id : 0})
 
-10. Mostrem el nom i la edat de les persones que tenen més de 30 anys
+11. Mostrem el nom i la edat de les persones que tenen més de 30 anys
  db.people.find( {age : {$gt : 30}}, {name : 1, _id : 0})
 
-11. Mostrem el nom i la edat de les persones que tenen 30 o més anys
+12. Mostrem el nom i la edat de les persones que tenen 30 o més anys
  db.people.find({age : { $gte : 30}},{name : 1, age : 1, _id : 0})
 
-12. Mostrem el nom i la edat de les persones menors de 30 anys
+13. Mostrem el nom i la edat de les persones menors de 30 anys
  db.people.find({age : { $lt : 30}},{name : 1, age : 1, _id : 0})
 
-13. Mostrem el nom i la edat de les persones que no tenen 30 anys
+14. Mostrem el nom i la edat de les persones que no tenen 30 anys
  db.people.find({age : { $ne : 30}},{name : 1, age : 1, _id : 0})
 
-14. Mostrem el nom i la edat de les persones que tenen 25, 30 o 35 anys
+15. Mostrem el nom i la edat de les persones que tenen 25, 30 o 35 anys
  db.people.find({age : {$in : [25,30,35]}},{name : 1, age : 1, _id : 0})
 
-15. Busquem els documents el camp gender sigui "female" i el camp age sigui més gran que 20.
+16. Busquem els documents el camp gender sigui "female" i el camp age sigui més gran que 20.
  db.people.find({gender : "female", age : {$gt : 20}})
 
-16. Busquem els documents el camp gender sigui "female" o el camp age sigui més gran que 20
+17. Busquem els documents el camp gender sigui "female" o el camp age sigui més gran que 20
  db.people.find({$or : [{gender : "female"}, {age :{$gt : 20}}]},{})
 
-17. Busquem els documents el camp gender sigui "female" i el camp age sigui més gran que 20 utilitzant l'operador $and.
+18. Busquem els documents el camp gender sigui "female" i el camp age sigui més gran que 20 utilitzant l'operador $and.
  db.people.find({$and : [{gender : "female"}, {age :{$gt : 20}}]},{})
 
-18. Busca les persones a people en que la seva edat és més gran que 30, o el gènere és "female" i la seva edat més gran que 50.
+19. Busca les persones a people en que la seva edat és més gran que 30, o el gènere és "female" i la seva edat més gran que 50.
  db.people.find({$or: [{age : {$gt:30}}, {gender : "female"}]}, {})
 
-19. Busquem les persones edat NO sigui més gran que 30 i el camp isActive NO sigui true.
+20. Busquem les persones edat NO sigui més gran que 30 i el camp isActive NO sigui true.
  db.people.find({$nor : [{age : {$gt : 30}}, {isActivate : true}]},{ name : 1, age:1,isActive:1})
 
-20. Busca l'element "laborum" a l'array tags, retornant les persones en el que en aquest array existeixi aquest element
+21. Busca l'element "laborum" a l'array tags, retornant les persones en el que en aquest array existeixi aquest element
  db.people.find({tags : "laborum"},{name : 1, _id : 0})
 
-21. Volem trobar totes les persones que continguin en tags els valors laborum i sunt.
+22. Volem trobar totes les persones que continguin en tags els valors laborum i sunt.
  db.people.find({$and : [{tags : "laborum"}, {tags : "sunt"}]}, {name : 1})
  db.people.find({tags:{$all:["laborum","sunt"]}},{name:1,age:1,tags:1})
 
-22. Volem trobar totes les persones que continguin en tags alguns dels valors laborum, sunt, nisi
+23. Volem trobar totes les persones que continguin en tags alguns dels valors laborum, sunt, nisi
  db.people.find({tags:{$in:["laborum","sunt","nisi"]}},{name:1,age:1,tags:1})
 
-23. Volem trobar totes les persones que NO continguin a l'array tags alguns dels valors especificats: laborum, sunt i, nisi
+24. Volem trobar totes les persones que NO continguin a l'array tags alguns dels valors especificats: laborum, sunt i, nisi
  db.people.find({tags:{$nin:["laborum","sunt","nisi"]}},{name:1,age:1,tags:1})
 
-24. Retornar tots els documents on l'array tags té una mida de 3 elements
+25. Retornar tots els documents on l'array tags té una mida de 3 elements
  db.people.find({tags:{$size:3}},{name:1,tags:1})
 
-25. Volem trobar totes les persones que continguin en tags alguns dels valors laborum, sunt, nisi
+26. Volem trobar totes les persones que continguin en tags alguns dels valors laborum, sunt, nisi
  db.people.find({$or:[{tags:{$in:["laborum","sunt","nisi"]}}]},{name:1})
 
-26. Mostrar els primers tres elements de l'array que compleixen la condició de contenir a tags els valors laborum i sunt anteriors
+27. Mostrar els primers tres elements de l'array que compleixen la condició de contenir a tags els valors laborum i sunt anteriors
  db.people.find({tags:{$in:["laborum","sunt"]}},{name:{$slice:3}})
 
-27. Mostrar els primers tres elements últims de l'array que compleixen la condició de contenir a tags els valors laborum i sunt anteriors
+28. Mostrar els primers tres elements últims de l'array que compleixen la condició de contenir a tags els valors laborum i sunt anteriors
  db.people.find({tags:{$in:["laborum","sunt"]}},{name:{$slice:3} })
