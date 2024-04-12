@@ -918,3 +918,239 @@ coincidencia, crea un de nou.
 db.products.update({ tipo: "RAM" }, { nombre: "Kingston 4Gb", cantidad: 50, precio: 26.50, tipo: "RAM" }, { upsert: true })
 db.products.find().pretty()
 ```
+
+## Aggregation
+
+1. Mostra per a cada gènere el nombre d'estudiants segons el model de resultat següent:
+```
+{ "gender" : "H", "students" : 2895 }
+{ "gender" : "M", "students" : 348 }
+ 
+db.students.aggregate([
+  {
+      "$group": {
+           "_id": "$gender",
+           "num": {"$sum": 1}
+       }
+  },
+  {
+      "$project": {
+           "_id": false,
+           "gender": "$_id",
+           "students": "$num"
+       }
+  },
+  {
+      "$sort": { "students": -1}
+  }
+])
+```
+
+2. Mostra per a cada gènere el nombre d'estudiants segons el model de resultat següent:
+```
+{ "gender" : "H", "description": "Hombre", "students" : 2895 }
+{ "gender" : "M", "description" : "Mujer", "students" : 348 }
+ 
+db.students.aggregate([
+  {
+      "$group": {
+           "_id": "$gender",
+           "num": {"$sum": 1}
+       }
+  },
+  {
+      "$project": {
+           "_id": false,
+           "gender": "$_id",
+           "description": {"$cond": [ { $eq: [ "$_id", "H" ]} , "Hombre", "Mujer"]},
+           "students": "$num"
+       }
+  },
+  {
+      "$sort": { "students": -1}
+  }
+])
+```
+
+3. Mostra per a cada any el nombre d'estudiants segons el model de resultat següent:
+```
+{ "year" : 1990, "students" : 98 }
+{ "year" : 1989, "students" : 69 }
+{ "year" : 1988, "students" : 87 }
+ 
+db.students.aggregate([
+   {
+       "$group": {
+              "_id": "$birthYear",
+             "num": {"$sum": 1}
+         }
+    },
+    {
+       "$project": {
+              "_id": false,
+              "year": "$_id",
+              "students": "$num"
+        }
+    },
+    {
+        "$sort": { "year": -1}
+    }
+])
+```
+
+4. Mostra per a cada any i gènere el nombre d'estudiants segons el model de resultat següent:
+```
+{ "year" : 1992, "gender" : "M", "students" : 13 }
+{ "year" : 1992, "gender" : "H", "students" : 87 }
+{ "year" : 1991, "gender" : "M", "students" : 9 }
+ 
+db.students.aggregate([
+  {
+     "$group": {
+        "_id": { "year": "$birthYear",
+                 "gender": "$gender"
+               },
+        "num": {"$sum": 1}
+     }
+  },
+  {
+    "$project": {
+        "_id": false,
+        "year": "$_id.year",
+        "gender": "$_id.gender",
+        "students": "$num"
+     }
+  },
+  {
+    "$sort": { "year": -1, "gender": -1}
+  }
+])
+```
+
+5. Mostra per a cada any les dades obtingudes segons el model de resultat següent:
+```
+{
+        "year" : 1993,
+        "total" : 97,
+        "males" : 81,
+        "females" : 16,
+        "malesper" : 83.50515463917526,
+        "femalesper" : 16.49484536082474
+}
+{
+        "year" : 1992,
+        "total" : 100,
+        "males" : 87,
+        "females" : 13,  
+        "malesper" : 87,
+        "femalesper" : 13
+}
+ 
+db.students.aggregate([
+  {
+     "$group": {
+        "_id": "$birthYear",
+        "ntotal": {"$sum": 1},
+        "nmales": {"$sum": {"$cond": [ {"$eq": ["$gender","H"]}, 1, 0]}},
+        "nfemales": {"$sum": {"$cond": [ {"$eq": ["$gender","M"]}, 1, 0]}},
+     }
+  },
+  {
+    "$project": {
+        "_id": false,
+        "year": "$_id",
+        "total": "$ntotal",
+        "males": "$nmales",
+        "females": "$nfemales",
+        "malesper": {"$multiply": [{"$divide": ["$nmales", "$ntotal"]} , 100]},
+        "femalesper": {"$multiply": [{"$divide": ["$nfemales", "$ntotal"]}, 100]}
+     }
+  },
+  {
+    "$sort": { "year": -1}
+  }
+]).pretty()
+```
+
+6. Mostra per a cada autor el nombre de llibres escrits segons el model de resultat següent:
+```
+{ "author" : "Andrew Hunt", "books" : 6 }
+...
+{ "author" : "Christian Heilmann", "books" : 2 }
+{ "author" : "Bill Dudney", "books" : 2 }
+ 
+> db.books.aggregate([ 
+                 {"$unwind": "$author"},  
+                 {"$group": {"_id": "$author", "nbooks": {"$sum": 1}}},  
+                 {"$project": {"_id": false, "author": "$_id", "books": "$nbooks"}},  
+                 {"$sort": {"books": -1}}
+])
+```
+
+7. Mostra per a cada actor les dades obtingudes segons el model de resultat següent:
+```
+{"actor" : "Jane Fonda", "movies" : 7, "catalog" : [ "Cat Ballou", "They Shoot Horses, Don't They?", "Klute", "Julia", "California Suite", "Coming Home", "On Golden Pond" ] }
+{ "actor" : "Morgan Freeman", "movies" : 7, "catalog" : [ "Driving Miss Daisy", "Glory", "Robin Hood: Prince of Thieves", "Unforgiven", "Deep Impact", "Bruce Almighty", "Million Dollar Baby" ] }
+ 
+> db.movies.aggregate([ 
+              {"$unwind": "$actors"},
+              {"$group": {"_id": "$actors.name", "nmovies": {"$sum": 1}, "lmovies": {"$push": "$name"}}},  
+              {"$project": {"_id": 0, "actor": "$_id", "movies": "$nmovies", "catalog" : "$lmovies"}},  
+              {"$sort": {"movies": -1}}
+])
+```
+
+8. Mostra per a cada actor les dades obtingudes segons el model de resultat següent:
+```
+"_id" : "Tom Cruise",
+    "nmovies" : 13.0,
+    "lyear" : 2011,
+    "fyear" : 1986,
+    "tduration" : 1690,
+    "lmovies" : [  
+        "Mission: Impossible - Ghost Protocol (2011)",  
+        "Mission: Impossible III (2006)",  
+        "War of the Worlds (2005)",  
+        "Minority Report (2002)",  
+        "Mission: Impossible II (2000)",  
+        "Jerry Maguire (1996)",  
+        "Mission: Impossible (1996)",  
+        "Firm, The (1993)",  
+        "Few Good Men, A (1992)",  
+        "Born on the Fourth of July (1989)",  
+        "Rain Man (1988)",  
+        "Color of Money, The (1986)",  
+        "Top Gun (1986)"
+    ]
+ 
+db.movies.aggregate([
+   {"$sort": {"year": -1}},
+   {"$unwind": "$actors"},
+   {"$group": {
+        "_id": "$actors.name",
+        "nmovies": {"$sum": 1},
+        "lyear": {"$max": "$year"},
+        "fyear": {"$min": "$year"},
+        "tduration": {"$sum": "$runtime"},
+        "lmovies": {"$push": {"$concat": ["$name", " (", {"$substr": ["$year", 0, -1]}, ")"]}}
+      }     
+   },
+   {
+       "$sort": { "nmovies": -1}
+   }
+])
+```
+
+9. Mostra per a cada director les dades obtingudes segons el model de resultat següent:
+```
+{ "director" : "Billy Wilder", "movies" : 4, "catalog" : [ "Lost Weekend, The", "Stalag 17", "Apartment, The", "Fortune Cookie, The" ] }
+{ "director" : "John Huston", "movies" : 4, "catalog" : [ "Key Largo", "Treasure of the Sierra Madre, The", "African Queen, The", "Prizzi's Honor" ] }
+{ "director" : "Fred Zinnemann", "movies" : 4, "catalog" : [ "High Noon", "From Here to Eternity", "Man for All Seasons, A", "Julia" ] }
+ 
+> db.movies.aggregate([ 
+              {"$unwind": "$directors"},
+              {"$group": {"_id": "$directors.name", "nmovies": {"$sum": 1}, "lmovies": {"$push": "$name"}}},  
+              {"$project": {"_id": 0, "director": "$_id", "movies": "$nmovies", "catalog" : "$lmovies"}},  
+              {"$sort": {"movies": -1}}
+])
+```
