@@ -962,7 +962,7 @@ db.students.aggregate([
       "$project": {
            "_id": false,
            "gender": "$_id",
-           "description": {"$cond": [ { $eq: [ "$_id", "H" ]} , "Hombre", "Mujer"]},
+           "description": {"$cond": [ { $eq: [ "$_id", "H" ]} , "Hombre", "Mujer"]},
            "students": "$num"
        }
   },
