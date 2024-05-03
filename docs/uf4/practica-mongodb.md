@@ -2,11 +2,14 @@
 Dues col·leccions: Teniu el fitxer amb les sentències SQL. Amb MongoDB heu de crear UNA col·lecció amb tots els documents (afegiu als documents de la segona taula la informació de la primera).
 
 1) La informació dels camps és la següent:
+```
     DEPT_NO - Número o codi del departament.
     DNOM - Nom del departament.
     LLOC - Ciutat on el departament està ubicat.
+```
 
 2) La informació dels camps és la següent:
+```
     TREB_NO - Número o codi de l'empleat.
     COGNOM - Cognom de l'empleat.
     OFICI - Treball de l'empleat.
@@ -15,6 +18,7 @@ Dues col·leccions: Teniu el fitxer amb les sentències SQL. Amb MongoDB heu de 
     SOU - sou mensual de l'empleat
     COMISIO - Comissió
     DEPT_NO - Número o codi del departament.
+```
 
 ## Consultes a desenvolupar
 Heu d'obtenir les següents informacions. Inseriu la consulta a sota de cadascuna de preguntes. La consulta ha de retornar el resultat de l'enunciat de cadascuna de les preguntes.
