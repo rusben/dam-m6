@@ -1,6 +1,49 @@
 # Nova empresa
 Dues col·leccions: Teniu el fitxer amb les sentències SQL. Amb MongoDB heu de crear UNA col·lecció amb tots els documents (afegiu als documents de la segona taula la informació de la primera).
 
+```sql
+NOVAEMPRESA
+--
+-- TAULES DEPARTAMENTS i TREBALLADORS - MySQL - SQLITE
+--
+CREATE TABLE departaments (dept_no TINYINT(2) NOT NULL PRIMARY KEY, dnom VARCHAR(15), lloc VARCHAR(15));
+
+INSERT INTO departaments VALUES (10,'CONTABILITAT','REUS');
+INSERT INTO departaments VALUES (20,'INVESTIGACIÓ','BARCELONA');
+INSERT INTO departaments VALUES (30,'VENDES','SANT CUGAT');
+INSERT INTO departaments VALUES (40,'PRODUCCIÓ','BILBAO');
+COMMIT;
+
+CREATE TABLE treballadors (
+ treb_no   SMALLINT(4)  NOT NULL PRIMARY KEY,
+ cognom    VARCHAR(20),
+ ofici     VARCHAR(10),
+ dir       SMALLINT,
+ data_ent  DATE      ,
+ sou       FLOAT(6,2),
+ comisio  FLOAT(6,2),
+ dept_no   TINYINT(2) NOT NULL REFERENCES departaments(dept_no)
+);
+
+INSERT INTO treballadors VALUES (7369,'Borges','OFICINISTA',7902,'1991/12/17',1040,NULL,20);				
+INSERT INTO treballadors VALUES (7499,'Alicia','VENEDOR',7698,'1990/02/20',1500,390,30);
+INSERT INTO treballadors VALUES (7521,'Sala','VENEDOR',7698,'1991/02/22',1625,650,30);
+INSERT INTO treballadors VALUES (7566,'Bruguera','DIRECTOR',7839,'1991/04/02',2900,NULL,20);
+INSERT INTO treballadors VALUES (7654,'Marín','VENEDOR',7698,'1991/09/29',1600,1020,30);
+INSERT INTO treballadors VALUES (7698,'Puig','DIRECTOR',7839,'1991/05/01',3005,NULL,30);
+INSERT INTO treballadors VALUES (7782,'Ricart','DIRECTOR',7839,'1991/06/09',2885,NULL,10);
+INSERT INTO treballadors VALUES (7788,'Gil','ANALISTA',7566,'1991/11/09',3000,NULL,20);
+INSERT INTO treballadors VALUES (7839,'Nuñez','PRESIDENT',NULL,'1991/11/17',4100,NULL,10);
+INSERT INTO treballadors VALUES (7844,'Fernández','VENEDOR',7698,'1991/09/08',1350,0,30);
+INSERT INTO treballadors VALUES (7876,'Alonso','OFICINISTA',7788,'1991/09/23',1430,NULL,20);
+INSERT INTO treballadors VALUES (7900,'Aimerich','OFICINISTA',7698,'1991/12/03',1335,NULL,30);
+INSERT INTO treballadors VALUES (7902,'Font','ANALISTA',7566,'1991/12/03',3000,NULL,20);
+INSERT INTO treballadors VALUES (7934,'Román','OFICINISTA',7782,'1992/01/23',1690,NULL,10);
+
+COMMIT;
+
+```
+
 1) La informació dels camps és la següent:
 ```
     DEPT_NO - Número o codi del departament.
